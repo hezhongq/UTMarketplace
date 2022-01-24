@@ -1,4 +1,4 @@
-| Full Name   | UTORID | Student ID | Email | Best Way to Contact | Discord Username |\ 
+| Full Name   | UTORID | Student ID | Email | Best Way to Contact | Discord Username |\
 |Tianyi Ma |matian7 |1006429928 |tinnn.ma@mail.utoronto.ca |Discord | BaicaiTomato#7806|\
 |Zhongqi He|hezhongq|1006271393|zhongqi.he@mail.utoronto.ca|Discord|oldhehe#1610|\
 | Andrew Qiu |qiuandre|1006261992| andrew.qiu@mail.utoronto.ca| Discord |ANJEW#5707|\

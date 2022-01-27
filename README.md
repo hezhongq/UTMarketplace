@@ -76,7 +76,7 @@ This branch is composed of fully developed features that have been tested and in
 2. ```DEV```
 This branch is used to store features that have been developed, but not yet tested or fully integrated in. All merges from feature branches are subject to Pull Requests that must be reviewed by at least 2 other developers.
 
-#Feature Development
+# Feature Development
 Features are developed in the following manner:
 * Create a branch off ```DEV``` with the naming convention: FEATURE/feature_name
 * During feature development, commits must be frequent and should not be large in size. Commit messages must be detailed.

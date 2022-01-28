@@ -22,7 +22,8 @@ As an existing user, I want to be able to log out of UTMarketplace
 
 As an existing user who has forgotten their password, I want to reset my password
 ● CoS: Ensure that there is a password reset link being sent to the correct user
-● CoS: Ensure that the password reset link
+● CoS: Ensure that the user can change their password from the password reset link and that
+the change is updated in the database
 
 ## Priority: Low
 
@@ -87,7 +88,7 @@ As George I want to discuss offers with email to make friends
 As a user, I want to be able to keep multiple listings in a cart/”My Orders” section.
 ● CoS: Ensure that user’s orders don’t get reset every time they leave website
 As Catherine I do not want to see a messy list
-● CoS: Ensure that user has ease of access
+● CoS: Ensure that the website looks clean and the listings are shown properly
 
 ## Priority: Low
 
@@ -95,9 +96,9 @@ As Dhruv I want to see the rating of a user to see if they are trustworthy
 ● CoS: Ensure that this account actually belongs to this user through email verification
 As Dhruv I want to rate a seller after a transaction
 ● CoS: Ensure that users are trading properly and gives them credibility
+
+
 As a user, I want to be able to communicate with a buyer/seller through an IM feature on the website
-
-
 ● Cos: Ensure that connection between the buyer and seller are correctly established and no
 loss of data
 As a user, I want to be able to view the website in my preferred language

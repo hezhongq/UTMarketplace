@@ -46,13 +46,13 @@ pip install -r requirements.txt
 Apply Migrations:
 * On OS X / Linux
 ```bash
-$ cd src/UTMarketplace
+$ cd src
 $ python3 manage.py migrate
 ```
 * On Windows:
 ```
-cd src\UTMarketplace
-py manage.py migrate
+cd UTMarketplace
+> py manage.py migrate
 ```
 
 Start the application (by default, the server will be listening on port 8000):
@@ -63,10 +63,12 @@ $ python3 manage.py runserver
 
 * On Windows
 ```
-py manage.py runserver
+> py manage.py runserver
 ```
 
 Navigate to localhost:8000/login to use the application.
+After usage:
+To stop the server, press CTRL + C. Type ```deactivate``` to shutdown the virtual environment.
 
 ## Contribution
 This repository is devised of two central branches:

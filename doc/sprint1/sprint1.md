@@ -15,13 +15,13 @@ Since we are not working with 8 hour days, as a team we decided to complete 26 u
 
 # Participants
 
-Chris
-Joshua
-Renfrew
-Andrew
-Tin
-Eric
-Arush
+* Chris
+* Joshua
+* Renfrew
+* Andrew
+* Tin
+* Eric
+* Arush
 
 # Decisions & User Stories & Subtasks
 As a team, we decided to work on the frontend and backend components of having a user being able to log into UTMarketplace and making sure that their account is authenticated on creation. Through this decision, we then decided which tasks from the backlog to include into sprint 1, while making sure the work was doable within the timeframe of sprint 1.

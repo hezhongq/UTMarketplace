@@ -9,7 +9,7 @@ The release planning meeting occurred on **Monday January 31, 2022 at 8PM EST** 
 * Joshua Menezes
 * Renfrew Ao-leoung
 * Tianyi Ma
-* Zhonqi He
+* Zhongqi He
 
 ## Release Goal
 For our group, a successful release includes completing all of our sprint tasks, 

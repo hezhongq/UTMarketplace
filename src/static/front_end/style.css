@@ -1,0 +1,169 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+.annotate {
+    text-align: center;
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
+
+}
+
+.bg-img {
+    z-index: 0;
+    background-image: linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)),url(https://onesearch.library.utoronto.ca/sites/default/files/utm_exterior.jpg);
+}
+
+/*---------- HEADER style ----------*/
+.header {
+    left: 1%;
+    top: 1%;
+    position: absolute;
+    width: 17%;
+    background-color: #004294;
+}
+.header img {
+    width: 100%;
+}
+
+/*---------- Navigation style ----------*/
+.navbar {
+    top: 12.5%;
+    position: absolute;
+    background-color: #004294;
+    width: 100%;
+    height: 4%;
+    text-align: left;
+}
+.navbar ul {
+    position: relative;
+    top: 30%;
+    margin-left: 2%;
+    display: inline;
+}
+
+.navbar ul li{
+    display: inline;
+    color: white;
+}
+
+.navbar ul li a{
+    color: white;
+    list-style: none;
+    text-decoration: none;
+    padding: 0.5%;
+    padding-left: 2%;
+    padding-right: 2%;
+}
+
+.navbar ul li a:hover{
+    color: #004294;
+    background-color: white;
+}
+
+.search-container {
+    position: static;
+    float: right;
+    margin: auto;
+    margin-right: 3%;
+}
+.input {
+    line-height:2em;
+}
+
+
+.body {
+    height: 85%;
+    width: 100%;
+    background-color: yellow;
+}
+
+/*---------- Menu style ----------*/
+.menu {
+    top: 18%;
+    left: 1%;
+    position: absolute;
+    background-color: #004294;
+    width: 17%;
+    height: 77%;
+    color: #eeeeee;
+    text-align: left;
+}
+.menu h1 {
+    text-align: center;
+    margin-top: 5%;
+}
+
+.menu summary {
+    margin-left: 10%;
+}
+.menu-list{
+    margin-top: 10%;
+}
+
+.menu-list ul {
+    background-color: white;
+    list-style: none;
+}
+.menu-list ul li {
+    color: #004294;
+    text-align: center;
+    padding: 3%;
+}
+.menu-list ul li:hover {
+    background-color: #004294;
+    color: white;
+    text-align: center;
+}
+
+/*---------- Navigation style ----------*/
+
+.display {
+    top: 18%;
+    left: 20%;
+    position: absolute;
+    height: 77%;
+    width: 78%;
+    background-color: white;
+}
+
+
+
+
+
+
+
+
+
+footer {
+    top: 97%;
+    left: 0%;
+    position: absolute;
+    background-color: #004294;
+    height: 3%;
+    width: 100%;
+}
+
+footer p {
+    color: #eeeeee;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -51,7 +51,7 @@ $ python3 manage.py migrate
 ```
 * On Windows:
 ```
-cd UTMarketplace
+cd src
 > py manage.py migrate
 ```
 

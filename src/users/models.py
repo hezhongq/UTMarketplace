@@ -1,14 +1,16 @@
 from django.db import models
 from django.utils import timezone
+from django.contrib.auth.models import User
 # Create your models here.
 
 
-class User(models):
+class User(models.Model):
     # TODO set global static flags
 
-    name = models.CharField(max_length=50)  
-    email = models.EmailField(max_length=254)    # TODO validate emails, emails should be unique ie no two users share the same email
-    password = models.CharField(max_length=16)  # TODO validate password, passwords need to be strong
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    # name = models.CharField(max_length=50)  
+    # email = models.EmailField(max_length=254)    # TODO validate emails, emails should be unique ie no two users share the same email
+    # password = models.CharField(max_length=16)  # TODO validate password, passwords need to be strong
     bookmarks = models.ForeignKey('Listing', on_delete=models.CASCADE, blank=True)
     listings = models.ForeignKey('Listing', on_delete=SET_NULL, blank=True)   # If user deletes account, we shouldnt delete their listings
 
@@ -22,6 +24,8 @@ class Listing(models.Model):
     title = models.TextField(max_length=64)
     description = models.TextField(max_length=61000)
     category = models.ForeignKey('Category', on_delete=models.SET_NULL, null=True)
+
+    post_user = models.ForeignKey(on_delete=CASCADE)
     # Maybe we change to on_delete to set "uncategorized" instead?
 
     # TODO add edit history

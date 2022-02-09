@@ -1,21 +1,20 @@
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
+
 # Create your models here.
 
 
-class User(models.Model):
+class UserExtension(models.Model):
     # TODO set global static flags
-
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    # name = models.CharField(max_length=50)  
-    # email = models.EmailField(max_length=254)    # TODO validate emails, emails should be unique ie no two users share the same email
-    # password = models.CharField(max_length=16)  # TODO validate password, passwords need to be strong
-    bookmarks = models.ForeignKey('Listing', on_delete=models.CASCADE, blank=True)
-    listings = models.ForeignKey('Listing', on_delete=SET_NULL, blank=True)   # If user deletes account, we shouldnt delete their listings
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='extension')
+    # TODO add image file and ratings in next sprint
+    
+    class Meta:
+        verbose_name = 'User'
 
     def __str__(self):
-        return self.name
+        return self.user.__str__()
 
 class Listing(models.Model):
     item_name = models.CharField(max_length=25)
@@ -44,6 +43,14 @@ class Listing(models.Model):
     def __str__(self):
         return self.item_name
 
+class Bookmark(models.Model):
+    def __init__(self):
+        self.
+
+
+
+ 
+
 
 class Category(models.Model):
     name = models.CharField(max_length=64)
@@ -52,3 +59,11 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+@receiver(post_save, sender=User)
+def create_user_extension(sender, instance, created **kwargs):
+    if created:
+        UserExtension.objects.create(user=instance)
+    else:
+        instance.extension.save()
+
+    

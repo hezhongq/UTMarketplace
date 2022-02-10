@@ -1,4 +1,4 @@
-from .forms import RegisterForm, LoginForm
+from .forms import LoginForm, RegistrationForm
 from .models import UserExtension
 from django.conf import settings
 from django.shortcuts import render, get_object_or_404
@@ -14,13 +14,17 @@ def home(response):
 def register(response):
     error = []
     if response.method == 'POST':
-        form = RegisterForm(response.POST)
+        form = RegistrationForm(response.POST)
         if form.is_valid():
             email = form.cleaned_data['email']
-            password = form.cleaned_data['password']
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password1']
             password2 = form.cleaned_data['password2']
+            if password != password2:
+                return HttpResponse("two passwords do not match with each other")
             if not UserExtension.objects.all().filter(email=email):
                 user = UserExtension()
+                user.username = username
                 user.email = email
                 user.set_password(password2)
                 user.save()
@@ -28,9 +32,9 @@ def register(response):
             else:
                 return HttpResponse("user exists")
     else:
-        form = RegisterForm()
+        form = RegistrationForm()
 
-    return render(response, "users/signup.html", {'form': form, 'error':error})
+    return render(response, "users/signup.html", {'form': form, 'error': error})
 
 
 def login(response):

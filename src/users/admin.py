@@ -6,7 +6,7 @@ from .models import UserExtension
 # Re-register UserAdmin
 class CustomUserAdmin(UserAdmin):
     model = UserExtension
-    list_display = ['email']
+    list_display = ['email', 'username']
 
 
 admin.site.register(UserExtension, CustomUserAdmin)

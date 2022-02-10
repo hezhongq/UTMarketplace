@@ -1,8 +1,24 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
+from .models import UserExtension
 
 
+class RegistrationForm(UserCreationForm):
+    email = forms.EmailField(required=True, label='Email')
+
+    class Meta:
+        model = UserExtension
+        fields = ("username", "email",)
+
+    def clean_email(self):
+        email_data = self.cleaned_data.get('email')
+        if "@mail.utoronto.ca" not in email_data:
+            raise forms.ValidationError("Must be a utoronto address")
+        return email_data
+
+
+# Will not use this form
+'''
 class RegisterForm(forms.Form):
     email = forms.EmailField(label='email')
     username = forms.CharField(label='username')
@@ -20,6 +36,7 @@ class RegisterForm(forms.Form):
         else:
             cleaned_data = super(RegisterForm, self).clean()
         return cleaned_data
+'''
 
 
 class LoginForm(forms.Form):

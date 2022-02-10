@@ -1,4 +1,3 @@
-from cProfile import label
 from django import forms
 from django.contrib.auth.models import User
 
@@ -10,7 +9,7 @@ class RegistrationForm(forms.Form):
     def clean_username(self):
         username = self.cleaned_data.get('username')
         if len(username) > 50:
-            raise forms.ValidationError("Please wirte the proper email")
+            raise forms.ValidationError("Please write the proper email")
         else:
             filter_result = User.objects.filter(username__exact = username)
             if filter_result.exists():
@@ -36,13 +35,13 @@ class RegistrationForm(forms.Form):
         return password2
 
 class LoginForm(forms.Form):
-    username = username = forms.CharField(label='Username', max_length=50)
+    username = forms.CharField(label='Username', max_length=50)
     password = forms.CharField(label='Password', widget=forms.PasswordInput)
 
     def clean_username(self):
         username = self.cleaned_data.get('username')
         if len(username) > 50:
-            raise forms.ValidationError("Please wirte the proper email")
+            raise forms.ValidationError("Please write the proper email")
         else:
             filter_result = User.objects.filter(username__exact = username)
             if not filter_result.exists():

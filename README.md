@@ -12,7 +12,7 @@ UTMarketplace is a web-based application.
 ## Tools and Dependencies Used
 ### Frontend
 - HTML5
-- CSS3
+- Bootstrap v5.1.3
 - Javascript
 
 ### Backend

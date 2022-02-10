@@ -131,3 +131,11 @@ LOGOUT_REDIRECT_URL = 'login'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.Email.Backend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 25
+EMAIL_HOST_USER = 'uoftmarketplace@gmail.com'
+EMAIL_HOST_PASSWORD = 'getusintopey'
+EMAIL_FROM = 'UTmarketplace<uoftmarketplace@gmail.com>'

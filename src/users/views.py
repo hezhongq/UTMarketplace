@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
 def home(response):
-    return render(response, 'users/users/home.html', {})
+    return render(response, 'users/home.html', {})
 
 def register(response):
     if response.method == 'POST':

@@ -1,50 +1,33 @@
 from django import forms
+from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
-class RegistrationForm(forms.Form):
-    username = forms.CharField(label='Username', max_length=50)
-    password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
-    password2 = forms.CharField(label='Password Confirmation', widget=forms.PasswordInput)
 
-    def clean_username(self):
-        username = self.cleaned_data.get('username')
-        if len(username) > 50:
-            raise forms.ValidationError("Please write the proper email")
+class RegisterForm(forms.Form):
+    email = forms.EmailField(label='email')
+    username = forms.CharField(label='username')
+    password = forms.CharField(label='password', widget=forms.PasswordInput())
+    password2 = forms.CharField(label='confirm password', widget=forms.PasswordInput())
+
+    def clean(self):
+        email_data = self.cleaned_data['email']
+        if "@mail.utoronto.ca" not in email_data:
+            raise forms.ValidationError("Must be a utoronto address")
+        if not self.is_valid():
+            raise forms.ValidationError('Please input all fields in form')
+        elif self.cleaned_data['password2'] != self.cleaned_data['password']:
+            raise forms.ValidationError('2 passwords do not match with each other')
         else:
-            filter_result = User.objects.filter(username__exact = username)
-            if filter_result.exists():
-                raise forms.ValidationError("Your username exists")
-        
-        return username
+            cleaned_data = super(RegisterForm, self).clean()
+        return cleaned_data
 
-    def clean_password1(self):
-        password1 = self.cleaned_data.get('password1')
-        if len(password1) < 6:
-            raise forms.ValidationError("Your password is too short")
-        elif len(password1) > 20:
-            raise forms.ValidationError("Your password is too long")
-        
-        return password1
-
-    def clean_password2(self):
-        password1 = self.cleaned_data.get('password1')
-        password2 = self.cleaned_data.get('password2')
-        if password1 and password2 and password1 != password2:
-            raise forms.ValidationError("Confirm Password is not matching")
-        
-        return password2
 
 class LoginForm(forms.Form):
-    username = forms.CharField(label='Username', max_length=50)
-    password = forms.CharField(label='Password', widget=forms.PasswordInput)
+    email = forms.EmailField(label='email')
+    password = forms.CharField(label='password', widget=forms.PasswordInput())
 
-    def clean_username(self):
-        username = self.cleaned_data.get('username')
-        if len(username) > 50:
-            raise forms.ValidationError("Please write the proper email")
-        else:
-            filter_result = User.objects.filter(username__exact = username)
-            if not filter_result.exists():
-                raise forms.ValidationError("This user does not exist in our website")
-        
-        return username
+    def clean(self):
+        if not self.is_valid():
+            raise forms.ValidationError('Please input all fields in form')
+        cleaned_data = super(LoginForm, self).clean()
+        return cleaned_data

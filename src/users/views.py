@@ -1,53 +1,62 @@
-from .forms import RegistrationForm, LoginForm
+from .forms import RegisterForm, LoginForm
 from .models import UserExtension
 from django.conf import settings
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponseRedirect
-from django.urls import reverse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.core.mail import send_mail
 from django.contrib import auth
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
+
 
 def home(response):
     return render(response, 'users/home.html', {})
 
+
 def register(response):
+    error = []
     if response.method == 'POST':
-        form = RegistrationForm(response.POST)
-
+        form = RegisterForm(response.POST)
         if form.is_valid():
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password2']
-
-            user = User.objects.create_user(username=username, password=password)
-            user_extension = UserExtension(user)
-            user_extension.save()
-
-        return HttpResponseRedirect("")
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password']
+            password2 = form.cleaned_data['password2']
+            if not UserExtension.objects.all().filter(email=email):
+                user = UserExtension()
+                user.email = email
+                user.set_password(password2)
+                user.save()
+                return HttpResponse("success")
+            else:
+                return HttpResponse("user exists")
     else:
-        form = RegistrationForm()
-    
-    return render(response, "users/signup.html", {'form': form})
+        form = RegisterForm()
+
+    return render(response, "users/signup.html", {'form': form, 'error':error})
+
 
 def login(response):
     if response.method == 'POST':
         form = LoginForm(response.POST)
 
         if form.is_valid():
-            username = form.cleaned_data['username']
+            email = form.cleaned_data['email']
             password = form.cleaned_data['password']
 
-            user = auth.authenticate(username=username, password=password)
+            user = auth.authenticate(email=email, password=password)
             if user is not None:
                 auth.login(response, user)
-                return HttpResponseRedirect(reverse('users:profile', args=[user.id]))
+                return render(response, 'users/home.html', {})
             else:
-                return render(response, 'users/login.html', {'form': form, 'message': 'wrong password'})
+                return HttpResponse("wrong user email or password")
     else:
         form = LoginForm()
-    
+
     return render(response, "users/login.html", {'form': form})
+
+
+def do_logout(response):
+    auth.logout(response)
+    return HttpResponseRedirect('/')
+
 
 def send(request):
     subject = ''

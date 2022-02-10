@@ -3,12 +3,12 @@
 {% block content %}
   <h2>Login</h2>
   
-    <form method="post"> {% csrf_token %}
+    <form method="post" class="form-group"> {% csrf_token %}
       <table>
         {{ form.as_p }}
         <tr>
           <td>&nbsp;</td>
-          <td><input type="submit" value="Submit"></td>
+          <td><input type="submit" value="Submit" class="btn btn-light"></td>
         </tr>                
       </table>
     </form>

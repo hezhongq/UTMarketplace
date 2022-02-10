@@ -1,21 +1,56 @@
 from django.db import models
 from django.utils import timezone
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.base_user import BaseUserManager
+
 
 # Create your models here.
+class CustomUserManager(BaseUserManager):
+
+    def _create_user(self, email, password, **extra_fields):
+        """
+        Create and save a User with the given email and password.
+        """
+        if not email:
+            raise ValueError("The given email must be set")
+        email = self.normalize_email(email)
+        user = self.model(email=email, **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_user(self, email, password=None, **extra_fields):
+        extra_fields.setdefault("is_superuser", False)
+        return self._create_user(email, password, **extra_fields)
+
+    def create_superuser(self, email, password, **extra_fields):
+        extra_fields.setdefault("is_staff", True)
+        extra_fields.setdefault("is_superuser", True)
+
+        if extra_fields.get("is_staff") is not True:
+            raise ValueError(
+                "Superuser must have is_staff=True."
+            )
+        if extra_fields.get("is_superuser") is not True:
+            raise ValueError(
+                "Superuser must have is_superuser=True."
+            )
+
+        return self._create_user(email, password, **extra_fields)
 
 
-# Why do we need this?
-class UserExtension(models.Model):
+class UserExtension(AbstractUser):
     # TODO set global static flags
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='extension')
     # TODO add image file and ratings in next sprint
-    
-    class Meta:
-        verbose_name = 'User'
+    # avatar = ProcessedImageField(upload_to='avatar',default='avatar/default.png', verbose_name='image')
+    email = models.EmailField(unique=True)
+    username = models.CharField(max_length=20, blank=False)
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ["username"]
+    objects = CustomUserManager()
 
     def __str__(self):
-        return self.user.__str__()
+        return self.email
 
 
 # Table which stores all listings.
@@ -33,7 +68,7 @@ class Listing(models.Model):
 
     # TODO add edit history
 
-    post_date = models.DateTimeField(editable=False, null=True) # auto_now and autop_now_add will be depreciated
+    post_date = models.DateTimeField(editable=False, null=True)  # auto_now and autop_now_add will be depreciated
     last_modified_date = models.DateTimeField(null=True)
 
     def save(self, *args, **kwargs):

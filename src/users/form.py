@@ -34,3 +34,18 @@ class RegistrationForm(forms.Form):
             raise forms.ValidationError("Confirm Password is not matching")
         
         return password2
+
+class LoginForm(forms.Form):
+    username = username = forms.CharField(label='Username', max_length=50)
+    password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
+
+    def clean_username(self):
+        username = self.cleaned_data.get('username')
+        if len(username) > 50:
+            raise forms.ValidationError("Please wirte the proper email")
+        else:
+            filter_result = User.objects.filter(username__exact = username)
+            if not filter_result.exists():
+                raise forms.ValidationError("This user does not exist in our website")
+        
+        return username

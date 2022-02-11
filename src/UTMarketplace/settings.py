@@ -22,6 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-6sx!_#*eo87@vm(+m6dd^6#rn(li%998f%$-l-3-n=nza^big0'
 
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -131,3 +132,12 @@ LOGOUT_REDIRECT_URL = 'login'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+AUTH_USER_MODEL = 'users.UserExtension'
+AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend',)
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.Email.Backend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 25
+EMAIL_HOST_USER = 'uoftmarketplace@gmail.com'
+EMAIL_HOST_PASSWORD = 'getusintopey'
+EMAIL_FROM = 'UTmarketplace<uoftmarketplace@gmail.com>'

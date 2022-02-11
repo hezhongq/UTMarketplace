@@ -1,28 +1,26 @@
-{% load static %}
-
 <!DOCTYPE html>
 <html>
 <head>
 	<meta charset="utf-8">
 	<title>UTMarket</title>
-
+	
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
-	<link href="{% static 'css/signup.css' %}" rel="stylesheet" type="text/css">
-    <link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css">
+	<link href="../css/signup.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body class="bg-img">
-
+	
 	<div class="hero">
 
 <!---------------------- Header Bar  ---------------------->
 
 
 		<div class="container-fluid">
-			<a href="">
+			<a href="index.html">
 				<div class="">
-					<img class="m-2" id="nav-img" src="{% static 'img/logo.png' %}">
+					<img class="m-2" id="nav-img" src="img/logo.png"> 
 				</div>
 			</a>
 		</div>
@@ -39,23 +37,23 @@
 				<div class="collapse navbar-collapse">
 					<ul class="navbar-nav me-auto">
 						<li class="nav-item px-3 hov">
-							<a class="nav-link text-white py-3" href="index.html">Home</a>
+							<a class="nav-link text-white py-3" href="">Home</a>
 						</li>
 						<li class="nav-item px-3 hov">
 							<a class="nav-link text-white py-3" href="">Sell</a>
 						</li>
 						<li class="nav-item px-3 hov">
-							<a class="nav-link text-white py-3" href="report.html">Report</a>
+							<a class="nav-link text-white py-3" href="">Report</a>
 						</li>
 					</ul>
-
+					
 					<div class="hov mx-2">
 						<a class="p-3 py-5" href="bookmarks.html">
 							<i class="bi bi-bookmarks-fill h2 text-white"></i>
-						</a>
+						</a>	
 					</div>
-
-
+					
+					
 					<form class="d-flex">
 						<input class="form-control me-2" type="text" name="">
 						<button class="btn btn-primary">Search</button>
@@ -67,7 +65,7 @@
 					<div class="hov">
 						<a class="px-3 py-5" href="profile.html">
 							<i class="bi bi-person-circle h2 text-white"></i>
-						</a>
+						</a>	
 					</div>
 				</div>
 
@@ -75,10 +73,11 @@
 		</nav>
 
 
-		<div class="container-fluid">
+
 
 <!---------------------- Side bar  ---------------------->
 
+		<div class="container-fluid">
 
 			<div class="row">
 				<div class="col-3 col-lg-3 col-xl-2 m-3 menu bg-uoft text-white">
@@ -103,7 +102,7 @@
 							<a href="#" class="list-group-item list-group-item-action">Sociology</a>
 							<a href="#" class="list-group-item list-group-item-action">Visual Studies</a>
 						</div>
-					</details>
+					</details>					
 
 					<details class="mt-4">
 						<summary><p class="d-inline">Notes</p></summary>
@@ -112,7 +111,7 @@
 							<a href="#" class="list-group-item list-group-item-action">Note 2</a>
 							<a href="#" class="list-group-item list-group-item-action">Note 3</a>
 						</div>
-					</details>
+					</details>					
 
 					<details class="mt-4">
 						<summary><p class="d-inline">Tutors</p></summary>
@@ -146,85 +145,65 @@
 <!---------------------- Listings  ---------------------->
 
 				<div class="col-7 col-lg-8 col-xl-9 bg-white m-3">
-					<h1 class="text-center mt-3">Subjects</h1>
+					<h1 class="text-center mt-3">Subject 1</h1>
 
 					<div class="row mt-3">
 
 
-						<a class="col-3 text-decoration-none" href="inner.html">
-							<div class="card bg-warning text-black mb-3">
-								<div class="card-header">Subject 1</div>
+						<div class="col-4">
+							<div class="card">
+								<img class="rounded" src="https://media.istockphoto.com/vectors/book-icon-vector-id1254373900?k=20&m=1254373900&s=170667a&w=0&h=OQ6JNrjZiJRrBIO2WUs9EJPdJCN8mDAnyPKOD_3sseU=">
 								<div class="card-body">
-									<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Book.svg/1200px-Book.svg.png" class="h-100 w-100">
+									<a class="text-decoration-none text-black" href="">
+										<h4>Book 1</h4>
+									</a>
+									<p>$100</p>
+									<a href="#" class="btn btn-primary">See details</a>
 								</div>
-							</div>
-						</a>
+								<a class="stretched-link" href="post.html"></a>
+							</div>	
+						</div>
 
-						<a class="col-3 text-decoration-none" href="inner.html">
-							<div class="card bg-warning text-black mb-3">
-								<div class="card-header">Subject 2</div>
+						<div class="col-4">
+							<div class="card">
+								<img class="rounded" src="https://media.istockphoto.com/vectors/book-icon-vector-id1254373900?k=20&m=1254373900&s=170667a&w=0&h=OQ6JNrjZiJRrBIO2WUs9EJPdJCN8mDAnyPKOD_3sseU=">
 								<div class="card-body">
-									<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Book.svg/1200px-Book.svg.png" class="h-100 w-100">
+									<a class="text-decoration-none text-black" href="">
+										<h4>Book 2</h4>
+									</a>
+									<p>$100</p>
+									<a href="#" class="btn btn-primary">See details</a>
 								</div>
-							</div>
-						</a>
+								<a class="stretched-link" href="post.html"></a>
+							</div>	
+						</div>
 
-						<a class="col-3 text-decoration-none" href="inner.html">
-							<div class="card bg-warning text-black mb-3">
-								<div class="card-header">Subject 3</div>
+						<div class="col-4">
+							<div class="card">
+								<img class="rounded" src="https://media.istockphoto.com/vectors/book-icon-vector-id1254373900?k=20&m=1254373900&s=170667a&w=0&h=OQ6JNrjZiJRrBIO2WUs9EJPdJCN8mDAnyPKOD_3sseU=">
 								<div class="card-body">
-									<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Book.svg/1200px-Book.svg.png" class="h-100 w-100">
+									<a class="text-decoration-none text-black" href="">
+										<h4>Book 3</h4>
+									</a>
+									<p>$100</p>
+									<a href="#" class="btn btn-primary">See details</a>
 								</div>
-							</div>
-						</a>
-
-						<a class="col-3 text-decoration-none" href="inner.html">
-							<div class="card bg-warning text-black mb-3">
-								<div class="card-header">Subject 4</div>
-								<div class="card-body">
-									<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Book.svg/1200px-Book.svg.png" class="h-100 w-100">
-								</div>
-							</div>
-						</a>
-
-						<a class="col-3 text-decoration-none" href="inner.html">
-							<div class="card bg-warning text-black mb-3">
-								<div class="card-header">Subject 5</div>
-								<div class="card-body">
-									<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Book.svg/1200px-Book.svg.png" class="h-100 w-100">
-								</div>
-							</div>
-						</a>
-
-						<a class="col-3 text-decoration-none" href="inner.html">
-							<div class="card bg-warning text-black mb-3">
-								<div class="card-header">Subject 6</div>
-								<div class="card-body">
-									<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Book.svg/1200px-Book.svg.png" class="h-100 w-100">
-								</div>
-							</div>
-						</a>
-
-						<a class="col-3 text-decoration-none" href="inner.html">
-							<div class="card bg-warning text-black mb-3">
-								<div class="card-header">Subject 7</div>
-								<div class="card-body">
-									<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Book.svg/1200px-Book.svg.png" class="h-100 w-100">
-								</div>
-							</div>
-						</a>
+								<a class="stretched-link" href="post.html"></a>
+							</div>	
+						</div>
 
 
-						<a class="col-3 text-decoration-none" href="inner.html">
-							<div class="card bg-warning text-black mb-3">
-								<div class="card-header">Subject 8</div>
-								<div class="card-body">
-									<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Book.svg/1200px-Book.svg.png" class="h-100 w-100">
-								</div>
-							</div>
-						</a>
-
-
+					<div class="row mt-5">
+						<ul class="pagination justify-content-center">
+							<li class="page-item"><a class="page-link" href="">Previous</a></li>
+							<li class="page-item active"><a class="page-link" href="">1</a></li>
+							<li class="page-item"><a class="page-link" href="">2</a></li>
+							<li class="page-item"><a class="page-link" href="">3</a></li>
+							<li class="page-item"><a class="page-link" href="">4</a></li>
+							<li class="page-item"><a class="page-link" href="">5</a></li>
+							<li class="page-item"><a class="page-link" href="">Next</a></li>
+						</ul>
+					</div>
 
 					</div>
 
@@ -233,14 +212,14 @@
 
 				</div>
 			</div>
-
+			
 		</div>
 
 
 	<!-- 	<div class="container-fluid">
 
-
-
+			
+			
 	 	</div>
 
 

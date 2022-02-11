@@ -12,7 +12,7 @@ UTMarketplace is a web-based application.
 ## Tools and Dependencies Used
 ### Frontend
 - HTML5
-- CSS3
+- Bootstrap v5.1.3
 - Javascript
 
 ### Backend
@@ -75,7 +75,7 @@ To stop the server, press CTRL + C. Type ```deactivate``` to shutdown the virtua
 ## Contribution
 This repository is devised of two central branches:
 1. ```main```
-This branch is composed of fully developed features that have been tested and integrated with existing features. After a set of features in the ```DEV``` branch, it may be merged into the ```main``` branch at the end of a sprint, to have a working product. Prior to merging into main, all commits must be subject to a Pull Request that must be reviewed by at least 2 other developers.
+This branch is composed of fully developed features that have been tested and integrated with existing features. After a set of features in the ```DEV``` branch has been fully tested, it may be merged into the ```main``` branch at the end of a sprint, to have a working product. Prior to merging into main, all commits must be subject to a Pull Request that must be reviewed by at least 2 other developers.
 
 2. ```DEV```
 This branch is used to store features that have been developed, but not yet tested or fully integrated in. All merges from feature branches are subject to Pull Requests that must be reviewed by at least 2 other developers.

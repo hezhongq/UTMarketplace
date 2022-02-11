@@ -52,7 +52,7 @@ $ python3 manage.py migrate --run-syncdb
 ```
 * On Windows:
 ```
-cd UTMarketplace
+cd src
 > py manage.py makemigrations
 > py manage.py migrate --run-syncdb
 ```

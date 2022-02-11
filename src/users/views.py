@@ -59,7 +59,7 @@ def login(response):
 
 def do_logout(response):
     auth.logout(response)
-    return HttpResponseRedirect('/')
+    return HttpResponseRedirect('/users/login')
 
 
 def send(request):

@@ -1,7 +1,7 @@
 from .forms import LoginForm, RegistrationForm
 from .models import UserExtension
 from django.conf import settings
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.mail import send_mail
 from django.contrib import auth
@@ -41,7 +41,6 @@ def login(response):
     error = []
     if response.method == 'POST':
         form = LoginForm(response.POST)
-
         if form.is_valid():
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
@@ -49,7 +48,7 @@ def login(response):
             user = auth.authenticate(email=email, password=password)
             if user is not None:
                 auth.login(response, user)
-                return render(response, 'users/home.html', {})
+                return redirect('/users/home/')
             else:
                 return HttpResponse("wrong user email or password")
     else:

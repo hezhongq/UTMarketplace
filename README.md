@@ -48,13 +48,13 @@ Apply Migrations:
 ```bash
 $ cd src
 $ python3 manage.py makemigrations
-$ python3 manage.py migrate
+$ python3 manage.py migrate --run-syncdb
 ```
 * On Windows:
 ```
 cd UTMarketplace
 > py manage.py makemigrations
-> py manage.py migrate
+> py manage.py migrate --run-syncdb
 ```
 
 Start the application (by default, the server will be listening on port 8000):

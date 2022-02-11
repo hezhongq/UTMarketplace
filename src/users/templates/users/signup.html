@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -15,7 +14,7 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
         <div class="container d-flex justify-content-center">
-            <img id="nav-img" src="img/logo.png"> 
+            <img id="nav-img" src="./img/logo.png">
         </div>
     </nav>
 
@@ -27,35 +26,29 @@
                         <div class="card" style="border-radius: 15px;">
                             <div class="card-body p-5">
                                 <h2 class="text-center mb-5">Create an account</h2>
-                                <form method="POST">
-
+                                <form action="." method="post">
+                                    {% csrf_token %}
                                     <div class="form-outline mb-4">
-                                        <label for="fname-field" class="form-label"> First Name</label>
-                                        <input required type="text" id="fname-field"
+                                        <label for="fname-field" class="form-label">username</label>
+                                        <input required type="text" id="fname-field" name="username"
                                             class="form-control form-control-lg" />
                                     </div>
 
                                     <div class="form-outline mb-4">
-                                        <label for="lname-field" class="form-label"> Last Name</label>
-                                        <input required type="text" id="lname-field"
-                                            class="form-control form-control-lg" />
-                                    </div>
-
-                                    <div class="form-outline mb-4">
-                                        <label for="email-field" class="form-label"> Email</label>
-                                        <input required type="email" id="email-field"
+                                        <label for="email-field" class="form-label">email</label>
+                                        <input required type="email" id="email-field" name="email"
                                             class="form-control form-control-lg" />
                                     </div>
 
                                     <div class="form-outline mb-4">
                                         <label for="password-field" class="form-label">Password</label>
-                                        <input required type="password" id="password-field"
+                                        <input required type="password" id="password-field" name="password1"
                                             class="form-control form-control-lg" />
                                     </div>
 
                                     <div class="form-outline mb-4">
                                         <label for="confirm-password-field" class="form-label">Re-enter Password</label>
-                                        <input required type="password" id="confirm-password-field"
+                                        <input required type="password" id="confirm-password-field" name="password2"
                                             class="form-control form-control-lg" />
                                     </div>
 
@@ -68,7 +61,7 @@
                                     </div>
 
                                     <div class="d-flex justify-content-center">
-                                        <button type="submit" class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">Register</button>
+                                        <button type="submit" value="OK" class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">Register</button>
                                     </div>
 
                                     <p class="text-center text-muted mt-4 mb-0">Already have an account? <a

@@ -38,6 +38,7 @@ def register(response):
 
 
 def login(response):
+    error = []
     if response.method == 'POST':
         form = LoginForm(response.POST)
 
@@ -54,7 +55,7 @@ def login(response):
     else:
         form = LoginForm()
 
-    return render(response, "users/login.html", {'form': form})
+    return render(response, "users/login.html", {'form': form, 'error': error})
 
 
 def do_logout(response):

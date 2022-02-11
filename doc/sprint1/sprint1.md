@@ -4,10 +4,10 @@ The goal for this sprint is to complete the epics listed in the Sprint 1 backlog
 
 # Spikes
 
-How to authenticate a University of Toronto student
-How to authenticate an administrator user
-How to encrypt user information properly
-How to have a bot email account that is used to reset user password
+* How to authenticate a University of Toronto student
+* How to authenticate an administrator user
+* How to encrypt user information properly
+* How to have a bot email account that is used to reset user password
 
 # Team capacity
 

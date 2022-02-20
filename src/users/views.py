@@ -12,7 +12,7 @@ def home(response):
 
 
 def register(response):
-    error = []
+    error = ""
     if response.method == 'POST':
         form = RegistrationForm(response.POST)
         if form.is_valid():
@@ -21,7 +21,8 @@ def register(response):
             password = form.cleaned_data['password1']
             password2 = form.cleaned_data['password2']
             if password != password2:
-                return HttpResponse("two passwords do not match with each other")
+                error = "two passwords do not match with each other\n"
+                return render(response, "users/signup.html", {'form': form, 'error': error})
             if not UserExtension.objects.all().filter(email=email):
                 user = UserExtension()
                 user.username = username
@@ -30,15 +31,15 @@ def register(response):
                 user.save()
                 return HttpResponse("success")
             else:
-                return HttpResponse("user exists")
+                error = "user exists\n"
+                return render(response, "users/signup.html", {'form': form, 'error': error})
     else:
         form = RegistrationForm()
-
     return render(response, "users/signup.html", {'form': form, 'error': error})
 
 
 def login(response):
-    error = []
+    error = ""
     if response.method == 'POST':
         form = LoginForm(response.POST)
         if form.is_valid():
@@ -50,7 +51,7 @@ def login(response):
                 auth.login(response, user)
                 return redirect('/users/home/')
             else:
-                return HttpResponse("wrong user email or password")
+               error = "wrong user email or password\n"
     else:
         form = LoginForm()
 

@@ -29,7 +29,7 @@ def register(response):
                 user.email = email
                 user.set_password(password2)
                 user.save()
-                return HttpResponse("success")
+                return redirect('/users/home/')
             else:
                 error = "user exists\n"
                 return render(response, "users/signup.html", {'form': form, 'error': error})
@@ -60,7 +60,7 @@ def login(response):
 
 def do_logout(response):
     auth.logout(response)
-    return HttpResponseRedirect('/users/login')
+    return redirect('/users/login')
 
 
 def send(request):

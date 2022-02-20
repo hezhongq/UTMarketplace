@@ -46,8 +46,10 @@ class RegisterForm(forms.Form):
 
 
 class LoginForm(forms.Form):
-    email = forms.EmailField(label='email', required=True, widget=forms.TextInput({'placeholder':'Email'}))
-    password = forms.CharField(label='password', required=True, widget=forms.PasswordInput({'placeholder':'Password'}))
+    email = forms.EmailField(label='email', required=True, min_length=1,
+                             widget=forms.TextInput({'placeholder': 'Email'}))
+    password = forms.CharField(label='password', required=True, min_length=8,
+                               widget=forms.PasswordInput({'placeholder': 'Password'}))
 
     def __init__(self, *args, **kwargs):
         super(LoginForm, self).__init__(*args, **kwargs)

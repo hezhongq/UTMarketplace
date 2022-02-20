@@ -1,3 +1,4 @@
+from crispy_forms.helper import FormHelper
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from .models import UserExtension
@@ -9,6 +10,11 @@ class RegistrationForm(UserCreationForm):
     class Meta:
         model = UserExtension
         fields = ("username", "email",)
+
+    def __init__(self, *args, **kwargs):
+        super(RegistrationForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_show_labels = False
 
     def clean_email(self):
         email_data = self.cleaned_data.get('email')
@@ -40,8 +46,15 @@ class RegisterForm(forms.Form):
 
 
 class LoginForm(forms.Form):
-    email = forms.EmailField(label='email')
-    password = forms.CharField(label='password', widget=forms.PasswordInput())
+    email = forms.EmailField(label='email', required=True, min_length=1,
+                             widget=forms.TextInput({'placeholder': 'Email'}))
+    password = forms.CharField(label='password', required=True, min_length=8,
+                               widget=forms.PasswordInput({'placeholder': 'Password'}))
+
+    def __init__(self, *args, **kwargs):
+        super(LoginForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_show_labels = False
 
     def clean(self):
         if not self.is_valid():

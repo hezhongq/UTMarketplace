@@ -34,7 +34,7 @@ def register(response):
                 user.email = email
                 user.set_password(password2)
                 user.save()
-                send_register_email(email, "register")
+                send_register_email(response.get_host(), email, "register")
                 return redirect('/users/login/')
             else:
                 error = "user exists\n"
@@ -108,7 +108,7 @@ def random_str(randomlength=8):
     return s
 
 
-def send_register_email(email, send_type="register"):
+def send_register_email(hostname, email, send_type="register"):
     email_record = EmailVerifyRecord()
     code = random_str(16)
     email_record.code = code
@@ -118,17 +118,15 @@ def send_register_email(email, send_type="register"):
 
     if send_type == "register":
         email_title = "UTMarketplace - register code"
-        email_body = "click to verify:http://127.0.0.1:8000/users/active/{0}".format(code)
-        send_status = send_mail(email_title, email_body, settings.EMAIL_HOST_USER, [email])
-        if not send_status:
-            print("send email failed")
-        elif send_type == "forget":
-            email_title = "UTMarketplace - Password Reset"
-            email_body = "Click here to reset password: http://127.0.0.1:8000/users/forgot_my_password/{0}".format(code)
+        email_body = "click to verify: http://{0}/users/active/{1}".format(hostname, code)
 
-        send_status = send_mail(email_title, email_body, settings.EMAIL_HOST_USER, [email])
-        if not send_status:
-            print("send email failed")
+    elif send_type == "forget":
+        email_title = "UTMarketplace - Password Reset"
+        email_body = "Click here to reset password: http://{0}/users/forgot_my_password/{1}".format(hostname, code)
+
+    send_status = send_mail(email_title, email_body, settings.EMAIL_HOST_USER, [email])
+    if not send_status:
+        print("send email failed")
 
 # Bookmark listing view
 class BookmarksView(ListView):

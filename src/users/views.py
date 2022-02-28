@@ -80,9 +80,9 @@ def active_user(response, active_code):
             if user:
                 user[0].is_active = True
                 user[0].save()
-                return redirect('/users/login')
-            return render(response, "users/active_fail.html", {'error': "no this user"})
-    return render(response, "users/active_fail.html", {'error': "no this code"})
+                return render(response, "users/active.html", {'success': "verify account successfully"})
+            return render(response, "users/active.html", {'error': "no this user"})
+    return render(response, "users/active.html", {'error': "no this code"})
 
 
 '''===helpers==='''

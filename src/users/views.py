@@ -33,7 +33,7 @@ def register(response):
                 user.set_password(password2)
                 user.save()
                 send_register_email(email, "register")
-                return redirect('/users/home/')
+                return redirect('/users/login/')
             else:
                 error = "user exists\n"
                 return render(response, "users/signup.html", {'form': form, 'error': error})
@@ -105,11 +105,9 @@ def send_register_email(email, send_type="register"):
     email_record.email = email
     email_record.send_type = send_type
     email_record.save()
-    email_title = ""
-    email_body = ""
     if send_type == "register":
         email_title = "UTMarketplace - register code"
         email_body = "click to verify:http://127.0.0.1:8000/users/active/{0}".format(code)
-        send_status = send_mail(email_title, email_body, "UTmarketplace<uoftmarketplace@gmail.com>", [email])
-        if send_status:
+        send_status = send_mail(email_title, email_body, settings.EMAIL_HOST_USER, [email])
+        if not send_status:
             print("send email failed")

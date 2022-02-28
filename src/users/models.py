@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.base_user import BaseUserManager
+from django.utils.translation import gettext_lazy as _
 
 
 # Create your models here.
@@ -45,6 +46,7 @@ class UserExtension(AbstractUser):
     # avatar = ProcessedImageField(upload_to='avatar',default='avatar/default.png', verbose_name='image')
     email = models.EmailField(unique=True)
     username = models.CharField(max_length=20, blank=False)
+    is_active = models.BooleanField(_('active'), default=False)
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ["username"]
     objects = CustomUserManager()
@@ -104,9 +106,18 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
-# @receiver(post_save, sender=User)
-# def create_user_extension(sender, instance, created **kwargs):
-#     if created:
-#         UserExtension.objects.create(user=instance)
-#     else:
-#         instance.extension.save()
+
+class EmailVerifyRecord(models.Model):
+    code = models.CharField(max_length=20, verbose_name="verified_code")
+    email = models.EmailField(max_length=50, verbose_name="email")
+    send_type = models.CharField(verbose_name="type", max_length=10,
+                                 choices=(("register", "register"), ("forget", "forget")))
+    send_time = models.DateTimeField(verbose_name="send_time", default=timezone.now())
+
+    class Meta:
+        verbose_name = "email_verified_code"
+        verbose_name_plural = verbose_name
+
+    def __unicode__(self):
+        return '{0}({1})'.format(self.code, self.email)
+

@@ -5,6 +5,9 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.mail import send_mail
 from django.contrib import auth
+from random import Random
+from django.core.mail import send_mail
+from .models import EmailVerifyRecord
 
 
 def home(response):
@@ -29,6 +32,7 @@ def register(response):
                 user.email = email
                 user.set_password(password2)
                 user.save()
+                send_register_email(email, "register")
                 return redirect('/users/home/')
             else:
                 error = "user exists\n"
@@ -48,10 +52,13 @@ def login(response):
 
             user = auth.authenticate(email=email, password=password)
             if user is not None:
+                if not user.is_active:
+                    error = "user not active\n"
+                    return render(response, "users/login.html", {'form': form, 'error': error})
                 auth.login(response, user)
                 return redirect('/users/home/')
             else:
-               error = "wrong user email or password\n"
+                error = "wrong user email or password\n"
     else:
         form = LoginForm()
 
@@ -63,10 +70,46 @@ def do_logout(response):
     return redirect('/users/login')
 
 
-def send(request):
-    subject = ''
-    message = ''
-    sender = settings.EMAIL_FROM
-    receiver = []
-    html_message = '<h1>TEST<h1>'
-    send_mail(subject, message, sender, receiver, html_message=html_message)
+def active_user(response, active_code):
+    all_records = EmailVerifyRecord.objects.filter(code=active_code)
+    if all_records:
+        # should we avoid same record?
+        for record in all_records:
+            email = record.email
+            user = UserExtension.objects.all().filter(email=email)
+            if user:
+                user[0].is_active = True
+                user[0].save()
+                return redirect('/users/login')
+            return render(response, "users/active_fail.html", {'error': "no this user"})
+    return render(response, "users/active_fail.html", {'error': "no this code"})
+
+
+'''===helpers==='''
+
+
+def random_str(randomlength=8):
+    s = ''
+    chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789'
+    length = len(chars) - 1
+    random = Random()
+    for i in range(randomlength):
+        s += chars[random.randint(0, length)]
+    return s
+
+
+def send_register_email(email, send_type="register"):
+    email_record = EmailVerifyRecord()
+    code = random_str(16)
+    email_record.code = code
+    email_record.email = email
+    email_record.send_type = send_type
+    email_record.save()
+    email_title = ""
+    email_body = ""
+    if send_type == "register":
+        email_title = "UTMarketplace - register code"
+        email_body = "click to verify:http://127.0.0.1:8000/users/active/{0}".format(code)
+        send_status = send_mail(email_title, email_body, "UTmarketplace<uoftmarketplace@gmail.com>", [email])
+        if send_status:
+            print("send email failed")

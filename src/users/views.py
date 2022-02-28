@@ -115,9 +115,17 @@ def send_register_email(email, send_type="register"):
     email_record.email = email
     email_record.send_type = send_type
     email_record.save()
+
     if send_type == "register":
         email_title = "UTMarketplace - register code"
         email_body = "click to verify:http://127.0.0.1:8000/users/active/{0}".format(code)
+        send_status = send_mail(email_title, email_body, settings.EMAIL_HOST_USER, [email])
+        if not send_status:
+            print("send email failed")
+        elif send_type == "forget":
+            email_title = "UTMarketplace - Password Reset"
+            email_body = "Click here to reset password: http://127.0.0.1:8000/users/forgot_my_password/{0}".format(code)
+
         send_status = send_mail(email_title, email_body, settings.EMAIL_HOST_USER, [email])
         if not send_status:
             print("send email failed")

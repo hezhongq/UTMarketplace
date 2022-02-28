@@ -135,11 +135,12 @@ LOGOUT_REDIRECT_URL = 'login'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'users.UserExtension'
-AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend',)
+AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.AllowAllUsersModelBackend',)
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.Email.Backend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 25
+EMAIL_PORT = 587
 EMAIL_HOST_USER = 'uoftmarketplace@gmail.com'
 EMAIL_HOST_PASSWORD = 'getusintopey'
 EMAIL_FROM = 'UTmarketplace<uoftmarketplace@gmail.com>'
+EMAIL_USE_TLS = True

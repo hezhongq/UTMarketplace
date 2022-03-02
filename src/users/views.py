@@ -1,4 +1,4 @@
-from .forms import LoginForm, RegistrationForm
+from .forms import LoginForm, RegistrationForm, ResetPasswordForm
 from .models import UserExtension
 from django.conf import settings
 from django.shortcuts import render, get_object_or_404, redirect
@@ -111,6 +111,25 @@ def forget_password_submit(response, reset_code):
                               {'error': "no this user"})
     return render(response, "users/result.html",
                   {'error': "no this code"})
+
+def reset_password(response):
+    error = ""
+    if response.method == 'POST':
+        form = ResetPasswordForm(response.POST)
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            user = UserExtension.objects.all().filter(email=email)
+            if user:
+               send_register_email(response.get_host(), email, "forget")
+               return render(response, "users/result.html", {'success': "email sent"})
+                
+            return render(response, "users/result.html", {'error': "no this user"})
+
+
+    else:
+        form = ResetPasswordForm()
+
+    return render(response, "users/pwd_retrieval.html", {'form': form, 'error': error})
 
 
 '''===helpers==='''

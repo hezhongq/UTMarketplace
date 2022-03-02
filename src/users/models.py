@@ -27,6 +27,7 @@ class CustomUserManager(BaseUserManager):
     def create_superuser(self, email, password, **extra_fields):
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
+        extra_fields.setdefault("is_active", True)
 
         if extra_fields.get("is_staff") is not True:
             raise ValueError(
@@ -35,6 +36,10 @@ class CustomUserManager(BaseUserManager):
         if extra_fields.get("is_superuser") is not True:
             raise ValueError(
                 "Superuser must have is_superuser=True."
+            )
+        if extra_fields.get("is_active") is not True:
+            raise ValueError(
+                "Superuser must have is_active=True."
             )
 
         return self._create_user(email, password, **extra_fields)
@@ -112,7 +117,7 @@ class EmailVerifyRecord(models.Model):
     email = models.EmailField(max_length=50, verbose_name="email")
     send_type = models.CharField(verbose_name="type", max_length=10,
                                  choices=(("register", "register"), ("forget", "forget")))
-    send_time = models.DateTimeField(verbose_name="send_time", default=timezone.now())
+    send_time = models.DateTimeField(verbose_name="send_time", default=timezone.now)
 
     class Meta:
         verbose_name = "email_verified_code"

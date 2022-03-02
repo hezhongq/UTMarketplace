@@ -1,12 +1,11 @@
-from .forms import LoginForm, RegistrationForm
+from .forms import LoginForm, RegistrationForm, ResetPasswordForm
 from .models import UserExtension
 from django.conf import settings
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponse, HttpResponseRedirect
-from django.core.mail import send_mail
 from django.contrib import auth
 from random import Random
 from django.core.mail import send_mail
+from django.contrib.auth.forms import SetPasswordForm, PasswordChangeForm
 from .models import EmailVerifyRecord
 
 
@@ -32,7 +31,7 @@ def register(response):
                 user.email = email
                 user.set_password(password2)
                 user.save()
-                send_register_email(email, "register")
+                send_register_email(response.get_host(), email, "register")
                 return redirect('/users/login/')
             else:
                 error = "user exists\n"
@@ -71,7 +70,7 @@ def do_logout(response):
 
 
 def active_user(response, active_code):
-    all_records = EmailVerifyRecord.objects.filter(code=active_code)
+    all_records = EmailVerifyRecord.objects.filter(code=active_code, send_type="register")
     if all_records:
         # should we avoid same record?
         for record in all_records:
@@ -80,9 +79,54 @@ def active_user(response, active_code):
             if user:
                 user[0].is_active = True
                 user[0].save()
-                return render(response, "users/active.html", {'success': "verify account successfully"})
-            return render(response, "users/active.html", {'error': "no this user"})
-    return render(response, "users/active.html", {'error': "no this code"})
+                return render(response, "users/result.html", {'success': "verify account successfully"})
+            return render(response, "users/result.html", {'error': "no this user"})
+    return render(response, "users/result.html", {'error': "no this code"})
+
+
+def forget_password_submit(response, reset_code):
+    all_records = EmailVerifyRecord.objects.filter(code=reset_code, send_type="forget")
+    if all_records:
+        # should we avoid same record?
+        for record in all_records:
+            email = record.email
+            user = UserExtension.objects.all().filter(email=email)
+            if user:
+                user = UserExtension.objects.get(email=email)
+                if response.method == 'POST':
+                    form = SetPasswordForm(user=user, data=response.POST)
+                    if form.is_valid():
+                        form.save()
+                        return render(response, "users/result.html",
+                                      {'success': "reset password successfully"})
+                    else:
+                        return render(response, "users/reset.html",
+                                      {'form': form})
+                else:
+                    form = SetPasswordForm(user=user)
+                    return render(response, "users/reset.html",
+                                  {'form': form})
+            else:
+                return render(response, "users/result.html",
+                              {'error': "no this user"})
+    return render(response, "users/result.html",
+                  {'error': "no this code"})
+
+
+def reset_password(response):
+    error = ""
+    if response.method == 'POST':
+        form = ResetPasswordForm(response.POST)
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            user = UserExtension.objects.all().filter(email=email)
+            if user:
+                send_register_email(response.get_host(), email, "forget")
+                return render(response, "users/result.html", {'success': "email sent"})
+            return render(response, "users/result.html", {'error': "no this user"})
+    else:
+        form = ResetPasswordForm()
+    return render(response, "users/pwd_retrieval.html", {'form': form, 'error': error})
 
 
 '''===helpers==='''
@@ -98,16 +142,22 @@ def random_str(randomlength=8):
     return s
 
 
-def send_register_email(email, send_type="register"):
+def send_register_email(hostname, email, send_type="register"):
     email_record = EmailVerifyRecord()
     code = random_str(16)
-    email_record.code = code
+    email_record.code = code + email
     email_record.email = email
     email_record.send_type = send_type
     email_record.save()
+
     if send_type == "register":
         email_title = "UTMarketplace - register code"
-        email_body = "click to verify:http://127.0.0.1:8000/users/active/{0}".format(code)
-        send_status = send_mail(email_title, email_body, settings.EMAIL_HOST_USER, [email])
-        if not send_status:
-            print("send email failed")
+        email_body = "click to verify: http://{0}/users/active/{1}".format(hostname, code + email)
+
+    elif send_type == "forget":
+        email_title = "UTMarketplace - Password Reset"
+        email_body = "Click here to reset password: http://{0}/users/reset/{1}".format(hostname, code + email)
+
+    send_status = send_mail(email_title, email_body, settings.EMAIL_HOST_USER, [email])
+    if not send_status:
+        print("send email failed")

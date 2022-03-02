@@ -131,13 +131,21 @@ def reset_password(response):
     return render(response, "users/pwd_retrieval.html", {'form': form, 'error': error})
 
 
-def search_results(request):
-    if request.method == 'POST':
-        searched = request.POST['search']
-        listings = Listing.objects.filter(item_name__contains=searched)
-        return render(request, "users/search_results.html", {'searched': searched, 'listings': listings})
+def change_password(response):
+    if not response.user.is_authenticated:
+        return render(response, "users/result.html", {'error': "please login"})
+    if response.method == "POST":
+        form = PasswordChangeForm(user=response.user, data=response.POST)
+        if form.is_valid():
+            user = form.save()
+            auth.update_session_auth_hash(response, user)
+            return redirect('/users/profile/{0}'.format(user.id))
     else:
-        return render(request, "users/search_results.html", {})
+        form = PasswordChangeForm(user=response.user)
+    return render(response, "users/change_profile_password.html", {'form': form})
+
+
+'''===helpers==='''
 
 
 '''===helpers==='''

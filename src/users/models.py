@@ -27,6 +27,7 @@ class CustomUserManager(BaseUserManager):
     def create_superuser(self, email, password, **extra_fields):
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
+        extra_fields.setdefault("is_active", True)
 
         if extra_fields.get("is_staff") is not True:
             raise ValueError(
@@ -101,7 +102,7 @@ class Bookmark(models.Model):
 # Textbook's parent_category is Book
 class Category(models.Model):
     name = models.CharField(max_length=64)
-    parent_category = models.CharField(max_length=64, null=True)
+    parent_category = models.CharField(max_length=64, null=True, blank=True)
 
     def __str__(self):
         return self.name

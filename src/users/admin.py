@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import UserExtension, EmailVerifyRecord
+from .models import UserExtension, EmailVerifyRecord, Listing, Category
 
 
 # Re-register UserAdmin
@@ -15,3 +15,5 @@ class EmailCodesAdmin(admin.ModelAdmin):
 
 admin.site.register(UserExtension, CustomUserAdmin)
 admin.site.register(EmailVerifyRecord, EmailCodesAdmin)
+admin.site.register(Listing)
+admin.site.register(Category)

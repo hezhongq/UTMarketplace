@@ -20,7 +20,7 @@
 
 
 		<div class="container-fluid">
-			<a href="">
+			<a href="{% url 'home' %}">
 				<div class="">
 					<img class="m-2" id="nav-img" src="{% static 'img/logo.png' %}">
 				</div>
@@ -143,98 +143,26 @@
 					</details>
 
 				</div>
+				<div class="col-7 col-lg-8 col-xl-9 bg-white m-3">
+					{% if searched %}
+						<h1> You searched for {{ searched }}</h1>
+                        <br/>
+                        {% if not listings %}
+                            No results.
+                        {% else %}
+                            {% for listing in listings %}
+                                {{ listing }}<br/>
+                            {% endfor %}
+                        {% endif %}
+
+					{% else %}
+						<h1> Please enter an item to search </h1>
+					{% endif %}
+				</div>
 
 <!---------------------- Listings  ---------------------->
 
-				<div class="col-7 col-lg-8 col-xl-9 bg-white m-3">
-					<h1 class="text-center mt-3">Subjects</h1>
-
-					<div class="row mt-3">
-
-
-						<a class="col-3 text-decoration-none" href="inner.html">
-							<div class="card bg-warning text-black mb-3">
-								<div class="card-header">Subject 1</div>
-								<div class="card-body">
-									<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Book.svg/1200px-Book.svg.png" class="h-100 w-100">
-								</div>
-							</div>
-						</a>
-
-						<a class="col-3 text-decoration-none" href="inner.html">
-							<div class="card bg-warning text-black mb-3">
-								<div class="card-header">Subject 2</div>
-								<div class="card-body">
-									<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Book.svg/1200px-Book.svg.png" class="h-100 w-100">
-								</div>
-							</div>
-						</a>
-
-						<a class="col-3 text-decoration-none" href="inner.html">
-							<div class="card bg-warning text-black mb-3">
-								<div class="card-header">Subject 3</div>
-								<div class="card-body">
-									<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Book.svg/1200px-Book.svg.png" class="h-100 w-100">
-								</div>
-							</div>
-						</a>
-
-						<a class="col-3 text-decoration-none" href="inner.html">
-							<div class="card bg-warning text-black mb-3">
-								<div class="card-header">Subject 4</div>
-								<div class="card-body">
-									<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Book.svg/1200px-Book.svg.png" class="h-100 w-100">
-								</div>
-							</div>
-						</a>
-
-						<a class="col-3 text-decoration-none" href="inner.html">
-							<div class="card bg-warning text-black mb-3">
-								<div class="card-header">Subject 5</div>
-								<div class="card-body">
-									<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Book.svg/1200px-Book.svg.png" class="h-100 w-100">
-								</div>
-							</div>
-						</a>
-
-						<a class="col-3 text-decoration-none" href="inner.html">
-							<div class="card bg-warning text-black mb-3">
-								<div class="card-header">Subject 6</div>
-								<div class="card-body">
-									<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Book.svg/1200px-Book.svg.png" class="h-100 w-100">
-								</div>
-							</div>
-						</a>
-
-						<a class="col-3 text-decoration-none" href="inner.html">
-							<div class="card bg-warning text-black mb-3">
-								<div class="card-header">Subject 7</div>
-								<div class="card-body">
-									<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Book.svg/1200px-Book.svg.png" class="h-100 w-100">
-								</div>
-							</div>
-						</a>
-
-
-						<a class="col-3 text-decoration-none" href="inner.html">
-							<div class="card bg-warning text-black mb-3">
-								<div class="card-header">Subject 8</div>
-								<div class="card-body">
-									<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Book.svg/1200px-Book.svg.png" class="h-100 w-100">
-								</div>
-							</div>
-						</a>
-
-
-
-					</div>
-
-
-
-
-				</div>
 			</div>
-
 		</div>
 
 
@@ -254,12 +182,3 @@
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-

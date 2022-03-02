@@ -1,5 +1,5 @@
 from .forms import LoginForm, RegistrationForm
-from .models import UserExtension
+from .models import UserExtension, Listing
 from django.conf import settings
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseRedirect
@@ -85,8 +85,16 @@ def active_user(response, active_code):
     return render(response, "users/active.html", {'error': "no this code"})
 
 
-'''===helpers==='''
+def search_results(request):
+    if request.method == 'POST':
+        searched = request.POST['search']
+        listings = Listing.objects.filter(item_name__contains=searched)
+        return render(request, "users/search_results.html", {'searched': searched, 'listings': listings})
+    else:
+        return render(request, "users/search_results.html", {})
 
+
+'''===helpers==='''
 
 def random_str(randomlength=8):
     s = ''

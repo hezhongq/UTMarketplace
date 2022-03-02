@@ -114,6 +114,7 @@ def forget_password_submit(response, reset_code):
     return render(response, "users/result.html",
                   {'error': "no this code"})
 
+
 def reset_password(response):
     error = ""
     if response.method == 'POST':
@@ -122,15 +123,11 @@ def reset_password(response):
             email = form.cleaned_data['email']
             user = UserExtension.objects.all().filter(email=email)
             if user:
-               send_register_email(response.get_host(), email, "forget")
-               return render(response, "users/result.html", {'success': "email sent"})
-                
+                send_register_email(response.get_host(), email, "forget")
+                return render(response, "users/result.html", {'success': "email sent"})
             return render(response, "users/result.html", {'error': "no this user"})
-
-
     else:
         form = ResetPasswordForm()
-
     return render(response, "users/pwd_retrieval.html", {'form': form, 'error': error})
 
 
@@ -165,11 +162,11 @@ def send_register_email(hostname, email, send_type="register"):
 
     if send_type == "register":
         email_title = "UTMarketplace - register code"
-        email_body = "click to verify: http://{0}/users/active/{1}".format(hostname, code)
+        email_body = "click to verify: http://{0}/users/active/{1}".format(hostname, code + email)
 
     elif send_type == "forget":
         email_title = "UTMarketplace - Password Reset"
-        email_body = "Click here to reset password: http://{0}/users/reset/{1}".format(hostname, code)
+        email_body = "Click here to reset password: http://{0}/users/reset/{1}".format(hostname, code + email)
 
     send_status = send_mail(email_title, email_body, settings.EMAIL_HOST_USER, [email])
     if not send_status:

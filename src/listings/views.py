@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.shortcuts import redirect, get_object_or_404
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from .models import Listing
-from django.views.generic import FormView, ListView, DetailView, UpdateView
+from django.views.generic import FormView, ListView, DetailView, UpdateView, CreateView, DeleteView
 # Create your views here.
 
 
@@ -11,10 +11,13 @@ def home(response):
 
 
 class AddListing(FormView):
-    pass
+    template_name = 'listings/add_listing.html'
 
-class DeleteListing():
-    pass
+class DeleteListing(DeleteView):
+    model = Listing
+
+    def get_success_url(self):
+        pass
 
 class UpdateListing(FormView):
     pass

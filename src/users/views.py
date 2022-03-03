@@ -1,14 +1,24 @@
+<<<<<<< HEAD
 from .forms import LoginForm, RegistrationForm, ResetPasswordForm
 from .models import UserExtension
 from django.conf import settings
 from django.shortcuts import render, get_object_or_404, redirect
+=======
+from .forms import LoginForm, RegistrationForm
+from .models import UserExtension
+from django.conf import settings
+from django.shortcuts import render, get_object_or_404, redirect
+from django.core.paginator import Paginator
+from django.http import HttpResponse, HttpResponseRedirect
+from django.core.mail import send_mail
+>>>>>>> de72dfc (Moved Bookmark model to Listing and updated search_results page)
 from django.contrib import auth
 from random import Random
 from django.core.mail import send_mail
 from django.contrib.auth.forms import SetPasswordForm, PasswordChangeForm
 from .models import EmailVerifyRecord
 from django.views.generic import ListView
-from src.listings.models import Listing
+from listings.models import Listing, Bookmark
 
 
 def home(response):
@@ -86,46 +96,17 @@ def active_user(response, active_code):
     return render(response, "users/result.html", {'error': "no this code"})
 
 
-def forget_password_submit(response, reset_code):
-    all_records = EmailVerifyRecord.objects.filter(code=reset_code, send_type="forget")
-    if all_records:
-        # should we avoid same record?
-        for record in all_records:
-            email = record.email
-            user = UserExtension.objects.all().filter(email=email)
-            if user:
-                user = UserExtension.objects.get(email=email)
-                if response.method == 'POST':
-                    form = SetPasswordForm(user=user, data=response.POST)
-                    if form.is_valid():
-                        form.save()
-                        return render(response, "users/result.html",
-                                      {'success': "reset password successfully"})
-                    else:
-                        return render(response, "users/reset.html",
-                                      {'form': form})
-                else:
-                    form = SetPasswordForm(user=user)
-                    return render(response, "users/reset.html",
-                                  {'form': form})
-            else:
-                return render(response, "users/result.html",
-                              {'error': "no this user"})
-    return render(response, "users/result.html",
-                  {'error': "no this code"})
+def search_results(request):
+    if request.method == 'POST':
+        searched = request.POST['search']
+        listings = Listing.objects.filter(item_name__contains=searched)
+        paginator = Paginator(listings, 10)  # Show 25 contacts per page.
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
 
+        # return render(request, "users/search_results.html", {'searched': searched, 'listings': listings})
+        return render(request, "users/search_results.html", {'page_obj': page_obj, 'searched': searched})
 
-def reset_password(response):
-    error = ""
-    if response.method == 'POST':
-        form = ResetPasswordForm(response.POST)
-        if form.is_valid():
-            email = form.cleaned_data['email']
-            user = UserExtension.objects.all().filter(email=email)
-            if user:
-                send_register_email(response.get_host(), email, "forget")
-                return render(response, "users/result.html", {'success': "email sent"})
-            return render(response, "users/result.html", {'error': "no this user"})
     else:
         form = ResetPasswordForm()
     return render(response, "users/pwd_retrieval.html", {'form': form, 'error': error})
@@ -179,6 +160,7 @@ def send_register_email(hostname, email, send_type="register"):
     send_status = send_mail(email_title, email_body, settings.EMAIL_HOST_USER, [email])
     if not send_status:
         print("send email failed")
+
 
 # Bookmark listing view
 class BookmarksView(ListView):

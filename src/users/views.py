@@ -1,5 +1,5 @@
 from .forms import LoginForm, RegistrationForm
-from .models import UserExtension
+from .models import Bookmark, UserExtension
 from django.conf import settings
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseRedirect
@@ -8,6 +8,7 @@ from django.contrib import auth
 from random import Random
 from django.core.mail import send_mail
 from .models import EmailVerifyRecord
+from django.views.generic import ListView
 from src.listings.models import Listing
 
 
@@ -120,3 +121,9 @@ def send_register_email(email, send_type="register"):
         send_status = send_mail(email_title, email_body, settings.EMAIL_HOST_USER, [email])
         if not send_status:
             print("send email failed")
+
+# Bookmark listing view
+class BookmarksView(ListView):
+    model = Bookmark
+    context_object_name = "bookmarks"
+    template_name = 'users/bookmarks.html'

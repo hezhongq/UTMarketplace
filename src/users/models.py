@@ -52,6 +52,7 @@ class UserExtension(AbstractUser):
     email = models.EmailField(unique=True)
     username = models.CharField(max_length=20, blank=False)
     is_active = models.BooleanField(_('active'), default=False)
+    image = models.ImageField(default='default.jpg', upload_to='profile_pics')
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ["username"]
     objects = CustomUserManager()
@@ -127,9 +128,3 @@ class EmailVerifyRecord(models.Model):
         return '{0}({1})'.format(self.code, self.email)
 
 
-class Profile(models.Model):
-    user = models.OneToOneField(AbstractUser, on_delete=models.CASCADE) 
-    image = models.ImageField(default='default.jpg', upload_to='profile_pics')
-
-    def __str__(self):
-        return f'{self.user.username} Profile' #show how we want it to be displayed

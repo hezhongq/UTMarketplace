@@ -62,7 +62,7 @@ class UserExtension(AbstractUser):
 # No duplicate entries allowed
 # Example for get table of all listings of a user: SELECT listing FROM Bookmark WHERE user=user;
 class Bookmark(models.Model):
-    user = models.ForeignKey(UserExtension, on_delete=models.CASCADE)
+    owner = models.ForeignKey(UserExtension, on_delete=models.CASCADE)
     listing = models.ForeignKey(Listing, on_delete=models.CASCADE)
 
 

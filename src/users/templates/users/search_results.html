@@ -50,7 +50,7 @@
 					</ul>
 
 					<div class="hov mx-2">
-						<a class="p-3 py-5" href="bookmarks.html">
+						<a class="p-3 py-5" href="/users/bookmarks">
 							<i class="bi bi-bookmarks-fill h2 text-white"></i>
 						</a>
 					</div>
@@ -144,21 +144,40 @@
 
 				</div>
 				<div class="col-7 col-lg-8 col-xl-9 bg-white m-3">
-					{% if searched %}
-						<h1> You searched for {{ searched }}</h1>
-                        <br/>
-                        {% if not listings %}
-                            No results.
-                        {% else %}
-                            {% for listing in listings %}
-                                {{ listing }}<br/>
-                            {% endfor %}
-                        {% endif %}
+                    <div class="row mt-3">
+                        {% if searched %}
+                            <h1> Results for: {{ searched }}</h1>
+                            <br/>
+                            {% if not page_obj %}
+                                No results.
+                            {% else %}
+                                {% for listing in page_obj %}
+                                    <div class="col-4">
+                                        <div class="card">
+                                            <img class="rounded" src="https://media.istockphoto.com/vectors/book-icon-vector-id1254373900?k=20&m=1254373900&s=170667a&w=0&h=OQ6JNrjZiJRrBIO2WUs9EJPdJCN8mDAnyPKOD_3sseU=">
+                                            <div class="card-body">
+                                                <!-- item title -->
+                                                <a class="text-decoration-none text-black" href="">
+                                                    <h4>{{ listing.listing_title }}</h4>
+                                                </a>
+                                                <p> {{ listing.item_name }}</p>
+                                                <!-- price -->
+                                                <p>${{ listing.price }}</p>
+                                                <!-- descriptions -->
+                                                <a href="#" class="btn btn-primary">See details</a>
+                                            </div>
+                                            <!-- Link to the listing page -->
+                                            <a class="stretched-link" href="post.html"></a>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
 
-					{% else %}
-						<h1> Please enter an item to search </h1>
-					{% endif %}
-				</div>
+                        {% else %}
+                            <h1> Please enter an item to search </h1>
+                        {% endif %}
+                    </div>
+                </div>
 
 <!---------------------- Listings  ---------------------->
 

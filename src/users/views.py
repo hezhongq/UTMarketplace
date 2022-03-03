@@ -1,7 +1,8 @@
 from .forms import LoginForm, RegistrationForm
-from .models import Bookmark, UserExtension
+from .models import UserExtension
 from django.conf import settings
 from django.shortcuts import render, get_object_or_404, redirect
+from django.core.paginator import Paginator
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.mail import send_mail
 from django.contrib import auth
@@ -9,7 +10,7 @@ from random import Random
 from django.core.mail import send_mail
 from .models import EmailVerifyRecord
 from django.views.generic import ListView
-from src.listings.models import Listing
+from listings.models import Listing, Bookmark
 
 
 def home(response):
@@ -91,7 +92,13 @@ def search_results(request):
     if request.method == 'POST':
         searched = request.POST['search']
         listings = Listing.objects.filter(item_name__contains=searched)
-        return render(request, "users/search_results.html", {'searched': searched, 'listings': listings})
+        paginator = Paginator(listings, 10)  # Show 25 contacts per page.
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+
+        # return render(request, "users/search_results.html", {'searched': searched, 'listings': listings})
+        return render(request, "users/search_results.html", {'page_obj': page_obj, 'searched': searched})
+
     else:
         return render(request, "users/search_results.html", {})
 
@@ -121,6 +128,7 @@ def send_register_email(email, send_type="register"):
         send_status = send_mail(email_title, email_body, settings.EMAIL_HOST_USER, [email])
         if not send_status:
             print("send email failed")
+
 
 # Bookmark listing view
 class BookmarksView(ListView):

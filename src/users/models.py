@@ -3,7 +3,6 @@ from django.utils import timezone
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.base_user import BaseUserManager
 from django.utils.translation import gettext_lazy as _
-from src.listings.models import Listing
 
 
 # Create your models here.
@@ -61,9 +60,9 @@ class UserExtension(AbstractUser):
 # An entry contains a user and a listing.
 # No duplicate entries allowed
 # Example for get table of all listings of a user: SELECT listing FROM Bookmark WHERE user=user;
-class Bookmark(models.Model):
-    owner = models.ForeignKey(UserExtension, on_delete=models.CASCADE)
-    listing = models.ForeignKey(Listing, on_delete=models.CASCADE)
+# class Bookmark(models.Model):
+#     owner = models.ForeignKey(UserExtension, on_delete=models.CASCADE)
+#     listing = models.ForeignKey(Listing, on_delete=models.CASCADE)
 
 
 # Table of Categories

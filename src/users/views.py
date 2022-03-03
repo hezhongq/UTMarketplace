@@ -135,3 +135,7 @@ class BookmarksView(ListView):
     model = Bookmark
     context_object_name = "bookmarks"
     template_name = 'users/bookmarks.html'
+
+    # Make the queryset return all bookmarks that belong to the user
+    def get_queryset(self):
+        return Bookmark.objects.filter(owner=self.request.user)

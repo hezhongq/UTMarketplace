@@ -15,4 +15,6 @@ class UpdateListing(FormView):
     pass
 
 class DisplayListings(ListView):
-    pass
+    model = Listing
+    context_object_name = "listing"
+    template_name = "listings/display_listings.html"

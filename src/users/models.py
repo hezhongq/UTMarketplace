@@ -126,3 +126,10 @@ class EmailVerifyRecord(models.Model):
     def __unicode__(self):
         return '{0}({1})'.format(self.code, self.email)
 
+
+class Profile(models.Model):
+    user = models.OneToOneField(AbstractUser, on_delete=models.CASCADE) 
+    image = models.ImageField(default='default.jpg', upload_to='profile_pics')
+
+    def __str__(self):
+        return f'{self.user.username} Profile' #show how we want it to be displayed

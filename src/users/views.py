@@ -1,9 +1,3 @@
-<<<<<<< HEAD
-from .forms import LoginForm, RegistrationForm, ResetPasswordForm
-from .models import UserExtension
-from django.conf import settings
-from django.shortcuts import render, get_object_or_404, redirect
-=======
 from .forms import LoginForm, RegistrationForm
 from .models import UserExtension
 from django.conf import settings
@@ -11,7 +5,6 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.mail import send_mail
->>>>>>> de72dfc (Moved Bookmark model to Listing and updated search_results page)
 from django.contrib import auth
 from random import Random
 from django.core.mail import send_mail

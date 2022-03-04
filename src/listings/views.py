@@ -11,7 +11,7 @@ from django.views.generic import FormView, ListView, DetailView, UpdateView, Cre
 
 
 def home(response):
-    return render(response, 'listings/display_listings.html', {})
+    return render(response, 'users/display_listings.html', {})
 
 
 class AddListing(FormView):

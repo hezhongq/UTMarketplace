@@ -7,7 +7,6 @@ from random import Random
 from django.core.mail import send_mail
 from django.contrib.auth.forms import SetPasswordForm, PasswordChangeForm
 from .models import EmailVerifyRecord
-from django.views.generic import FormView
 
 def home(response):
     return render(response, 'users/home.html', {})

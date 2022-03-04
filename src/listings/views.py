@@ -3,6 +3,7 @@ from django.shortcuts import redirect, get_object_or_404
 from django.http import HttpRequest, HttpResponse, JsonResponse
 
 from listings.forms.add_listing import AddListingForm
+from users.models import Category
 
 from .models import Listing
 from django.views.generic import FormView, ListView, DetailView, UpdateView, CreateView, DeleteView
@@ -19,7 +20,12 @@ class AddListing(FormView):
 
     def form_valid(self, form):
         # Create the new listing here after validating data. Redirect to success URL if listing was successfully created
-        pass
+        
+        category_name = form.cleaned_data.pop('category')
+        category_object = Category.objects.get(name=category_name)
+
+        # Might need to change original_poster to abstract user by doing a query
+        Listing.objects.create(**form.cleaned_data, category=category_object, original_poster=self.request.user)
 
 # Ensure that only the user who created this post can delete it
 class DeleteListing(DeleteView):

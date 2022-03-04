@@ -178,20 +178,11 @@ def send_register_email(hostname, email, send_type="register"):
 
 
 def edit_avatar(response):
-    error = ""
-    if response.method == 'POST':
-        form = ResetPasswordForm(response.POST)
-        if form.is_valid():
-            email = form.cleaned_data['email']
-            user = UserExtension.objects.all().filter(email=email)
-            if user:
-                send_register_email(response.get_host(), email, "forget")
-                return render(response, "users/result.html", {'success': "email sent"})
-            return render(response, "users/result.html", {'error': "no this user"})
-    else:
-        form = ResetPasswordForm()
-    return render(response, "users/pwd_retrieval.html", {'form': form, 'error': error})
+    error = ''
+    if response.method =='GET':
+        return render(response, "users/edit_profile.html")
 
 def profile_view(response):
     if response.method == 'GET':
         return render(response, "users/profile.html")
+    

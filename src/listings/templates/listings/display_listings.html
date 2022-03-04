@@ -1,14 +1,58 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
+	<style>
+		/*--------------- Background color ---------------*/
+
+
+.bg-uoft {
+    background-color: #004294;
+}
+
+
+
+/*--------------- HEADER style ---------------*/
+
+
+
+
+#nav-img {
+    width: 20%;
+    height: 40%;
+}
+
+
+
+
+/*--------------- Navigation style ---------------*/
+
+
+
+
+.navbar-collapse ul li:hover {
+    background-color: black;
+}
+.hov:hover {
+    background-color: black;
+}
+
+
+
+/*--------------- Menu style ---------------*/
+
+.menu {
+    min-height: 700px;
+}
+	</style>
 	<meta charset="utf-8">
 	<title>UTMarket</title>
 	
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
-	<link href="../css/signup.css" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" type="text/css" href="style.css">
+	<link href="css/signup.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
 </head>
 <body class="bg-img">
 	
@@ -20,7 +64,7 @@
 		<div class="container-fluid">
 			<a href="index.html">
 				<div class="">
-					<img class="m-2" id="nav-img" src="img/logo.png"> 
+					<img class="m-2" id="nav-img" src="{% static 'img/logo.png' %}"> 
 				</div>
 			</a>
 		</div>
@@ -149,23 +193,24 @@
 
 					<div class="row mt-3">
 
-
+						{% for listing in listings %}
 						<div class="col-4">
 							<div class="card">
 								<img class="rounded" src="https://media.istockphoto.com/vectors/book-icon-vector-id1254373900?k=20&m=1254373900&s=170667a&w=0&h=OQ6JNrjZiJRrBIO2WUs9EJPdJCN8mDAnyPKOD_3sseU=">
 								<div class="card-body">
 									<!-- item title -->
 									<a class="text-decoration-none text-black" href="">
-										<h4>Book 1</h4>
+										<h4>{{ listing.name }}</h4>
 									</a>
 									<!-- price -->
-									<p>$100</p>
+									<p>${{ listing.price}}</p>
 									<!-- descriptions -->
 									<a href="#" class="btn btn-primary">See details</a>
 								</div>
 								<a class="stretched-link" href="post.html"></a>
 							</div>	
 						</div>
+						{% endfor %}
 
 
 

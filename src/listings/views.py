@@ -11,7 +11,7 @@ from django.views.generic import FormView, ListView, DetailView, UpdateView, Cre
 
 
 def home(response):
-    return render(response, 'users/home.html', {})
+    return render(response, 'listings/display_listings.html', {})
 
 
 class AddListing(FormView):
@@ -30,6 +30,8 @@ class AddListing(FormView):
 # Ensure that only the user who created this post can delete it
 class DeleteListing(DeleteView):
     model = Listing
+    context_object_name = 'listing'
+    template_name = 'listings/delete_listing.html'
 
     def get_object(self):
         # Look for the object that belongs to the user here
@@ -49,5 +51,8 @@ class UpdateListing(UpdateView):
 
 class DisplayListings(ListView):
     model = Listing
-    context_object_name = "listing"
+    context_object_name = "listings"
     template_name = "listings/display_listings.html"
+
+    def get_queryset(self):
+        return Listing.objects.all()

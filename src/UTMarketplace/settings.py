@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     # -------------[User Defined Apps]-------------
     'crispy_forms',
     'users',
+    'listings'
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'

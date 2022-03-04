@@ -1,2 +1,7 @@
 # Virtual Environment
 env/
+__pycache__/
+db.sqlite3
+.DS_Store
+interactions/
+.idea/

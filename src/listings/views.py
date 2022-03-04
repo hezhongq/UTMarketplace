@@ -56,3 +56,8 @@ class DisplayListings(ListView):
 
     def get_queryset(self):
         return Listing.objects.all()
+
+class SingleListing(DetailView):
+    model = Listing
+    context_object_name = "listing"
+    template_name = "listings/single_listing.html"

@@ -161,6 +161,15 @@ class BookmarksView(ListView):
     context_object_name = "bookmarks"
     template_name = 'users/bookmarks.html'
 
+    # We get the total price of all items in the user's bookmarks
+    def get_context_data(self, **kwargs):
+        cost = 0
+        for bookmark in Bookmark.objects.filter(owner=self.request.user):
+            cost += bookmark.listing.price
+        context = super().get_context_data(**kwargs)
+        context['total_cost'] = cost
+        return context
+
     # Make the queryset return all bookmarks that belong to the user
     def get_queryset(self):
         return Bookmark.objects.filter(owner=self.request.user)

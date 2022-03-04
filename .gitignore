@@ -1,2 +1,18 @@
 # Virtual Environment
 env/
+src/db.sqlite3
+src/manage.py
+src/users/__pycache__/__init__.cpython-38.pyc
+src/users/__pycache__/apps.cpython-38.pyc
+src/users/__pycache__/forms.cpython-38.pyc
+src/users/__pycache__/__init__.cpython-38.pyc
+src/manage.py
+src/users/__pycache__/admin.cpython-38.pyc
+src/users/__pycache__/apps.cpython-38.pyc
+src/users/__pycache__/models.cpython-38.pyc
+src/users/__pycache__/urls.cpython-38.pyc
+src/users/__pycache__/views.cpython-38.pyc
+src/UTMarketplace/__pycache__/__init__.cpython-38.pyc
+src/UTMarketplace/__pycache__/settings.cpython-38.pyc
+src/UTMarketplace/__pycache__/urls.cpython-38.pyc
+src/UTMarketplace/__pycache__/wsgi.cpython-38.pyc

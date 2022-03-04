@@ -22,10 +22,13 @@ class AddListing(FormView):
         # Create the new listing here after validating data. Redirect to success URL if listing was successfully created
         
         category_name = form.cleaned_data.pop('category')
+        print(category_name) 
         category_object = Category.objects.get(name=category_name)
+        
 
         # Might need to change original_poster to abstract user by doing a query
         Listing.objects.create(**form.cleaned_data, category=category_object, original_poster=self.request.user)
+        return redirect("/listings")
 
 # Ensure that only the user who created this post can delete it
 class DeleteListing(DeleteView):

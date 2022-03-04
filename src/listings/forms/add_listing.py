@@ -2,8 +2,8 @@ from django import forms
 
 CATEGORIES = [
         ('anthropology', 'Anthropology'),
-        ('biology', 'Anthropology'),
-        ('chemical_physical_sciences', 'English & Drama'),
+        ('biology', 'Biology'),
+        ('chemical_physical_sciences', 'Chemical Physical Sciences'),
         ('economics', 'Economics'),
         ('english_drama', 'English & Drama'),
         ('geography', 'Geography'),

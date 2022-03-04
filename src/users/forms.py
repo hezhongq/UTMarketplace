@@ -23,6 +23,8 @@ class RegistrationForm(UserCreationForm):
         return email_data
 
 
+
+
 # Will not use this form
 '''
 class RegisterForm(forms.Form):
@@ -77,3 +79,5 @@ class ResetPasswordForm(forms.Form):
             raise forms.ValidationError('Please input all fields in form')
         cleaned_data = super(ResetPasswordForm, self).clean()
         return cleaned_data
+
+

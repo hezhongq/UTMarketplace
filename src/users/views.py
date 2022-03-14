@@ -161,7 +161,16 @@ def search_results(request):
         return render(request, "users/search_results.html", {})
 
 
+def profile(response, user_id):
+    user = UserExtension.objects.filter(id=user_id)
+    if user:
+        return render(response, "users/profile.html", {'user': user[0], 'listing_set': user[0].listing_set.all()})
+    else:
+        return render(response, "users/result.html", {'error': "no this user"})
+
+
 '''===helpers==='''
+
 
 def random_str(randomlength=8):
     s = ''

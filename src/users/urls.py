@@ -14,5 +14,6 @@ urlpatterns = [
     re_path(r'^reset/(?P<reset_code>.*)/$', views.forget_password_submit, name="reset_password"),
     path('forgetpassword/', views.reset_password, name="forgetpassword"),
     path('change_profile_password/', views.change_password, name="change_profile_password"),
+    path('profile/<int:user_id>', views.profile, name="profile"),
 ]
 

@@ -124,8 +124,10 @@ def change_password(response):
 
 def profile(response, user_id):
     user = UserExtension.objects.filter(id=user_id)
-    if user:
-        return render(response, "users/profile.html", {'user': user[0], 'listing_set': user[0].listing_set.all()})
+    if user_id == response.user.id:
+        return render(response, "users/profile.html", {'user': user[0], 'listing_set': user[0].listing_set.all(), 'is_user': True})
+    elif user:
+        return render(response, "users/profile.html", {'user': user[0], 'listing_set': user[0].listing_set.all(), 'is_user': False})
     else:
         return render(response, "users/result.html", {'error': "no this user"})
 

@@ -5,7 +5,7 @@ from django.http import HttpRequest, HttpResponse, JsonResponse
 from listings.forms.add_listing import AddListingForm
 from users.models import Category
 
-from .models import Listing
+from listings.models import Listing, Bookmark
 from django.views.generic import FormView, ListView, DetailView, UpdateView, CreateView, DeleteView
 # Create your views here.
 
@@ -64,3 +64,6 @@ class SingleListing(DetailView):
     model = Listing
     context_object_name = "listing"
     template_name = "listings/single_listing.html"
+
+def bookmark_listing(request, pk):
+    pass

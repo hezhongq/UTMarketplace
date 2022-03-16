@@ -236,15 +236,14 @@
 									<div class="col-9"></div>
 									<div class="col-2">
 										<div class="hov mx-2">
-											<button class="bookmarkItem">
+											<button>
 												<a class="p-3 py-5">
 													<i class="bi bi-bookmarks-fill h2 text-black"></i>
 												</a>
 											</button>
-											<form action="{% url 'bookmark' pk=listing.id %}">
+											<form id="bookmarkItem" action="{% url 'bookmark' pk=listing.id %}">
 												{% csrf_token %}
 											</form>
-												
 										</div>
 									</div>
 								</div>
@@ -304,6 +303,11 @@
 	<footer class="container-fluid bg-uoft">
 		<p class="pt-3 pb-3 text-white text-center mb-0">copyright: All rights reserved</p>
 	</footer>
+
+	<!-- Submit the form if the user wishes to bookmark this item-->
+	<script>
+		document.getElementById("bookmarkItem").submit();
+	</script>
 
 </body>
 </html>

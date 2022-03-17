@@ -28,6 +28,8 @@ class AddListingForm(forms.Form):
     # Choose one of the subject categories and record it (temporarily) as a string. 
     # When creating a listing, query the Category model for the right row and create the correct key constraint
     category = forms.CharField(label='Category', widget=forms.Select(choices=CATEGORIES)) 
+    image = forms.ImageField(required=False)
+
 
     def clean(self):
         cleaned_data = super().clean()

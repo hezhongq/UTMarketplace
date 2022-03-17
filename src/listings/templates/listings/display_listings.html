@@ -242,11 +242,15 @@
 										</div>
 									</div>
 								</div>
-								<img class="rounded" src="https://media.istockphoto.com/vectors/book-icon-vector-id1254373900?k=20&m=1254373900&s=170667a&w=0&h=OQ6JNrjZiJRrBIO2WUs9EJPdJCN8mDAnyPKOD_3sseU=">
+								{% if not listing.image %}
+									<img class="rounded" src="../../static/listing_images/default_listing.jpeg">
+								{% else %}
+									<img class="rounded" src="../../static/listing_images/{{ listing.image }}">
+								{% endif %}
 								<div class="card-body">
 									<!-- item title -->
 									<a class="text-decoration-none text-black" href="">
-										<h4>{{ listing.name }}</h4>
+										<h4>{{ listing.item_name }}</h4>
 									</a>
 									<!-- price -->
 									<p>${{ listing.price}}</p>
@@ -254,6 +258,7 @@
 									<a href="#" class="btn btn-primary">See details</a>
 								</div>
 								<a class="stretched-link" href="{% url 'single-listing' pk=listing.id %}"></a>
+
 							</div>	
 						</div>
 						{% endfor %}

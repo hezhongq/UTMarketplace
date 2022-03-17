@@ -13,6 +13,7 @@ class Listing(models.Model):
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
     post_date = models.DateField(auto_now_add=True) # When a listing is created, date will be assigned automatically
     last_modified_date = models.DateField(auto_now=True) # When listing is modified, date will be updated automatically
+    image = models.ImageField(upload_to='')
 
     original_poster = models.ForeignKey(to=UserExtension, on_delete=CASCADE)
 

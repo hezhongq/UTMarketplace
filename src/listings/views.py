@@ -3,9 +3,8 @@ from django.shortcuts import redirect, get_object_or_404
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect, JsonResponse
 
 from listings.forms.add_listing import AddListingForm
-from users.models import Category
 
-from listings.models import Listing, Bookmark
+from listings.models import Listing, Bookmark, Category
 from django.views.generic import FormView, ListView, DetailView, UpdateView, CreateView, DeleteView
 # Create your views here.
 
@@ -65,7 +64,6 @@ class SingleListing(DetailView):
     template_name = "listings/single_listing.html"
 
 def bookmark_listing(request, pk):
-    print("made it here")
     given_listing = get_object_or_404(Listing, id=pk)
     existing_bookmarks = Bookmark.objects.filter(owner=request.user)
 

@@ -78,9 +78,10 @@ def bookmark_listing(request, pk):
         # The user has already bookmarked this listing
         if bookmark.listing == given_listing and bookmark.owner == request.user:
             Bookmark.objects.get(id=bookmark.id).delete()
-            return HttpResponse('Bookmark Removed!')
+            return redirect(f'/listings/{pk}/details/')
+            #return HttpResponse('Bookmark Removed!')
 
     new_bookmark = Bookmark(owner=request.user, listing=given_listing)
     new_bookmark.save()
-    
-    return HttpResponse('Bookmark Added!')
+    return redirect(f'/listings/{pk}/details/')
+    #return HttpResponse('Bookmark Added!')

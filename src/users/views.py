@@ -180,6 +180,8 @@ def edit_profile(response):
         form = EditUserForm(response.POST)
         if form.is_valid():
             user.username = form.cleaned_data['username']
+            if 'avatar' in response.FILES:
+                user.avatar = response.FILES['avatar']
             user.save()
             return redirect(reverse('profile', kwargs={'user_id': user.id}))
     return render(response, "users/edit_profile.html", {'user': user, 'form': form, 'is_user': True})

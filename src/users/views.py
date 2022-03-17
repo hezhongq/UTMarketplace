@@ -179,7 +179,8 @@ def edit_profile(response):
     if response.method == "POST":
         form = EditUserForm(response.POST)
         if form.is_valid():
-            user.username = form.cleaned_data['username']
+            if len(form.cleaned_data['username']) > 0:
+                user.username = form.cleaned_data['username']
             if 'avatar' in response.FILES:
                 user.avatar = response.FILES['avatar']
             user.save()

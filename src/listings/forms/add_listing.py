@@ -12,7 +12,7 @@ CATEGORIES = [
         ('geography', 'Geography'),
         ('history', 'Historical Studies'),
         ('iccit', 'ICCIT'),
-        ('language', 'Language Studies'),
+        ('language_studies', 'Language Studies'),
         ('management', 'Management'),
         ('mcs', 'MCS'),
         ('philosophy', 'Philosophy'),

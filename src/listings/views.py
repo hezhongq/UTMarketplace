@@ -65,18 +65,17 @@ class SingleListing(DetailView):
     template_name = "listings/single_listing.html"
 
 def bookmark_listing(request, pk):
+    print("made it here")
     given_listing = get_object_or_404(Listing, id=pk)
     existing_bookmarks = Bookmark.objects.filter(owner=request.user)
 
-    print(len(existing_bookmarks))
-
     for bookmark in existing_bookmarks:
         # The user has already bookmarked this listing
-        if bookmark.owner == request.user:
-            Bookmark.objects.get(owner=request.user).delete()
+        if bookmark.listing == given_listing and bookmark.owner == request.user:
+            Bookmark.objects.get(id=bookmark.id).delete()
             return HttpResponse('Bookmark Removed!')
 
     new_bookmark = Bookmark(owner=request.user, listing=given_listing)
     new_bookmark.save()
-    print(request.path)
-    return HttpResponseRedirect(request.path, 'Bookmark Added!')
+    
+    return HttpResponse('Bookmark Added!')

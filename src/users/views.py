@@ -170,6 +170,14 @@ def profile(response, user_id):
     else:
         return render(response, "users/result.html", {'error': "no this user"})
 
+def delete_account(response, user_id):
+    user = UserExtension.objects.filter(id=user_id)
+    if user_id == response.user.id:
+        return render(response, "users/delete_account.html", {'user': user[0], 'is_user': True})
+    elif user:
+        return render(response, "users/delete_account.html", {'user': user[0], 'is_user': False})
+    else:
+        return render(response, "users/result.html", {'error': "no this user"})
 
 '''===helpers==='''
 

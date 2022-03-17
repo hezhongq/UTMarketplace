@@ -1,7 +1,7 @@
-from .forms import LoginForm, RegistrationForm, ResetPasswordForm
+from .forms import LoginForm, RegistrationForm, ResetPasswordForm, EditUserForm
 from .models import UserExtension
 from django.conf import settings
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404, redirect, reverse
 from django.core.paginator import Paginator
 from django.contrib import auth
 from random import Random
@@ -171,6 +171,18 @@ def profile(response, user_id):
         return render(response, "users/result.html", {'error': "no this user"})
 
 
+def edit_profile(response):
+    user = response.user
+    form = EditUserForm()
+    if not user.is_authenticated:
+        return redirect(reverse('login'))
+    if response.method == "POST":
+        form = EditUserForm(response.POST)
+        if form.is_valid():
+            user.username = form.cleaned_data['username']
+            user.save()
+            return redirect(reverse('profile', kwargs={'user_id': user.id}))
+    return render(response, "users/edit_profile.html", {'user': user, 'form': form, 'is_user': True})
 '''===helpers==='''
 
 

@@ -1,0 +1,104 @@
+[
+    {
+        "pk" : 1,
+        "model" : "listings.Category",
+        "name" : "anthropology",
+        "parent_category" : "Book"
+    },
+    {
+        "pk" : 2,
+        "model" : "listings.Category",
+        "name" : "biology",
+        "parent_category" : "Book"
+    },
+    {
+        "pk" : 3,
+        "model" : "listings.Category",
+        "name" : "chemical_physical_sciences",
+        "parent_category" : "Book"
+    },
+    {
+        "pk" : 4,
+        "model" : "listings.Category",
+        "name" : "economics",
+        "parent_category" : "Book"
+    },
+    {
+        "pk" : 5,
+        "model" : "listings.Category",
+        "name" : "english_drama",
+        "parent_category" : "Book"
+    },
+    {
+        "pk" : 6,
+        "model" : "listings.Category",
+        "name" : "geography",
+        "parent_category" : "Book"
+    },
+    {
+        "pk" : 7,
+        "model" : "listings.Category",
+        "name" : "history",
+        "parent_category" : "Book"
+    },
+    {
+        "pk" : 8,
+        "model" : "listings.Category",
+        "name" : "iccit",
+        "parent_category" : "Book"
+    },
+    {
+        "pk" : 9,
+        "model" : "listings.Category",
+        "name" : "language",
+        "parent_category" : "Book"
+    },
+    {
+        "pk" : 10,
+        "model" : "listings.Category",
+        "name" : "management",
+        "parent_category" : "Book"
+    },
+    {
+        "pk" : 11,
+        "model" : "listings.Category",
+        "name" : "mcs",
+        "parent_category" : "Book"
+    },
+    {
+        "pk" : 12,
+        "model" : "listings.Category",
+        "name" : "philosophy",
+        "parent_category" : "Book"
+    },
+    {
+        "pk" : 13,
+        "model" : "listings.Category",
+        "name" : "political_science",
+        "parent_category" : "Book"
+    },
+    {
+        "pk" : 14,
+        "model" : "listings.Category",
+        "name" : "psychology",
+        "parent_category" : "Book"
+    },
+    {
+        "pk" : 15,
+        "model" : "listings.Category",
+        "name" : "sociology",
+        "parent_category" : "Book"
+    },
+    {
+        "pk" : 16,
+        "model" : "listings.Category",
+        "name" : "visual_studies",
+        "parent_category" : "Book"
+    },
+    {
+        "pk" : 17,
+        "model" : "listings.Category",
+        "name" : "wgs",
+        "parent_category" : "Book"
+    }
+]

@@ -1,8 +1,19 @@
-from users.models import Category, UserExtension
+from users.models import UserExtension
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models import CASCADE
 
+# Table of Categories
+# No duplicates
+# Contains category name and it's parent category, if it exists.
+# Example: You want to filter for all Books. We can select name=Books or parent_category=Books
+# Textbook's parent_category is Book
+class Category(models.Model):
+    name = models.CharField(max_length=64)
+    parent_category = models.CharField(max_length=64, null=True, blank=True)
+
+    def __str__(self):
+        return self.name
 
 # Create your models here.
 class Listing(models.Model):
@@ -24,3 +35,5 @@ class Listing(models.Model):
 class Bookmark(models.Model):
     owner = models.ForeignKey(UserExtension, on_delete=models.CASCADE)
     listing = models.ForeignKey(Listing, on_delete=models.CASCADE)
+
+

@@ -304,9 +304,13 @@
 		<p class="pt-3 pb-3 text-white text-center mb-0">copyright: All rights reserved</p>
 	</footer>
 
-	<!-- Submit the form if the user wishes to bookmark this item-->
+	<!-- Submit the form if this user wants to bookmark the item-->
 	<script>
-		document.getElementById("bookmarkItem").submit();
+		// Set an event listener for the bookmark button to bookmark the item
+		bookmark_item_button = document.getElementById("bookmarkItem");
+		bookmark_item_button.addEventListener("click", () => {
+			bookmark_item_button.submit();
+		})
 	</script>
 
 </body>

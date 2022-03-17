@@ -284,7 +284,11 @@
 
 	<!-- Submit the form if this user wants to bookmark the item-->
 	<script>
-		document.getElementById("bookmarkItem").submit();
+		// Set an event listener for the bookmark button to bookmark the item
+		bookmark_item_button = document.getElementById("bookmarkItem");
+		bookmark_item_button.addEventListener("click", () => {
+			bookmark_item_button.submit();
+		})
 	</script>
 
 </body>

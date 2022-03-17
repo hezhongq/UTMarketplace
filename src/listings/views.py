@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.shortcuts import redirect, get_object_or_404
-from django.http import HttpRequest, HttpResponse, JsonResponse
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect, JsonResponse
 
 from listings.forms.add_listing import AddListingForm
 from users.models import Category
@@ -21,14 +21,13 @@ class AddListing(FormView):
     def form_valid(self, form):
         # Create the new listing here after validating data. Redirect to success URL if listing was successfully created
         
-        category_name = form.cleaned_data.pop('category')
-        print(category_name) 
+        category_name = form.cleaned_data.pop('category') 
         category_object = Category.objects.get(name=category_name)
         
-
-        # Might need to change original_poster to abstract user by doing a query
-        Listing.objects.create(**form.cleaned_data, category=category_object, original_poster=self.request.user)
-        return redirect("/listings")
+        
+        new_listing = Listing.objects.create(**form.cleaned_data, category=category_object, original_poster=self.request.user)
+        print(f"/listings/{new_listing.id}/details/")
+        return redirect(f"/listings/{new_listing.id}/details/")
 
 # Ensure that only the user who created this post can delete it
 class DeleteListing(DeleteView):
@@ -67,14 +66,17 @@ class SingleListing(DetailView):
 
 def bookmark_listing(request, pk):
     given_listing = get_object_or_404(Listing, id=pk)
-    existing_bookmarks = Bookmark.objects.get(owner=request.user)
+    existing_bookmarks = Bookmark.objects.filter(owner=request.user)
+
+    print(len(existing_bookmarks))
 
     for bookmark in existing_bookmarks:
         # The user has already bookmarked this listing
-        if bookmark.listing == given_listing:
-            bookmark.delete()
+        if bookmark.owner == request.user:
+            Bookmark.objects.get(owner=request.user).delete()
             return HttpResponse('Bookmark Removed!')
 
     new_bookmark = Bookmark(owner=request.user, listing=given_listing)
     new_bookmark.save()
-    return HttpResponse('Bookmark Added!')
+    print(request.path)
+    return HttpResponseRedirect(request.path, 'Bookmark Added!')

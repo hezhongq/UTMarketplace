@@ -2,12 +2,15 @@ from .forms import LoginForm, RegistrationForm, ResetPasswordForm
 from .models import UserExtension
 from django.conf import settings
 from django.shortcuts import render, get_object_or_404, redirect
+from django.core.paginator import Paginator
 from django.contrib import auth
 from random import Random
 from django.core.mail import send_mail
 from django.contrib.auth.forms import SetPasswordForm, PasswordChangeForm
 from .models import EmailVerifyRecord
-from django.views.generic import FormView
+from django.views.generic import ListView
+from listings.models import Listing, Bookmark
+
 
 def home(response):
     return render(response, 'users/home.html', {})
@@ -143,6 +146,31 @@ def change_password(response):
     return render(response, "users/change_profile_password.html", {'form': form})
 
 
+def search_results(request):
+    if request.method == 'POST':
+        searched = request.POST['search']
+        listings = Listing.objects.filter(item_name__contains=searched)
+        paginator = Paginator(listings, 10)  # Show 25 contacts per page.
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+
+        # return render(request, "users/search_results.html", {'searched': searched, 'listings': listings})
+        return render(request, "users/search_results.html", {'page_obj': page_obj, 'searched': searched})
+
+    else:
+        return render(request, "users/search_results.html", {})
+
+
+def profile(response, user_id):
+    user = UserExtension.objects.filter(id=user_id)
+    if user_id == response.user.id:
+        return render(response, "users/profile.html", {'user': user[0], 'listing_set': user[0].listing_set.all(), 'is_user': True})
+    elif user:
+        return render(response, "users/profile.html", {'user': user[0], 'listing_set': user[0].listing_set.all(), 'is_user': False})
+    else:
+        return render(response, "users/result.html", {'error': "no this user"})
+
+
 '''===helpers==='''
 
 
@@ -177,12 +205,21 @@ def send_register_email(hostname, email, send_type="register"):
         print("send email failed")
 
 
-def edit_avatar(response):
-    error = ''
-    if response.method =='GET':
-        return render(response, "users/edit_profile.html")
+# Bookmark listing view
+class BookmarksView(ListView):
+    model = Bookmark
+    context_object_name = "bookmarks"
+    template_name = 'users/bookmarks.html'
 
-def profile_view(response):
-    if response.method == 'GET':
-        return render(response, "users/profile.html")
-    
+    # We get the total price of all items in the user's bookmarks
+    def get_context_data(self, **kwargs):
+        cost = 0
+        for bookmark in Bookmark.objects.filter(owner=self.request.user):
+            cost += bookmark.listing.price
+        context = super().get_context_data(**kwargs)
+        context['total_cost'] = cost
+        return context
+
+    # Make the queryset return all bookmarks that belong to the user
+    def get_queryset(self):
+        return Bookmark.objects.filter(owner=self.request.user)

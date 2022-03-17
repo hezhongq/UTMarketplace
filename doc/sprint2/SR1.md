@@ -8,7 +8,7 @@
 * Joshua Menezes
 * Renfrew Ao-leoung
 * Tianyi Ma
-* Zhonqi He
+* Zhongqi He
 
 ## Unfinished Tasks
 * UT-11 Verification of user emails upon account creation

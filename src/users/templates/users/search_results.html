@@ -1,4 +1,7 @@
 {% load static %}
+
+<!DOCTYPE html>
+<html>
 <head>
 	<meta charset="utf-8">
 	<title>UTMarket</title>
@@ -17,7 +20,7 @@
 
 
 		<div class="container-fluid">
-			<a href="">
+			<a href="{% url 'home' %}">
 				<div class="">
 					<img class="m-2" id="nav-img" src="{% static 'img/logo.png' %}">
 				</div>
@@ -47,7 +50,7 @@
 					</ul>
 
 					<div class="hov mx-2">
-						<a class="p-3 py-5" href="bookmarks.html">
+						<a class="p-3 py-5" href="/users/bookmarks">
 							<i class="bi bi-bookmarks-fill h2 text-white"></i>
 						</a>
 					</div>
@@ -63,7 +66,7 @@
 						<a class="nav-link text-white py-3 mx-2" href="/users/logout">Logout</a>
 					</div>
 					<div class="hov">
-						<a class="px-3 py-5" href="/users/profile/">
+						<a class="px-3 py-5" href="profile.html">
 							<i class="bi bi-person-circle h2 text-white"></i>
 						</a>
 					</div>
@@ -140,98 +143,45 @@
 					</details>
 
 				</div>
+				<div class="col-7 col-lg-8 col-xl-9 bg-white m-3">
+                    <div class="row mt-3">
+                        {% if searched %}
+                            <h1> Results for: {{ searched }}</h1>
+                            <br/>
+                            {% if not page_obj %}
+                                No results.
+                            {% else %}
+                                {% for listing in page_obj %}
+                                    <div class="col-4">
+                                        <div class="card">
+                                            <img class="rounded" src="https://media.istockphoto.com/vectors/book-icon-vector-id1254373900?k=20&m=1254373900&s=170667a&w=0&h=OQ6JNrjZiJRrBIO2WUs9EJPdJCN8mDAnyPKOD_3sseU=">
+                                            <div class="card-body">
+                                                <!-- item title -->
+                                                <a class="text-decoration-none text-black" href="">
+                                                    <h4>{{ listing.listing_title }}</h4>
+                                                </a>
+                                                <p> {{ listing.item_name }}</p>
+                                                <!-- price -->
+                                                <p>${{ listing.price }}</p>
+                                                <!-- descriptions -->
+                                                <a href="#" class="btn btn-primary">See details</a>
+                                            </div>
+                                            <!-- Link to the listing page -->
+                                            <a class="stretched-link" href="post.html"></a>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+
+                        {% else %}
+                            <h1> Please enter an item to search </h1>
+                        {% endif %}
+                    </div>
+                </div>
 
 <!---------------------- Listings  ---------------------->
 
-				<div class="col-7 col-lg-8 col-xl-9 bg-white m-3">
-					<h1 class="text-center mt-3">Subjects</h1>
-
-					<div class="row mt-3">
-
-
-						<a class="col-3 text-decoration-none" href="inner.html">
-							<div class="card bg-warning text-black mb-3">
-								<div class="card-header">Subject 1</div>
-								<div class="card-body">
-									<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Book.svg/1200px-Book.svg.png" class="h-100 w-100">
-								</div>
-							</div>
-						</a>
-
-						<a class="col-3 text-decoration-none" href="inner.html">
-							<div class="card bg-warning text-black mb-3">
-								<div class="card-header">Subject 2</div>
-								<div class="card-body">
-									<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Book.svg/1200px-Book.svg.png" class="h-100 w-100">
-								</div>
-							</div>
-						</a>
-
-						<a class="col-3 text-decoration-none" href="inner.html">
-							<div class="card bg-warning text-black mb-3">
-								<div class="card-header">Subject 3</div>
-								<div class="card-body">
-									<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Book.svg/1200px-Book.svg.png" class="h-100 w-100">
-								</div>
-							</div>
-						</a>
-
-						<a class="col-3 text-decoration-none" href="inner.html">
-							<div class="card bg-warning text-black mb-3">
-								<div class="card-header">Subject 4</div>
-								<div class="card-body">
-									<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Book.svg/1200px-Book.svg.png" class="h-100 w-100">
-								</div>
-							</div>
-						</a>
-
-						<a class="col-3 text-decoration-none" href="inner.html">
-							<div class="card bg-warning text-black mb-3">
-								<div class="card-header">Subject 5</div>
-								<div class="card-body">
-									<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Book.svg/1200px-Book.svg.png" class="h-100 w-100">
-								</div>
-							</div>
-						</a>
-
-						<a class="col-3 text-decoration-none" href="inner.html">
-							<div class="card bg-warning text-black mb-3">
-								<div class="card-header">Subject 6</div>
-								<div class="card-body">
-									<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Book.svg/1200px-Book.svg.png" class="h-100 w-100">
-								</div>
-							</div>
-						</a>
-
-						<a class="col-3 text-decoration-none" href="inner.html">
-							<div class="card bg-warning text-black mb-3">
-								<div class="card-header">Subject 7</div>
-								<div class="card-body">
-									<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Book.svg/1200px-Book.svg.png" class="h-100 w-100">
-								</div>
-							</div>
-						</a>
-
-
-						<a class="col-3 text-decoration-none" href="inner.html">
-							<div class="card bg-warning text-black mb-3">
-								<div class="card-header">Subject 8</div>
-								<div class="card-body">
-									<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Book.svg/1200px-Book.svg.png" class="h-100 w-100">
-								</div>
-							</div>
-						</a>
-
-
-
-					</div>
-
-
-
-
-				</div>
 			</div>
-
 		</div>
 
 
@@ -251,12 +201,3 @@
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-

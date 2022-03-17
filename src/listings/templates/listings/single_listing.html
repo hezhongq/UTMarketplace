@@ -44,6 +44,43 @@
 .menu {
     min-height: 700px;
 }
+
+
+.hero::before { /* Hero image code adapted from: https://love2dev.com/blog/responsive-hero-background-opacity/ */
+    background-image: url(https://www.utoronto.ca/sites/default/files/cover-utm-hazel-mccallion-bldg.jpg); 
+    background-size: cover; 
+    content: ""; 
+    display: block; 
+    position: absolute; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%; 
+    z-index: -2; 
+    opacity: 0.4; 
+
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+} 
+
+.hero::after { 
+    background-color: white; 
+    content: ""; 
+    display: block; 
+    position: absolute; 
+    top: 0px; 
+    left: 0px; 
+    width: 100%; 
+    height: 100%; 
+    z-index: -1; 
+    opacity: 0.4; 
+}
+
+#nav-img {
+    width: 15%;
+    height: 40%;
+}
 	</style>
 	<meta charset="utf-8">
 	<title>UTMarket</title>
@@ -51,8 +88,8 @@
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
-	<link href="css/signup.css" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" type="text/css" href="/css/style.css">
+	<link href="{% static 'css/signup.css' %}" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
 </head>
 <body class="bg-img">
 	
@@ -190,29 +227,51 @@
 
 				<div class="col-7 col-lg-8 col-xl-9 bg-white m-3">
 
-                    <div class="col-8">
-                        <div>
-                            <a class="py-5 text-decoration-none text-black h5" href="profile.html">
-                                <i class="bi bi-person-circle text-black"></i>
-                                Joshua Menenzes
-                            </a>	
+                    <div class="col-8 m-5">
+                        <div class="row">
+							<div class="col-10">
+								<a class="py-5 text-decoration-none text-black h5" href="profile.html">
+									<i class="bi bi-person-circle text-black"></i>
+									Joshua Menenzes
+								</a>
+							</div>
+							<div class="col-2">
+								<div class="row mx-5">
+									<div class="col-10"></div>
+									<div class="col-1">
+										<div class="hov mx-2">
+											<button id="bookmarkItemBtn">
+												<a class="p-3 py-5">
+													<i class="bi bi-bookmarks-fill h2 text-black"></i>
+												</a>
+											</button>
+											<form id="bookmarkItem" action="{% url 'bookmark' pk=listing.id %}">
+												{% csrf_token %}
+											</form>	
+										</div>
+									</div>
+								</div>
+							</div>
+								
                         </div>
 
                         <h2 class="mt-3">{{  listing.title }}</h2>
                         <h5 class="">${{ listing.price }}</h5>
-                        <a href = "mailto:abc@example.com?subject = Feedback&body = Message">
-                            Send Feedback
-                        </a>
+						<div class="card ">
+							{% if not listing.image %}
+								<img class="rounded" src="../../../static/listing_images/default_listing.jpeg">
+							{% else %}
+								<img class="rounded" src="../../../static/listing_images/{{ listing.image }}">
+							{% endif %}
+						</div>	
+						<a href = "mailto:abc@example.com?subject = Feedback&body = Message">
+							Send Feedback
+						</a>
+						<p>{{ listing.description }}</p>
 
-                        <p>{{ listing.description }}</p>
                     </div>
-
-
-
-
 				</div>
 			</div>
-			
 		</div>
 
 
@@ -229,6 +288,15 @@
 	<footer class="container-fluid bg-uoft">
 		<p class="pt-3 pb-3 text-white text-center mb-0">copyright: All rights reserved</p>
 	</footer>
+
+	<!-- Submit the form if this user wants to bookmark the item-->
+	<script>
+		// Set an event listener for the bookmark button to bookmark the item
+		bookmark_item_button = document.getElementById("bookmarkItemBtn");
+		bookmark_item_button.addEventListener("click", () => {
+			document.getElementById("bookmarkItem").submit();
+		})
+	</script>
 
 </body>
 </html>

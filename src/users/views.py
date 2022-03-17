@@ -1,10 +1,8 @@
-from .forms import LoginForm, RegistrationForm
+from .forms import LoginForm, RegistrationForm, ResetPasswordForm
 from .models import UserExtension
 from django.conf import settings
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator
-from django.http import HttpResponse, HttpResponseRedirect
-from django.core.mail import send_mail
 from django.contrib import auth
 from random import Random
 from django.core.mail import send_mail
@@ -87,6 +85,65 @@ def active_user(response, active_code):
                 return render(response, "users/result.html", {'success': "verify account successfully"})
             return render(response, "users/result.html", {'error': "no this user"})
     return render(response, "users/result.html", {'error': "no this code"})
+
+
+def forget_password_submit(response, reset_code):
+    all_records = EmailVerifyRecord.objects.filter(code=reset_code, send_type="forget")
+    if all_records:
+        # should we avoid same record?
+        for record in all_records:
+            email = record.email
+            user = UserExtension.objects.all().filter(email=email)
+            if user:
+                user = UserExtension.objects.get(email=email)
+                if response.method == 'POST':
+                    form = SetPasswordForm(user=user, data=response.POST)
+                    if form.is_valid():
+                        form.save()
+                        return render(response, "users/result.html",
+                                      {'success': "reset password successfully"})
+                    else:
+                        return render(response, "users/reset.html",
+                                      {'form': form})
+                else:
+                    form = SetPasswordForm(user=user)
+                    return render(response, "users/reset.html",
+                                  {'form': form})
+            else:
+                return render(response, "users/result.html",
+                              {'error': "no this user"})
+    return render(response, "users/result.html",
+                  {'error': "no this code"})
+
+
+def reset_password(response):
+    error = ""
+    if response.method == 'POST':
+        form = ResetPasswordForm(response.POST)
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            user = UserExtension.objects.all().filter(email=email)
+            if user:
+                send_register_email(response.get_host(), email, "forget")
+                return render(response, "users/result.html", {'success': "email sent"})
+            return render(response, "users/result.html", {'error': "no this user"})
+    else:
+        form = ResetPasswordForm()
+    return render(response, "users/pwd_retrieval.html", {'form': form, 'error': error})
+
+
+def change_password(response):
+    if not response.user.is_authenticated:
+        return render(response, "users/result.html", {'error': "please login"})
+    if response.method == "POST":
+        form = PasswordChangeForm(user=response.user, data=response.POST)
+        if form.is_valid():
+            user = form.save()
+            auth.update_session_auth_hash(response, user)
+            return redirect('/users/profile/{0}'.format(user.id))
+    else:
+        form = PasswordChangeForm(user=response.user)
+    return render(response, "users/change_profile_password.html", {'form': form})
 
 
 def search_results(request):

@@ -1,11 +1,10 @@
 from django.shortcuts import render, redirect
 from django.shortcuts import redirect, get_object_or_404
-from django.http import HttpRequest, HttpResponse, JsonResponse
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect, JsonResponse
 
 from listings.forms.add_listing import AddListingForm
-from users.models import Category
 
-from .models import Listing
+from listings.models import Listing, Bookmark, Category
 from django.views.generic import FormView, ListView, DetailView, UpdateView, CreateView, DeleteView
 # Create your views here.
 
@@ -22,13 +21,19 @@ class AddListing(FormView):
         # Create the new listing here after validating data. Redirect to success URL if listing was successfully created
         
         category_name = form.cleaned_data.pop('category')
+        print('============')
         print(category_name) 
         category_object = Category.objects.get(name=category_name)
         
-
+        print('============')
+        print(form.cleaned_data) 
         # Might need to change original_poster to abstract user by doing a query
-        Listing.objects.create(**form.cleaned_data, category=category_object, original_poster=self.request.user)
+        new_listing = Listing.objects.create(**form.cleaned_data, category=category_object, original_poster=self.request.user)
+        print(f"/listings/{new_listing.id}/details/")
+        return redirect(f"/listings/{new_listing.id}/details/")
+
         return redirect("/listings")
+
 
 # Ensure that only the user who created this post can delete it
 class DeleteListing(DeleteView):
@@ -54,20 +59,12 @@ class UpdateListing(UpdateView):
 
 class DisplayListings(ListView):
     model = Listing
-    context_object_name = "listing"
+    context_object_name = "listings"
     template_name = "listings/display_listings.html"
-    
+
     def get_queryset(self):
-        cost_from = self.request.GET.get('cost_from', 'give-default-value')
-        cost_to = self.request.GET.get('cost_to', 'give-default-value')
-        ctgry = self.request.GET.get('category', 'give-default-value')
-        
-        new_context = Listing.objects.filter(
-            price__range=(cost_from, cost_to)
-        ).filter(
-            category=ctgry
-        )
-        return new_context
+        return Listing.objects.all()
+
 
 class SingleListing(DetailView):
     model = Listing
@@ -85,3 +82,20 @@ class SingleListing(DetailView):
             category=ctgry
         )
         return new_context
+
+
+def bookmark_listing(request, pk):
+    given_listing = get_object_or_404(Listing, id=pk)
+    existing_bookmarks = Bookmark.objects.filter(owner=request.user)
+
+    for bookmark in existing_bookmarks:
+        # The user has already bookmarked this listing
+        if bookmark.listing == given_listing and bookmark.owner == request.user:
+            Bookmark.objects.get(id=bookmark.id).delete()
+            return HttpResponse('Bookmark Removed!')
+
+    new_bookmark = Bookmark(owner=request.user, listing=given_listing)
+    new_bookmark.save()
+    
+    return HttpResponse('Bookmark Added!')
+

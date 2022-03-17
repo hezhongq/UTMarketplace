@@ -181,8 +181,8 @@
                                     <div class="col-lg-4">
                                       <div class="card mb-4">
                                         <div class="card-body text-center">
-                                          <img src="https://toppng.com/uploads/preview/former-dictator-pingu-of-noot-island-pingu-noot-noot-11562927776r7hqdtwgts.png" alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
-                                          <h5 class="my-3">{{ user.username }}</h5>
+                                          <img src="{% static user.avatar.url %}" alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
+                                          <h5 class="my-3">Username: {{ user.username }}</h5>
                                             {% if is_user %}
                                           <div class="d-flex justify-content-center mb-2">
                                             <a href="{% url 'edit_profile' %}"><button type="button" class="btn btn-primary">Edit Profile</button></a>

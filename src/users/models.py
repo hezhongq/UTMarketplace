@@ -52,6 +52,7 @@ class UserExtension(AbstractUser):
     email = models.EmailField(unique=True)
     username = models.CharField(max_length=20, blank=False)
     is_active = models.BooleanField(_('active'), default=False)
+    avatar = models.ImageField(default='static/images/qq.png', upload_to='', null=True, blank=True)
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ["username"]
     objects = CustomUserManager()
@@ -69,24 +70,11 @@ class UserExtension(AbstractUser):
 #     listing = models.ForeignKey(Listing, on_delete=models.CASCADE)
 
 
-# Table of Categories
-# No duplicates
-# Contains category name and it's parent category, if it exists.
-# Example: You want to filter for all Books. We can select name=Books or parent_category=Books
-# Textbook's parent_category is Book
-class Category(models.Model):
-    name = models.CharField(max_length=64)
-    parent_category = models.CharField(max_length=64, null=True, blank=True)
-
-    def __str__(self):
-        return self.name
-
-
 class EmailVerifyRecord(models.Model):
     code = models.CharField(max_length=20, verbose_name="verified_code")
     email = models.EmailField(max_length=50, verbose_name="email")
     send_type = models.CharField(verbose_name="type", max_length=10,
-                                 choices=(("register", "register"), ("forget", "forget")))
+                                 choices=(("register", "register"), ("forget", "forget"), ("delete", "delete")))
     send_time = models.DateTimeField(verbose_name="send_time", default=timezone.now)
 
     class Meta:

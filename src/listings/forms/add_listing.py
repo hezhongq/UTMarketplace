@@ -1,5 +1,8 @@
 from django import forms
 
+# NOTE: In the model, all categories must have lowercase names. The value on the right of the tuple is what is shown
+# to the user, and the value on the left is what is passed in as the key
+# http://www.learningaboutelectronics.com/Articles/How-to-create-a-drop-down-list-in-a-Django-form.php
 CATEGORIES = [
         ('anthropology', 'Anthropology'),
         ('biology', 'Biology'),
@@ -9,7 +12,7 @@ CATEGORIES = [
         ('geography', 'Geography'),
         ('history', 'Historical Studies'),
         ('iccit', 'ICCIT'),
-        ('language', 'Language Studies'),
+        ('language_studies', 'Language Studies'),
         ('management', 'Management'),
         ('mcs', 'MCS'),
         ('philosophy', 'Philosophy'),
@@ -28,6 +31,8 @@ class AddListingForm(forms.Form):
     # Choose one of the subject categories and record it (temporarily) as a string. 
     # When creating a listing, query the Category model for the right row and create the correct key constraint
     category = forms.CharField(label='Category', widget=forms.Select(choices=CATEGORIES)) 
+    image = forms.ImageField(required=False)
+
 
     def clean(self):
         cleaned_data = super().clean()

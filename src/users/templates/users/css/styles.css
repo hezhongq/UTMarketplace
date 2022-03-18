@@ -1,0 +1,53 @@
+
+
+/*--------------- Background color ---------------*/
+
+
+.bg-uoft {
+    background-color: #004294;
+}
+
+
+
+/*--------------- HEADER style ---------------*/
+
+
+
+
+#nav-img {
+    width: 20%;
+    height: 40%;
+}
+
+
+
+
+/*--------------- Navigation style ---------------*/
+
+
+
+
+.navbar-collapse ul li:hover {
+    background-color: black;
+}
+.hov:hover {
+    background-color: black;
+}
+
+
+
+/*--------------- Menu style ---------------*/
+
+.menu {
+    min-height: 700px;
+}
+
+
+
+
+
+
+
+
+
+

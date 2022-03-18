@@ -171,15 +171,16 @@ def profile(response, user_id):
         return render(response, "users/result.html", {'error': "no this user"})
 
 
-def delete_account(response, user_id):    
+def delete_account(response, user_id):
+    user = UserExtension.objects.filter(id=user_id)
     if user_id == response.user.id:
         email = response.user.email
         send_email(response.get_host(), email, "delete")
         return redirect('/users/login/')
     elif user:
-        return render(response, "users/results.html", {"error": "access denied"})
+        return render(response, "users/result.html", {"error": "access denied"})
     else:
-        return render(response, "users/results.html", {"error": "user does not exist"})
+        return render(response, "users/result.html", {"error": "no account exists"})
 
 
 def delete_account_confirm(response, delete_account_confirm_code):
@@ -193,7 +194,7 @@ def delete_account_confirm(response, delete_account_confirm_code):
                 user[0].delete()
                 return render(response, "users/result.html", {'success': "account deleted"})
             return render(response, "users/result.html", {'error': "user does not exist"})
-    return render(response, "users/result.html", {'error': "no this code"})
+    return render(response, "users/result.html", {'error': "code does not exist"})
 
 '''===helpers==='''
 

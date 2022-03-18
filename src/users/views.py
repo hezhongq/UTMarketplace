@@ -1,7 +1,7 @@
-from .forms import LoginForm, RegistrationForm, ResetPasswordForm
+from .forms import LoginForm, RegistrationForm, ResetPasswordForm, EditUserForm
 from .models import UserExtension
 from django.conf import settings
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404, redirect, reverse
 from django.core.paginator import Paginator
 from django.contrib import auth
 from random import Random
@@ -171,6 +171,24 @@ def profile(response, user_id):
         return render(response, "users/result.html", {'error': "no this user"})
 
 
+
+def edit_profile(response):
+    user = response.user
+    form = EditUserForm()
+    if not user.is_authenticated:
+        return redirect(reverse('login'))
+    if response.method == "POST":
+        form = EditUserForm(response.POST)
+        if form.is_valid():
+            if len(form.cleaned_data['username']) > 0:
+                user.username = form.cleaned_data['username']
+            if 'avatar' in response.FILES:
+                user.avatar = response.FILES['avatar']
+            user.save()
+            return redirect(reverse('profile', kwargs={'user_id': user.id}))
+    return render(response, "users/edit_profile.html", {'user': user, 'form': form, 'is_user': True})
+
+
 def delete_account(response, user_id):
     user = UserExtension.objects.filter(id=user_id)
     if user_id == response.user.id:
@@ -195,6 +213,7 @@ def delete_account_confirm(response, delete_account_confirm_code):
                 return render(response, "users/result.html", {'success': "account deleted"})
             return render(response, "users/result.html", {'error': "user does not exist"})
     return render(response, "users/result.html", {'error': "code does not exist"})
+
 
 '''===helpers==='''
 

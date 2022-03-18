@@ -23,6 +23,8 @@ class RegistrationForm(UserCreationForm):
         return email_data
 
 
+
+
 # Will not use this form
 '''
 class RegisterForm(forms.Form):
@@ -77,3 +79,16 @@ class ResetPasswordForm(forms.Form):
             raise forms.ValidationError('Please input all fields in form')
         cleaned_data = super(ResetPasswordForm, self).clean()
         return cleaned_data
+
+
+class EditUserForm(forms.Form):
+    username = forms.CharField(required=False, max_length=20)
+    avatar = forms.ImageField(required=False)
+    def __init__(self, *args, **kwargs):
+        super(EditUserForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_show_labels = False
+
+    class Meta:
+        model = UserExtension
+        fields = ("username", "avatar")

@@ -245,9 +245,9 @@
 													<i class="bi bi-bookmarks-fill h2 text-black"></i>
 												</a>
 											</button>
-											<form id="bookmarkItem" action="{% url 'bookmark' pk=listing.id %}">
-												{% csrf_token %}
-											</form>	
+											<form method="POST" id="bookmarkItem" action="{% url 'bookmark' pk=listing.id %}"> {% csrf_token %}
+												<input id="url_type" name="url_type" type="hidden" value="single_listing"> <!-- Send in the URL to be redirected to-->
+											</form>
 										</div>
 									</div>
 								</div>

@@ -87,7 +87,7 @@ class EmailVerifyRecord(models.Model):
     code = models.CharField(max_length=20, verbose_name="verified_code")
     email = models.EmailField(max_length=50, verbose_name="email")
     send_type = models.CharField(verbose_name="type", max_length=10,
-                                 choices=(("register", "register"), ("forget", "forget")))
+                                 choices=(("register", "register"), ("forget", "forget"), ("delete", "delete")))
     send_time = models.DateTimeField(verbose_name="send_time", default=timezone.now)
 
     class Meta:

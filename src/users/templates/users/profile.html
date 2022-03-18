@@ -187,6 +187,13 @@
                                           <div class="d-flex justify-content-center mb-2">
                                             <a href="{% url 'edit_profile' %}"><button type="button" class="btn btn-primary">Edit Profile</button></a>
                                           </div>
+                                          
+                                          <div class="d-flex justify-content-center mb-2">
+                                            <!-- <div>{{ user.id}}</div> -->
+                                            <form action="/users/delete_account/{{ request.user.id }}">
+                                              <input type="submit" class="btn btn-primary" value="Delete Account" />
+                                            </form>
+                                          </div>
                                             {% endif %}
                                         </div>
                                       </div>

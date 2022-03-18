@@ -34,7 +34,7 @@ def register(response):
                 user.email = email
                 user.set_password(password2)
                 user.save()
-                send_register_email(response.get_host(), email, "register")
+                send_email(response.get_host(), email, "register")
                 return redirect('/users/login/')
             else:
                 error = "user exists\n"
@@ -124,7 +124,7 @@ def reset_password(response):
             email = form.cleaned_data['email']
             user = UserExtension.objects.all().filter(email=email)
             if user:
-                send_register_email(response.get_host(), email, "forget")
+                send_email(response.get_host(), email, "forget")
                 return render(response, "users/result.html", {'success': "email sent"})
             return render(response, "users/result.html", {'error': "no this user"})
     else:
@@ -163,12 +163,13 @@ def search_results(request):
 
 def profile(response, user_id):
     user = UserExtension.objects.filter(id=user_id)
-    if user_id == response.user.id:
+    if user_id == response.user.id:            
         return render(response, "users/profile.html", {'user': user[0], 'listing_set': user[0].listing_set.all(), 'is_user': True})
     elif user:
         return render(response, "users/profile.html", {'user': user[0], 'listing_set': user[0].listing_set.all(), 'is_user': False})
     else:
         return render(response, "users/result.html", {'error': "no this user"})
+
 
 
 def edit_profile(response):
@@ -186,8 +187,35 @@ def edit_profile(response):
             user.save()
             return redirect(reverse('profile', kwargs={'user_id': user.id}))
     return render(response, "users/edit_profile.html", {'user': user, 'form': form, 'is_user': True})
-'''===helpers==='''
 
+
+def delete_account(response, user_id):
+    user = UserExtension.objects.filter(id=user_id)
+    if user_id == response.user.id:
+        email = response.user.email
+        send_email(response.get_host(), email, "delete")
+        return redirect('/users/login/')
+    elif user:
+        return render(response, "users/result.html", {"error": "access denied"})
+    else:
+        return render(response, "users/result.html", {"error": "no account exists"})
+
+
+def delete_account_confirm(response, delete_account_confirm_code):
+    all_records = EmailVerifyRecord.objects.filter(code=delete_account_confirm_code, send_type="delete")
+    if all_records:
+        for record in all_records:
+            email = record.email
+            user = UserExtension.objects.all().filter(email=email)
+            if user:
+                user[0].is_active = True
+                user[0].delete()
+                return render(response, "users/result.html", {'success': "account deleted"})
+            return render(response, "users/result.html", {'error': "user does not exist"})
+    return render(response, "users/result.html", {'error': "code does not exist"})
+
+
+'''===helpers==='''
 
 def random_str(randomlength=8):
     s = ''
@@ -199,7 +227,7 @@ def random_str(randomlength=8):
     return s
 
 
-def send_register_email(hostname, email, send_type="register"):
+def send_email(hostname, email, send_type="register"):
     email_record = EmailVerifyRecord()
     code = random_str(16)
     email_record.code = code + email
@@ -214,6 +242,10 @@ def send_register_email(hostname, email, send_type="register"):
     elif send_type == "forget":
         email_title = "UTMarketplace - Password Reset"
         email_body = "Click here to reset password: http://{0}/users/reset/{1}".format(hostname, code + email)
+
+    elif send_type == "delete":
+        email_title = "UTMarketplace - Delete Account"
+        email_body = "Click here to confirm account deletion: http://{0}/users/delete_account_confirm/{1}".format(hostname, code + email)
 
     send_status = send_mail(email_title, email_body, settings.EMAIL_HOST_USER, [email])
     if not send_status:

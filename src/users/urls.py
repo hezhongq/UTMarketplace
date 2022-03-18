@@ -18,6 +18,8 @@ urlpatterns = [
     path('forgetpassword/', views.reset_password, name="forgetpassword"),
     path('change_profile_password/', views.change_password, name="change_profile_password"),
     path('profile/<int:user_id>', views.profile, name="profile"),
+    path('delete_account/<int:user_id>', views.delete_account, name="delete_account"),
+    re_path(r'^delete_account_confirm/(?P<delete_account_confirm_code>.*)/$', views.delete_account_confirm, name="delete_account_confirm"),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -44,6 +44,42 @@
 .menu {
     min-height: 700px;
 }
+
+.hero::before { /* Hero image code adapted from: https://love2dev.com/blog/responsive-hero-background-opacity/ */
+    background-image: url(/img/bg_img.jpg); 
+    background-size: cover; 
+    content: ""; 
+    display: block; 
+    position: absolute; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%; 
+    z-index: -2; 
+    opacity: 0.4; 
+
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+} 
+
+.hero::after { 
+    background-color: white; 
+    content: ""; 
+    display: block; 
+    position: absolute; 
+    top: 0px; 
+    left: 0px; 
+    width: 100%; 
+    height: 100%; 
+    z-index: -1; 
+    opacity: 0.4; 
+}
+
+#nav-img {
+    width: 15%;
+    height: 40%;
+}
 	</style>
 	<meta charset="utf-8">
 	<title>UTMarket</title>
@@ -191,16 +227,46 @@
 				<div class="col-7 col-lg-8 col-xl-9 bg-white m-3">
 					<h1 class="text-center mt-3">Subject 1</h1>
 
+					<form action="{% url 'listing-home' %}" method="GET">
+						{% csrf_token %}
+						<label for="">Starting price</label>
+						<input type="number" name="start-price" id="start-price" >
+						<label for="">Ending price</label>
+						<input type="number" name="end-price" id="end-price" >
+						<input type="submit" value="Submit">
+					</form>
+
+
+
 					<div class="row mt-3">
 
 						{% for listing in listings %}
 						<div class="col-4">
-							<div class="card">
-								<img class="rounded" src="https://media.istockphoto.com/vectors/book-icon-vector-id1254373900?k=20&m=1254373900&s=170667a&w=0&h=OQ6JNrjZiJRrBIO2WUs9EJPdJCN8mDAnyPKOD_3sseU=">
+							<div class="card ">
+								<div class="row mx-5 mt-2">
+									<div class="col-9"></div>
+									<div class="col-2">
+										<div class="hov mx-2">
+											<button>
+												<a class="p-3 py-5">
+													<i class="bi bi-bookmarks-fill h2 text-black"></i>
+												</a>
+											</button>
+											<form id="bookmarkItem" action="{% url 'bookmark' pk=listing.id %}">
+												{% csrf_token %}
+											</form>
+										</div>
+									</div>
+								</div>
+								{% if not listing.image %}
+									<img class="rounded" src="../../static/listing_images/default_listing.jpeg">
+								{% else %}
+									<img class="rounded" src="../../static/listing_images/{{ listing.image }}">
+								{% endif %}
 								<div class="card-body">
 									<!-- item title -->
 									<a class="text-decoration-none text-black" href="">
-										<h4>{{ listing.name }}</h4>
+										<h4>{{ listing.item_name }}</h4>
 									</a>
 									<!-- price -->
 									<p>${{ listing.price}}</p>
@@ -250,6 +316,15 @@
 	<footer class="container-fluid bg-uoft">
 		<p class="pt-3 pb-3 text-white text-center mb-0">copyright: All rights reserved</p>
 	</footer>
+
+	<!-- Submit the form if this user wants to bookmark the item-->
+	<script>
+		// Set an event listener for the bookmark button to bookmark the item
+		bookmark_item_button = document.getElementById("bookmarkItemBtn");
+		bookmark_item_button.addEventListener("click", () => {
+			document.getElementById("bookmarkItem").submit();
+		})
+	</script>
 
 </body>
 </html>

@@ -70,19 +70,6 @@ class UserExtension(AbstractUser):
 #     listing = models.ForeignKey(Listing, on_delete=models.CASCADE)
 
 
-# Table of Categories
-# No duplicates
-# Contains category name and it's parent category, if it exists.
-# Example: You want to filter for all Books. We can select name=Books or parent_category=Books
-# Textbook's parent_category is Book
-class Category(models.Model):
-    name = models.CharField(max_length=64)
-    parent_category = models.CharField(max_length=64, null=True, blank=True)
-
-    def __str__(self):
-        return self.name
-
-
 class EmailVerifyRecord(models.Model):
     code = models.CharField(max_length=20, verbose_name="verified_code")
     email = models.EmailField(max_length=50, verbose_name="email")

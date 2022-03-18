@@ -63,17 +63,11 @@ class DisplayListings(ListView):
     template_name = "listings/display_listings.html"
 
     def get_queryset(self):
-        print(self.request.GET)
         cost_from = self.request.GET.get('start-price', -1)
         cost_to = self.request.GET.get('end-price', -1)
-        print(cost_from)
-        print(cost_to)
         # if nothing in text boxes, return Listings.objects.all()
         if cost_from == -1 and cost_to == -1:
             return Listing.objects.all()
-        
-        print(cost_from)
-        print(cost_to)
 
         # if thing in text boxes, parse it and return filtered version
         

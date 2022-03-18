@@ -170,6 +170,7 @@ def profile(response, user_id):
     else:
         return render(response, "users/result.html", {'error': "no this user"})
 
+
 def delete_account(response, user_id):    
     if user_id == response.user.id:
         email = response.user.email
@@ -180,17 +181,21 @@ def delete_account(response, user_id):
     else:
         return render(response, "users/results.html", {"error": "user does not exist"})
 
-def delete_account_confirm(response, user_id):
-    if user_id == response.user.id:
-        #UserExtension.objects.filter(id=user_id).delete()
-        return render(response, "users/results.html", {"success": "account deleted"})
-    elif user:
-        return render(response, "users/results.html", {"error": "access denied"})
-    else:
-        return render(response, "users/results.html", {"error": "user does not exist"})
+
+def delete_account_confirm(response, delete_account_confirm_code):
+    all_records = EmailVerifyRecord.objects.filter(code=delete_account_confirm_code, send_type="delete")
+    if all_records:
+        for record in all_records:
+            email = record.email
+            user = UserExtension.objects.all().filter(email=email)
+            if user:
+                user[0].is_active = True
+                user[0].delete()
+                return render(response, "users/result.html", {'success': "account deleted"})
+            return render(response, "users/result.html", {'error': "user does not exist"})
+    return render(response, "users/result.html", {'error': "no this code"})
 
 '''===helpers==='''
-
 
 def random_str(randomlength=8):
     s = ''

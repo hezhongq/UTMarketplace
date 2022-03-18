@@ -43,18 +43,20 @@ Install required dependencies:
 pip install -r requirements.txt
 ```
 
-Apply Migrations:
+Apply Migrations and Initialize Database:
 * On OS X / Linux
 ```bash
 $ cd src
 $ python3 manage.py makemigrations
 $ python3 manage.py migrate --run-syncdb
+$ python3 manage.py loaddata load_categories.json
 ```
 * On Windows:
 ```
 cd src
 > py manage.py makemigrations
 > py manage.py migrate --run-syncdb
+> py manage.py loadddata load_categories.json
 ```
 
 Start the application (by default, the server will be listening on port 8000):

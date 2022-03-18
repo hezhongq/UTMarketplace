@@ -138,6 +138,22 @@ Users do not need to login again after changing their passwords
 - Note
 -- This endpoint returns a list of all listings that the user has bookmarked.
 
+## /users/delete_account/{id}
+- Status Code
+-- *HTTP 200* regardless of user access
+- Note
+-- If account user accesses page, user will get redirected to login page and email will be sent to confirm deletation
+-- If non account user accesses page, user will get redirected to a page saying "access denied"
+-- If no account exists, user will egt redirected to a page saying "no user exists"
+
+## /users/delete_account_confirm/{delete_account_confirm_code}
+- Status Code
+-- *HTTP 200*
+- Note
+-- If account exists, user will get redirected to a page saying "acount deleted"
+-- If account does not exists, user will get redirected to a page saying "user does not exist"
+-- If delete_account_confirm_code doest not exist,  user will get redirected to a page saying "code does not exist"
+
 ## /listings/
 - GET
 - Fields

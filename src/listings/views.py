@@ -63,7 +63,26 @@ class DisplayListings(ListView):
     template_name = "listings/display_listings.html"
 
     def get_queryset(self):
-        return Listing.objects.all()
+        print(self.request.GET)
+        cost_from = self.request.GET.get('start-price', -1)
+        cost_to = self.request.GET.get('end-price', -1)
+        print(cost_from)
+        print(cost_to)
+        # if nothing in text boxes, return Listings.objects.all()
+        if cost_from == -1 and cost_to == -1:
+            return Listing.objects.all()
+        
+        print(cost_from)
+        print(cost_to)
+
+        # if thing in text boxes, parse it and return filtered version
+        
+        # ctgry = self.request.GET.get('category', 'give-default-value')
+        
+        new_context = Listing.objects.filter(
+            price__range=(cost_from, cost_to)
+        )#  .filter(category=ctgry)
+        return new_context
 
 class SingleListing(DetailView):
     model = Listing
@@ -78,13 +97,9 @@ def bookmark_listing(request, pk):
         # The user has already bookmarked this listing
         if bookmark.listing == given_listing and bookmark.owner == request.user:
             Bookmark.objects.get(id=bookmark.id).delete()
-
-            if request.POST['url_type'] == 'all_listings':
-                return redirect('/listings/')
-            return redirect(f'/listings/{pk}/details/')
+            return HttpResponse('Bookmark Removed!')
 
     new_bookmark = Bookmark(owner=request.user, listing=given_listing)
     new_bookmark.save()
-    if request.POST['url_type'] == 'all_listings':
-        return redirect('/listings/')
-    return redirect(f'/listings/{pk}/details/')
+    
+    return HttpResponse('Bookmark Added!')

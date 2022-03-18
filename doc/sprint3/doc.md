@@ -180,3 +180,14 @@ Users do not need to login again after changing their passwords
 -- *HTTP 404* If no such listing exists.
 - Note
 -- This endpoint deletes a given listing. Upon successful deletion
+
+## /listings/{listing_id}/bookmark
+- POST
+- Fields
+-- None
+- Status Code
+-- *HTTP 200* Upon a successful addition / removal of a bookmark.
+-- *HTTP 404* If no such listing exists.
+- Note
+-- This endpoint adds a listing to an authenticated user's bookmarks (if the listing is not already in the user's bookmarks). If the listing is already
+in the user's bookmarks, it will be removed.

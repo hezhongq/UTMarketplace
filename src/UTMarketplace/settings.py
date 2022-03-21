@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -123,6 +124,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = 'static/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images') # Directory where uploaded media is saved.
+MEDIA_URL = '/images/' # Public URL at the browser
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
@@ -145,3 +148,8 @@ EMAIL_HOST_USER = 'uoftmarketplace@gmail.com'
 EMAIL_HOST_PASSWORD = 'getusintopey'
 EMAIL_FROM = 'UTmarketplace<uoftmarketplace@gmail.com>'
 EMAIL_USE_TLS = True
+
+# Place to store all uploaded files
+MEDIA_ROOT = os.path.join(BASE_DIR, 'static/listing_images')
+# MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_URL = '/listing_images/'

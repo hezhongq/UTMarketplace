@@ -1,7 +1,4 @@
 {% load static %}
-
-<!DOCTYPE html>
-<html>
 <head>
 	<meta charset="utf-8">
 	<title>UTMarket</title>
@@ -66,7 +63,9 @@
 						<a class="nav-link text-white py-3 mx-2" href="/users/logout">Logout</a>
 					</div>
 					<div class="hov">
-						<a class="px-3 py-5" href="profile.html">
+
+						<a class="px-3 py-5" href="/users/profile/{{ request.user.id }}">
+
 							<i class="bi bi-person-circle h2 text-white"></i>
 						</a>
 					</div>

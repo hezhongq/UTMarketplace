@@ -1,13 +1,17 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from users.models import UserExtension, EmailVerifyRecord, Category
-from listings.models import Listing, Bookmark
+from users.models import UserExtension, EmailVerifyRecord
+from listings.models import Listing, Bookmark, Category
 
 
 # Re-register UserAdmin
 class CustomUserAdmin(UserAdmin):
     model = UserExtension
-    list_display = ['email', 'username']
+    list_display = ['email', 'username', 'avatar']
+    fieldsets = (  
+        (None, {'fields': ('email', 'password', 'username', 'avatar')}),  
+        ('Permissions', {'fields': ('is_staff', 'is_active')}),  
+    )  
 
 
 class EmailCodesAdmin(admin.ModelAdmin):

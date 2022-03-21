@@ -154,6 +154,17 @@ Users do not need to login again after changing their passwords
 -- If account does not exists, user will get redirected to a page saying "user does not exist"
 -- If delete_account_confirm_code doest not exist,  user will get redirected to a page saying "code does not exist"
 
+## /users/edit_profile
+- GET POST
+- Fields
+-- username
+-- avatar
+- Status Code
+-- *HTTP 200*, *HTTP 302*
+- Note
+-- If user is not logged in, it will redirect to Login Page
+-- User can edit their username and their profile picture
+
 ## /listings/
 - GET
 - Fields
@@ -207,3 +218,18 @@ Users do not need to login again after changing their passwords
 - Note
 -- This endpoint adds a listing to an authenticated user's bookmarks (if the listing is not already in the user's bookmarks). If the listing is already
 in the user's bookmarks, it will be removed.
+
+## /listings/listings/add-listing
+- GET POST
+- Fields
+-- Item Name
+-- Listing Name
+-- Description
+-- Price
+-- Category
+-- Image
+- Status Code
+-- *HTTP 200* Upon a successful addition of a listing.
+- Note
+-- This endpoint adds a listing to database that stores all listings. If the user did not include any image of the posting, the image section will be set to null.
+

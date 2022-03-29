@@ -18,8 +18,10 @@ from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
 
+import users.views
 
 urlpatterns = [
+    path('', users.views.home, name="home"),  # URL to home page
     path('admin/', admin.site.urls),
     path('users/', include('users.urls')),
     path('listings/', include('listings.urls')),

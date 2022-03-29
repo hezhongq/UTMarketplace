@@ -16,11 +16,14 @@ CATEGORIES = [
         ('management', 'Management'),
         ('mcs', 'MCS'),
         ('philosophy', 'Philosophy'),
-        ('political_science', 'Polotical Science'),
+        ('political_science', 'Political Science'),
         ('psychology', 'Psychology'),
         ('sociology', 'Sociology'),
         ('visual_studies', 'Visual Studies'),
         ('wgs', 'Women & Gender Studies'),
+        ('tutor', 'Tutor Services'),
+        ('electronics', 'Electronics'),
+        ('misc', 'Miscellaneous')
     ]
 
 class AddListingForm(forms.Form):

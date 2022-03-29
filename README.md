@@ -56,7 +56,7 @@ $ python3 manage.py loaddata load_categories.json
 cd src
 > py manage.py makemigrations
 > py manage.py migrate --run-syncdb
-> py manage.py loadddata load_categories.json
+> py manage.py loaddata load_categories.json
 ```
 
 Start the application (by default, the server will be listening on port 8000):

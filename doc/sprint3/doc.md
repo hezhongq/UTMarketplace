@@ -154,6 +154,14 @@ Users do not need to login again after changing their passwords
 -- If account does not exists, user will get redirected to a page saying "user does not exist"
 -- If delete_account_confirm_code doest not exist,  user will get redirected to a page saying "code does not exist"
 
+
+## /users/profile/<int:user_id>
+- GET
+- Status Code
+-- *HTTP 200*
+- Note
+-- If account does not exists, user will get redirected to a page saying "no this user"
+
 ## /users/edit_profile
 - GET POST
 - Fields

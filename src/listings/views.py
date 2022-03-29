@@ -32,7 +32,6 @@ class AddListing(FormView):
         print(f"/listings/{new_listing.id}/details/")
         return redirect(f"/listings/{new_listing.id}/details/")
 
-        return redirect("/listings")
 
 
 # Ensure that only the user who created this post can delete it
@@ -41,12 +40,6 @@ class DeleteListing(DeleteView):
     context_object_name = 'listing'
     template_name = 'listings/delete_listing.html'
 
-    def get_object(self):
-        # Look for the object that belongs to the user here
-        pass
-
-    def get_success_url(self):
-        pass
 
 class UpdateListing(UpdateView):
     model = Listing

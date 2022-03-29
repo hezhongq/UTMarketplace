@@ -8,7 +8,7 @@ from random import Random
 from django.core.mail import send_mail
 from django.contrib.auth.forms import SetPasswordForm, PasswordChangeForm
 from .models import EmailVerifyRecord
-from django.views.generic import ListView
+from django.views.generic import ListView, DeleteView
 from listings.models import Listing, Bookmark
 
 
@@ -214,6 +214,17 @@ def delete_account_confirm(response, delete_account_confirm_code):
             return render(response, "users/result.html", {'error': "user does not exist"})
     return render(response, "users/result.html", {'error': "code does not exist"})
 
+
+class DeleteBookmark(DeleteView):
+    model = Bookmark
+    context_object_name = 'bookmark'
+    success_url = "/users/bookmarks"
+
+    def get(self, request, *args, **kwargs):
+        print(self.kwargs['pk'])
+        bookmark = Bookmark.objects.get(id=self.kwargs['pk'])
+        bookmark.delete()
+        return redirect("/users/bookmarks")
 
 '''===helpers==='''
 

@@ -1,4 +1,6 @@
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
+from django.db.models import CASCADE, Avg
 from django.utils import timezone
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.base_user import BaseUserManager
@@ -60,6 +62,14 @@ class UserExtension(AbstractUser):
     def __str__(self):
         return self.email
 
+    @property
+    def rate(self):
+        return self.userreview_set.all().aggregate(Avg('rate'))['rate__avg']
+
+
+class UserReview(models.Model):
+    user = models.ForeignKey(to=UserExtension, on_delete=CASCADE)
+    rate = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
 
 # Bookmark table
 # An entry contains a user and a listing.

@@ -240,12 +240,16 @@
                                                     </style>
                                                     </head>
                                                     <body>
-                                                    
-                                                    <span class="fa fa-star checked"></span>
-                                                    <span class="fa fa-star checked"></span>
-                                                    <span class="fa fa-star checked"></span>
-                                                    <span class="fa fa-star"></span>
-                                                    <span class="fa fa-star"></span>
+
+                                                    {% for i in star_range %}
+                                                        <i class="bi bi-star-fill text-warning"></i>
+                                                    {% endfor %}
+                                                    {% if half_star %}
+                                                        <i class="bi bi-star-half text-warning"></i>
+                                                    {% endif %}
+                                                    {% for i in star_empty %}
+                                                        <i class="bi bi-star text-warning"></i>
+                                                    {% endfor %}
                                             </div>
                                           </div>
                                         </div>

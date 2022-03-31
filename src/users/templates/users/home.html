@@ -53,8 +53,7 @@
 					</div>
 
 
-					<form class="d-flex" method="POST" action="{% url 'search_results' %}">
-						{% csrf_token %}
+					<form class="d-flex" method="GET" action="{% url 'search_results' %}">
 						<input class="form-control me-2" type="text" name="search">
 						<button class="btn btn-primary" type="submit">Search</button>
 					</form>

@@ -84,6 +84,7 @@ class ResetPasswordForm(forms.Form):
 class EditUserForm(forms.Form):
     username = forms.CharField(required=False, max_length=20)
     avatar = forms.ImageField(required=False)
+    engdrama = forms.BooleanField()
     def __init__(self, *args, **kwargs):
         super(EditUserForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()

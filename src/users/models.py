@@ -55,6 +55,7 @@ class UserExtension(AbstractUser):
     username = models.CharField(max_length=20, blank=False)
     is_active = models.BooleanField(_('active'), default=False)
     avatar = models.ImageField(default='static/images/qq.png', upload_to='', null=True, blank=True)
+    engdrama = models.BooleanField()
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ["username"]
     objects = CustomUserManager()

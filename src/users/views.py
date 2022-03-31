@@ -178,7 +178,6 @@ def profile(response, user_id):
         return render(response, "users/result.html", {'error': "no this user"})
 
 
-
 def edit_profile(response):
     user = response.user
     form = EditUserForm()

@@ -219,7 +219,7 @@ Users do not need to login again after changing their passwords
 -- This endpoint adds a listing to an authenticated user's bookmarks (if the listing is not already in the user's bookmarks). If the listing is already
 in the user's bookmarks, it will be removed.
 
-## /listings/listings/add-listing
+## /listings/add-listing
 - GET POST
 - Fields
 -- Item Name
@@ -232,4 +232,3 @@ in the user's bookmarks, it will be removed.
 -- *HTTP 200* Upon a successful addition of a listing.
 - Note
 -- This endpoint adds a listing to database that stores all listings. If the user did not include any image of the posting, the image section will be set to null.
-

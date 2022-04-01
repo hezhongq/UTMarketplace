@@ -1,5 +1,6 @@
+{% load crispy_forms_filters %}
 {% load static %}
-
+{% load crispy_forms_tags %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -74,20 +75,14 @@
 
 		<div class="container-fluid">
 
+<!---------------------- Side bar  ---------------------->
 
-
-
-		<!---------------------- Side bar  ---------------------->
-
-		<div class="container-fluid">
 
 			<div class="row">
 				<div class="col-3 col-lg-3 col-xl-2 m-3 menu bg-uoft text-white">
 					<h2 class="text-center mt-3">MENU</h2>
 					<details class="mt-4">
-						<summary>
-							<p class="d-inline">Textbooks</p>
-						</summary>
+						<summary><p class="d-inline">Textbooks</p></summary>
 						<div class="list-group">
 							<a href="#" class="list-group-item list-group-item-action">Anthropology</a>
 							<a href="#" class="list-group-item list-group-item-action">Biology</a>
@@ -109,9 +104,7 @@
 					</details>
 
 					<details class="mt-4">
-						<summary>
-							<p class="d-inline">Notes</p>
-						</summary>
+						<summary><p class="d-inline">Notes</p></summary>
 						<div class="list-group">
 							<a href="#" class="list-group-item list-group-item-action">Note 1</a>
 							<a href="#" class="list-group-item list-group-item-action">Note 2</a>
@@ -120,9 +113,7 @@
 					</details>
 
 					<details class="mt-4">
-						<summary>
-							<p class="d-inline">Tutors</p>
-						</summary>
+						<summary><p class="d-inline">Tutors</p></summary>
 						<div class="list-group">
 							<a href="#" class="list-group-item list-group-item-action">Tutor 1</a>
 							<a href="#" class="list-group-item list-group-item-action">Tutor 2</a>
@@ -131,9 +122,7 @@
 					</details>
 
 					<details class="mt-4">
-						<summary>
-							<p class="d-inline">Electronics</p>
-						</summary>
+						<summary><p class="d-inline">Electronics</p></summary>
 						<div class="list-group">
 							<a href="#" class="list-group-item list-group-item-action">Electronics 1</a>
 							<a href="#" class="list-group-item list-group-item-action">Electronics 2</a>
@@ -142,9 +131,7 @@
 					</details>
 
 					<details class="mt-4">
-						<summary>
-							<p class="d-inline mb-3">Miscellaneous</p>
-						</summary>
+						<summary><p class="d-inline mb-3">Miscellaneous</p></summary>
 						<div class="list-group">
 							<a href="#" class="list-group-item list-group-item-action">Miscellaneous 1</a>
 							<a href="#" class="list-group-item list-group-item-action">Miscellaneous 2</a>
@@ -154,118 +141,19 @@
 
 				</div>
 
-				<!---------------------- Listings  ---------------------->
+<!---------------------- Report  ---------------------->
 
 				<div class="col-7 col-lg-8 col-xl-9 bg-white m-3">
-					<h1 class="text-center mt-3">Subject 1</h1>
-
-					<form action="{% url 'listing-home' %}" method="GET">
-						{% csrf_token %}
-						<label for="">Starting price</label>
-						<input type="number" name="start-price" id="start-price">
-						<label for="">Ending price</label>
-						<input type="number" name="end-price" id="end-price">
-						<input type="submit" value="Submit">
-					</form>
-
-
-
-					<div class="row mt-3">
-
-						{% for listing in listings %}
-						<div class="col-4">
-							<div class="card ">
-								<div class="row mx-5 mt-2">
-									<div class="col-9"></div>
-									<div class="col-2">
-										<div class="hov mx-2">
-											<button id="bookmark{{ listing.id }}btn">
-												<a class="p-3 py-5">
-													<i class="bi bi-bookmarks-fill h2 text-black"></i>
-												</a>
-											</button>
-											<form method="POST" id="bookmark{{ listing.id }}"
-												action="{% url 'bookmark' pk=listing.id %}"> {% csrf_token %}
-												<input id="url_type" name="url_type" type="hidden" value="all_listings">
-												<!-- Send in the URL to be redirected to-->
-											</form>
-											<!-- Submit the form if this user wants to bookmark the item-->
-											
-											<script>
-												// Set an event listener for the bookmark button to bookmark the item
-												bookmark_item_button = document.getElementById("bookmark{{ listing.id }}btn");
-												bookmark_item_button.addEventListener("click", () => {
-													document.getElementById("bookmark{{ listing.id }}").submit();
-												})
-											</script>
-
-										</div>
-									</div>
-								</div>
-								<div style="transform: rotate(0);">
-
-									{% if not listing.image %}
-									<img class="rounded" src="../../static/listing_images/default_listing.jpeg">
-									{% else %}
-									<div></div>
-									<img class="rounded" src="../../static/listing_images/{{ listing.image }}" style="max-height: 30em; max-width: 35em">
-									{% endif %}
-									<div class="card-body">
-										<!-- item title -->
-										<a class="text-decoration-none text-black" href="">
-											<h4>{{ listing.item_name }}</h4>
-										</a>
-										<!-- price -->
-										<p>${{ listing.price}}</p>
-										<!-- descriptions -->
-										<a href="#" class="btn btn-primary">See details</a>
-									</div>
-									<a class="stretched-link" href="{% url 'single-listing' pk=listing.id %}"></a>
-
-								</div>
-							</div>
-						</div>
-						{% endfor %}
-
-
-
-						<div class="row mt-5">
-							<ul class="pagination justify-content-center">
-								{% if page_obj.has_previous %}
-									<li class="page-item"><a class="page-link" href="?page=1">&laquo</a></li>
-									<li class="page-item"><a class="page-link" href="?page={{page_obj.previous_page_number}}">Previous</a></li>
-								{% endif %}
-
-								<li class="page-item active"><a class="page-link" href="">{{page_obj.number}}</a></li>
-
-								{% if page_obj.has_next %}
-									<li class="page-item"><a class="page-link" href="?page={{page_obj.next_page_number}}">Next</a></li>
-									<li class="page-item"><a class="page-link" href="?page={{page_obj.paginator.num_pages}}">&raquo</a></li>
-								{% endif %}
-
-								
-							</ul>
-						</div>
-
-					</div>
-
-
-
-
+                    <h1><b>Report user: {{ offender.username }}</b></h1>
+                    <form method="post" enctype='multipart/form-data'>
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                        <input type="submit" value="Submit" class="mt-2 btn btn-primary">
+                    </form>
 				</div>
 			</div>
 
 		</div>
-
-
-		<!-- 	<div class="container-fluid">
-
-			
-			
-	 	</div>
-
-
-		<div class="display"><h1>BODY</h1></div> -->
 
 	</div>
 	<footer class="container-fluid bg-uoft">
@@ -273,5 +161,4 @@
 	</footer>
 
 </body>
-
 </html>

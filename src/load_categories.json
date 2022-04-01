@@ -135,5 +135,33 @@
             "parent_category" : "Book"
         }
         
+    },
+    {
+        "pk" : 18,
+        "model" : "listings.Category",
+        "fields" : {
+            "name" : "tutor",
+            "parent_category" : "Tutor"
+        }
+        
+    },
+    {
+        "pk" : 19,
+        "model" : "listings.Category",
+        "fields" : {
+            "name" : "electronics",
+            "parent_category" : "Electronics"
+        }
+        
+    },
+    {
+        "pk" : 20,
+        "model" : "listings.Category",
+        "fields" : {
+            "name" : "misc",
+            "parent_category" : "Miscellaneous"
+        }
+        
     }
+
 ]

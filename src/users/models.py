@@ -1,4 +1,6 @@
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
+from django.db.models import CASCADE, Avg
 from django.utils import timezone
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.base_user import BaseUserManager
@@ -60,6 +62,18 @@ class UserExtension(AbstractUser):
     def __str__(self):
         return self.email
 
+    @property
+    def rate(self):
+        if self.userreview_set.all():
+            return self.userreview_set.all().aggregate(Avg('rate'))['rate__avg']
+        else:
+            return 0
+
+
+class UserReview(models.Model):
+    user = models.ForeignKey(to=UserExtension, on_delete=CASCADE)
+    rate = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
+    text = models.CharField(max_length=300, blank=True)
 
 # Bookmark table
 # An entry contains a user and a listing.
@@ -83,4 +97,14 @@ class EmailVerifyRecord(models.Model):
 
     def __unicode__(self):
         return '{0}({1})'.format(self.code, self.email)
+
+
+class Report(models.Model):
+    reporter = models.ForeignKey(to=UserExtension, on_delete=CASCADE, related_name='reporter', null=True)
+    offender = models.ForeignKey(to=UserExtension, on_delete=CASCADE, related_name='offender', null=True)
+    report_reason = models.CharField(max_length=50)
+    description = models.CharField(max_length=2000)
+
+    def __str__(self):
+        return "Report for: " + self.offender.username + " Reason: " + self.report_reason
 

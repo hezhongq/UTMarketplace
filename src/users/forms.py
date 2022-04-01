@@ -1,8 +1,14 @@
 from crispy_forms.helper import FormHelper
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import UserExtension
+from .models import UserExtension, Report
 
+REPORT_REASON = [
+    ('scam', 'Scamming'),
+    ('harassment', 'Harassment'),
+    ('spam', 'Spam'),
+    ('other', 'Other'),
+]
 
 class RegistrationForm(UserCreationForm):
     email = forms.EmailField(required=True, label='Email')
@@ -92,3 +98,17 @@ class EditUserForm(forms.Form):
     class Meta:
         model = UserExtension
         fields = ("username", "avatar")
+
+class ReportForm(forms.ModelForm):
+    report_reason = forms.CharField(label='Reason', widget=forms.Select(choices=REPORT_REASON))
+    description = forms.CharField(widget=forms.Textarea)
+
+    def __init__(self, *args, **kwargs):
+        super(ReportForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_show_labels = False
+
+    class Meta:
+        model = Report
+        fields = ("report_reason", "description")
+

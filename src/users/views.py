@@ -1,5 +1,7 @@
-from .forms import LoginForm, RegistrationForm, ResetPasswordForm, EditUserForm
-from .models import UserExtension
+from django.http import HttpResponse, Http404
+
+from .forms import LoginForm, RegistrationForm, ResetPasswordForm, EditUserForm, ReportForm
+from .models import UserExtension, UserReview
 from django.conf import settings
 from django.shortcuts import render, get_object_or_404, redirect, reverse
 from django.core.paginator import Paginator
@@ -8,12 +10,15 @@ from random import Random
 from django.core.mail import send_mail
 from django.contrib.auth.forms import SetPasswordForm, PasswordChangeForm
 from .models import EmailVerifyRecord
-from django.views.generic import ListView
+from django.views.generic import ListView, DeleteView
 from listings.models import Listing, Bookmark
 
 
 def home(response):
-    return render(response, 'users/home.html', {})
+    if response.user.is_authenticated:
+        return render(response, 'users/home.html', {})
+    else:
+        return redirect('/users/login/')
 
 
 def register(response):
@@ -46,6 +51,8 @@ def register(response):
 
 def login(response):
     error = ""
+    if response.user.is_authenticated:
+        return redirect('/')
     if response.method == 'POST':
         form = LoginForm(response.POST)
         if form.is_valid():
@@ -147,26 +154,64 @@ def change_password(response):
 
 
 def search_results(request):
-    if request.method == 'POST':
-        searched = request.POST['search']
+    if request.method == 'GET':
+        searched = request.GET.get('search')
         listings = Listing.objects.filter(item_name__contains=searched)
-        paginator = Paginator(listings, 10)  # Show 25 contacts per page.
-        page_number = request.GET.get('page')
+        paginator = Paginator(listings, 3)  # Show 3 contacts per page.
+        page_number = request.GET.get('page_number')
         page_obj = paginator.get_page(page_number)
 
         # return render(request, "users/search_results.html", {'searched': searched, 'listings': listings})
         return render(request, "users/search_results.html", {'page_obj': page_obj, 'searched': searched})
-
     else:
         return render(request, "users/search_results.html", {})
+
+def report(request, user_id):
+    reporter = request.user
+    if not reporter.is_authenticated:
+        return redirect(reverse('login'))
+    offender = UserExtension.objects.filter(id=user_id)
+    if request.method == 'POST':
+        form = ReportForm(request.POST)
+        if form.is_valid():
+            report = form.save()
+            report.reporter = reporter
+            report.offender = offender[0]
+            report.save()
+        return redirect(reverse('profile', kwargs={'user_id': user_id}))
+    else:
+        form = ReportForm()
+        return render(request, "users/report.html", {'form': form, 'offender': offender[0]})
+
+
+def add_rate(response):
+    if not response.user.is_authenticated:
+        raise Http404("")
+    if response.method == 'POST':
+        rate = UserReview()
+        rate.rate = int(response.POST['rate'])
+        rate.user_id = int(response.POST['user'])
+        if response.POST['text'] and response.POST['text'] != "undefined":
+            rate.text = response.POST['text']
+        rate.save()
+
+        # return render(request, "users/search_results.html", {'searched': searched, 'listings': listings})
+        return HttpResponse(status=200)
 
 
 def profile(response, user_id):
     user = UserExtension.objects.filter(id=user_id)
     if user_id == response.user.id:            
-        return render(response, "users/profile.html", {'user': user[0], 'listing_set': user[0].listing_set.all(), 'is_user': True})
+        return render(response, "users/profile.html", {'user': user[0], 'listing_set': user[0].listing_set.all(), 'is_user': True,
+                                                       'star_range': range(int(user[0].rate)),
+                                                       'half_star': (user[0].rate - int(user[0].rate) >= 0.5),
+                                                       'star_empty': range(int(5 - user[0].rate))
+                                                       })
     elif user:
-        return render(response, "users/profile.html", {'user': user[0], 'listing_set': user[0].listing_set.all(), 'is_user': False})
+        return render(response, "users/profile.html", {'user': user[0], 'listing_set': user[0].listing_set.all(), 'is_user': False,
+                                                       'star_range': range(int(user[0].rate)),
+                                                       'half_star': (user[0].rate - int(user[0].rate) >= 0.5),
+                                                       'star_empty': range(int(5 - user[0].rate))})
     else:
         return render(response, "users/result.html", {'error': "no this user"})
 
@@ -214,6 +259,17 @@ def delete_account_confirm(response, delete_account_confirm_code):
             return render(response, "users/result.html", {'error': "user does not exist"})
     return render(response, "users/result.html", {'error': "code does not exist"})
 
+
+class DeleteBookmark(DeleteView):
+    model = Bookmark
+    context_object_name = 'bookmark'
+    success_url = "/users/bookmarks"
+
+    def get(self, request, *args, **kwargs):
+        print(self.kwargs['pk'])
+        bookmark = Bookmark.objects.get(id=self.kwargs['pk'])
+        bookmark.delete()
+        return redirect("/users/bookmarks")
 
 '''===helpers==='''
 

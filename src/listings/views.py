@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
-from django.shortcuts import redirect, get_object_or_404
+from django.shortcuts import redirect, get_object_or_404, reverse
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect, JsonResponse
 
-from listings.forms.add_listing import AddListingForm
+from listings.forms.add_listing import AddListingForm, EditListingForm
 
 from listings.models import Listing, Bookmark, Category
 from django.views.generic import FormView, ListView, DetailView, UpdateView, CreateView, DeleteView
@@ -45,10 +45,19 @@ class UpdateListing(UpdateView):
     model = Listing
     context_object_name = 'listing'
     template_name = 'listings/edit_listing.html'
+    fields = [
+        "image"
+    ]
 
     # Specify the success url here
     def get_success_url(self):
        pass 
+
+    def form_valid(self, form):
+        print("=++++===+==+++=+=")
+        self.object.groups.clear()
+        self.object.groups.add(form.cleaned_data['image'])
+        return super().form_valid(form)
 
 class DisplayListings(ListView):
     model = Listing
@@ -94,3 +103,21 @@ def bookmark_listing(request, pk):
     if request.POST['url_type'] == 'all_listings':
         return redirect('/listings/')
     return redirect(f'/listings/{pk}/details/')
+
+
+def edit_listing_img(request, pk):
+
+    user = request.user
+    form = EditListingForm()
+    listing = Listing.objects.filter(id=pk)
+    if not user.is_authenticated:
+        return redirect(reverse('login'))
+    if request.method == "POST":
+        form = EditListingForm(request.POST)
+        if form.is_valid():
+            if 'image' in request.FILES:
+                user.avatar = request.FILES['image']
+            user.save()
+            print("===============")
+            return redirect(reverse('profile', kwargs={'user_id': user.id}))
+    return render(request, "listings/edit_listing.html", {'user': user, 'listing': listing, 'form': form, 'is_user': True})

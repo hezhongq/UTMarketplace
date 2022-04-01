@@ -1,4 +1,6 @@
 from django import forms
+from crispy_forms.helper import FormHelper
+from listings.models import Listing
 
 # NOTE: In the model, all categories must have lowercase names. The value on the right of the tuple is what is shown
 # to the user, and the value on the left is what is passed in as the key
@@ -40,3 +42,14 @@ class AddListingForm(forms.Form):
     def clean(self):
         cleaned_data = super().clean()
         return cleaned_data
+
+class EditListingForm(forms.Form):
+    image = forms.ImageField(required=False)
+    def __init__(self, *args, **kwargs):
+        super(EditListingForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_show_labels = False
+    
+    class Meta:
+        model = Listing
+        fields = ("image")

@@ -272,10 +272,14 @@
 
 						</div>	
 						
-						<div id="edit-image"> </div>
-						{% csrf_token %} 
-    					{{ form.as_p }}
-						<a class="btn bg-primary text-white" id="edit-listing" href="{% url 'edit-listing' pk=listing.id %}">edit listing image</a>
+						<div id="edit-image">
+                            <form action="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                {{ form.as_p }}
+                            </form>
+                            <a href="{% url 'single-listing' pk=listing.id %}"><button type="submit" class="btn btn-primary">Submit</button></a>
+                        </div>
+						<p class="btn" id="edit-listing">edit listing image</p>
 						<p>{{ listing.description }}</p>
 
                     </div>

@@ -9,5 +9,6 @@ urlpatterns = [
     path('update-listing/', views.UpdateListing.as_view(), name="update-listing"),  # URL to update listing page
     path('<int:pk>/details/', views.SingleListing.as_view(), name="single-listing"),  # URL to display listing page
     path('<int:pk>/bookmark/', views.bookmark_listing, name='bookmark'),
+    path('<int:pk>/edit-listing/', views.UpdateListing.as_view(), name="edit-listing"),
 ]
 

@@ -73,6 +73,7 @@ class UserExtension(AbstractUser):
 class UserReview(models.Model):
     user = models.ForeignKey(to=UserExtension, on_delete=CASCADE)
     rate = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
+    text = models.CharField(max_length=300, blank=True)
 
 # Bookmark table
 # An entry contains a user and a listing.

@@ -198,6 +198,56 @@
                                                 <div class="d-flex justify-content-center mb-2">
                                             <a href="{% url 'report' user_id=user.id %}"><button type="button" class="btn btn-primary">Report User</button></a>
                                           </div>
+                                            <div class="rate">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <span>Review</span>
+                                                        <i class="rate_star bi bi-star-fill text-warning star_fill" style="cursor: pointer;"></i>
+                                                        <i class="rate_star bi bi-star-fill text-warning star_fill" style="cursor: pointer;"></i>
+                                                        <i class="rate_star bi bi-star-fill text-warning star_fill" style="cursor: pointer;"></i>
+                                                        <i class="rate_star bi bi-star-fill text-warning star_fill" style="cursor: pointer;"></i>
+                                                        <i class="rate_star bi bi-star-fill text-warning star_fill" style="cursor: pointer;"></i>
+                                                    </div>
+                                                </div>
+                                                <textarea maxlength="300" class="textarea form-control" id="rate_note"></textarea>
+                                                <button class="btn btn-primary btn-sm" id="rate_submit">Submit</button>
+                                            </div>
+                                            <script>
+                                                    var ratingStars = [...document.getElementsByClassName("rate_star")];
+
+                                                    function executeRating(stars) {
+                                                      const starClassActive = "rate_star bi bi-star-fill text-warning star_fill";
+                                                      const starClassInactive = "rate_star bi bi-star text-warning";
+                                                      const starsLength = stars.length;
+                                                      let i;
+                                                      stars.map((star) => {
+                                                        star.onclick = () => {
+
+                                                          if (star.className===starClassInactive) {
+                                                              i = stars.indexOf(star);
+                                                              for (i; i >= 0; --i) stars[i].className = starClassActive;
+                                                          } else {
+                                                              i = stars.indexOf(star) + 1;
+                                                              for (i; i < starsLength; ++i) stars[i].className = starClassInactive;
+                                                          }
+
+                                                        };
+                                                      });
+                                                    }
+                                                    executeRating(ratingStars);
+
+                                                    document.getElementById("rate_submit").onclick = function () {
+                                                        var star_fill = [...document.getElementsByClassName("star_fill")];
+                                                        const starsLength = star_fill.length;
+                                                        let req = new XMLHttpRequest();
+                                                        req.open("POST", "/users/rate/", true);
+                                                        req.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                                                        req.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+                                                        const formdata = "rate=" + starsLength + "&user=" + "{{ user.id }}" +
+                                                            "&text=" + document.getElementsByClassName("rate_note").value;
+                                                        req.send(formdata);
+                                                    }
+                                            </script>
                                             {% endif %}
                                         </div>
                                       </div>

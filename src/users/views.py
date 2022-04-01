@@ -13,7 +13,10 @@ from listings.models import Listing, Bookmark
 
 
 def home(response):
-    return render(response, 'users/home.html', {})
+    if response.user.is_authenticated:
+        return render(response, 'users/home.html', {})
+    else:
+        return redirect('/users/login/')
 
 
 def register(response):
@@ -46,6 +49,8 @@ def register(response):
 
 def login(response):
     error = ""
+    if response.user.is_authenticated:
+        return redirect('/')
     if response.method == 'POST':
         form = LoginForm(response.POST)
         if form.is_valid():

@@ -154,6 +154,19 @@ Users do not need to login again after changing their passwords
 -- If account does not exists, user will get redirected to a page saying "user does not exist"
 -- If delete_account_confirm_code doest not exist,  user will get redirected to a page saying "code does not exist"
 
+
+## /users/rate
+- POST
+- Fields
+-- rate
+-- user
+-- text
+- Status Code
+-- *HTTP 200*
+- Note
+-- If user is not logged in, it returns 404
+-- User can rate other users
+
 ## /users/edit_profile
 - GET POST
 - Fields

@@ -261,16 +261,26 @@
 									<div class="col-9"></div>
 									<div class="col-2">
 										<div class="hov mx-2">
-											<button id="bookmarkItemBtn">
+											<button id="bookmark{{ listing.id }}btn">
 												<a class="p-3 py-5">
 													<i class="bi bi-bookmarks-fill h2 text-black"></i>
 												</a>
 											</button>
-											<form method="POST" id="bookmarkItem"
+											<form method="POST" id="bookmark{{ listing.id }}"
 												action="{% url 'bookmark' pk=listing.id %}"> {% csrf_token %}
 												<input id="url_type" name="url_type" type="hidden" value="all_listings">
 												<!-- Send in the URL to be redirected to-->
 											</form>
+											<!-- Submit the form if this user wants to bookmark the item-->
+											
+											<script>
+												// Set an event listener for the bookmark button to bookmark the item
+												bookmark_item_button = document.getElementById("bookmark{{ listing.id }}btn");
+												bookmark_item_button.addEventListener("click", () => {
+													document.getElementById("bookmark{{ listing.id }}").submit();
+												})
+											</script>
+
 										</div>
 									</div>
 								</div>
@@ -343,15 +353,6 @@
 	<footer class="container-fluid bg-uoft">
 		<p class="pt-3 pb-3 text-white text-center mb-0">copyright: All rights reserved</p>
 	</footer>
-
-	<!-- Submit the form if this user wants to bookmark the item-->
-	<script>
-		// Set an event listener for the bookmark button to bookmark the item
-		bookmark_item_button = document.getElementById("bookmarkItemBtn");
-		bookmark_item_button.addEventListener("click", () => {
-			document.getElementById("bookmarkItem").submit();
-		})
-	</script>
 
 </body>
 

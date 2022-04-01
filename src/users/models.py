@@ -64,7 +64,10 @@ class UserExtension(AbstractUser):
 
     @property
     def rate(self):
-        return self.userreview_set.all().aggregate(Avg('rate'))['rate__avg']
+        if self.userreview_set.all():
+            return self.userreview_set.all().aggregate(Avg('rate'))['rate__avg']
+        else:
+            return 0
 
 
 class UserReview(models.Model):

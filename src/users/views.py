@@ -1,4 +1,4 @@
-from .forms import LoginForm, RegistrationForm, ResetPasswordForm, EditUserForm
+from .forms import LoginForm, RegistrationForm, ResetPasswordForm, EditUserForm, ReportForm
 from .models import UserExtension
 from django.conf import settings
 from django.shortcuts import render, get_object_or_404, redirect, reverse
@@ -164,20 +164,32 @@ def search_results(request):
     else:
         return render(request, "users/search_results.html", {})
 
+def report(request, user_id):
+    reporter = request.user
+    if not reporter.is_authenticated:
+        return redirect(reverse('login'))
+    offender = UserExtension.objects.filter(id=user_id)
+    if request.method == 'POST':
+        form = ReportForm(request.POST)
+        if form.is_valid():
+            report = form.save()
+            report.reporter = reporter
+            report.offender = offender[0]
+            report.save()
+        return redirect(reverse('profile', kwargs={'user_id': user_id}))
+    else:
+        form = ReportForm()
+        return render(request, "users/report.html", {'form': form, 'offender': offender[0]})
+
 
 def profile(response, user_id):
     user = UserExtension.objects.filter(id=user_id)
     if user_id == response.user.id:            
         return render(response, "users/profile.html", {'user': user[0], 'listing_set': user[0].listing_set.all(), 'is_user': True,
-                                                       'star_range': range(int(user[0].rate)),
-                                                       'half_star': (user[0].rate - int(user[0].rate) >= 0.5),
-                                                       'star_empty': range(int(5 - user[0].rate))
                                                        })
     elif user:
         return render(response, "users/profile.html", {'user': user[0], 'listing_set': user[0].listing_set.all(), 'is_user': False,
-                                                       'star_range': range(int(user[0].rate)),
-                                                       'half_star': (user[0].rate - int(user[0].rate) >= 0.5),
-                                                       'star_empty': range(int(5 - user[0].rate))})
+                                                       })
     else:
         return render(response, "users/result.html", {'error': "no this user"})
 

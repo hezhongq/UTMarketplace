@@ -194,6 +194,10 @@
                                               <input type="submit" class="btn btn-primary" value="Delete Account" />
                                             </form>
                                           </div>
+                                                {% else %}
+                                                <div class="d-flex justify-content-center mb-2">
+                                            <a href="{% url 'report' user_id=user.id %}"><button type="button" class="btn btn-primary">Report User</button></a>
+                                          </div>
                                             {% endif %}
                                         </div>
                                       </div>

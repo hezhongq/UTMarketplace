@@ -97,3 +97,13 @@ class EmailVerifyRecord(models.Model):
     def __unicode__(self):
         return '{0}({1})'.format(self.code, self.email)
 
+
+class Report(models.Model):
+    reporter = models.ForeignKey(to=UserExtension, on_delete=CASCADE, related_name='reporter', null=True)
+    offender = models.ForeignKey(to=UserExtension, on_delete=CASCADE, related_name='offender', null=True)
+    report_reason = models.CharField(max_length=50)
+    description = models.CharField(max_length=2000)
+
+    def __str__(self):
+        return "Report for: " + self.offender.username + " Reason: " + self.report_reason
+

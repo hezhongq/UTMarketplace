@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from users.models import UserExtension, EmailVerifyRecord, UserReview
+from users.models import UserExtension, EmailVerifyRecord, UserReview, Report
 from listings.models import Listing, Bookmark, Category
 
 
@@ -27,3 +27,4 @@ admin.site.register(UserReview, UserReviewAdmin)
 admin.site.register(Listing)
 admin.site.register(Bookmark)
 admin.site.register(Category)
+admin.site.register(Report)

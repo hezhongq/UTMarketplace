@@ -18,7 +18,9 @@ urlpatterns = [
     re_path(r'^reset/(?P<reset_code>.*)/$', views.forget_password_submit, name="reset_password"),
     path('forgetpassword/', views.reset_password, name="forgetpassword"),
     path('change_profile_password/', views.change_password, name="change_profile_password"),
+    path('rate/', views.add_rate, name="add_rate"),
     path('profile/<int:user_id>', views.profile, name="profile"),
+    path('report/<int:user_id>', views.report, name="report"),
     path('delete_account/<int:user_id>', views.delete_account, name="delete_account"),
     re_path(r'^delete_account_confirm/(?P<delete_account_confirm_code>.*)/$', views.delete_account_confirm, name="delete_account_confirm"),
 ]

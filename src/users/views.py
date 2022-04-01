@@ -1,5 +1,7 @@
-from .forms import LoginForm, RegistrationForm, ResetPasswordForm, EditUserForm
-from .models import UserExtension
+from django.http import HttpResponse, Http404
+
+from .forms import LoginForm, RegistrationForm, ResetPasswordForm, EditUserForm, ReportForm
+from .models import UserExtension, UserReview
 from django.conf import settings
 from django.shortcuts import render, get_object_or_404, redirect, reverse
 from django.core.paginator import Paginator
@@ -163,6 +165,38 @@ def search_results(request):
         return render(request, "users/search_results.html", {'page_obj': page_obj, 'searched': searched})
     else:
         return render(request, "users/search_results.html", {})
+
+def report(request, user_id):
+    reporter = request.user
+    if not reporter.is_authenticated:
+        return redirect(reverse('login'))
+    offender = UserExtension.objects.filter(id=user_id)
+    if request.method == 'POST':
+        form = ReportForm(request.POST)
+        if form.is_valid():
+            report = form.save()
+            report.reporter = reporter
+            report.offender = offender[0]
+            report.save()
+        return redirect(reverse('profile', kwargs={'user_id': user_id}))
+    else:
+        form = ReportForm()
+        return render(request, "users/report.html", {'form': form, 'offender': offender[0]})
+
+
+def add_rate(response):
+    if not response.user.is_authenticated:
+        raise Http404("")
+    if response.method == 'POST':
+        rate = UserReview()
+        rate.rate = int(response.POST['rate'])
+        rate.user_id = int(response.POST['user'])
+        if response.POST['text'] and response.POST['text'] != "undefined":
+            rate.text = response.POST['text']
+        rate.save()
+
+        # return render(request, "users/search_results.html", {'searched': searched, 'listings': listings})
+        return HttpResponse(status=200)
 
 
 def profile(response, user_id):

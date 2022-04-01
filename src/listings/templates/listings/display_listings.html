@@ -121,7 +121,7 @@
 				<div class="collapse navbar-collapse">
 					<ul class="navbar-nav me-auto">
 						<li class="nav-item px-3 hov">
-							<a class="nav-link text-white py-3" href="">Home</a>
+							<a class="nav-link text-white py-3" href="/users/home">Home</a>
 						</li>
 						<li class="nav-item px-3 hov">
 							<a class="nav-link text-white py-3" href="">Sell</a>
@@ -137,17 +137,16 @@
 						</a>
 					</div>
 
-
-					<form class="d-flex">
-						<input class="form-control me-2" type="text" name="">
-						<button class="btn btn-primary">Search</button>
+					<form class="d-flex" method="GET" action="{% url 'search_results' %}">
+						<input class="form-control me-2" type="text" name="search">
+						<button class="btn btn-primary" type="submit">Search</button>
 					</form>
 
 					<div class="hov mx-3">
-						<a class="nav-link text-white py-3 mx-2" href="login.html">Logout</a>
+						<a class="nav-link text-white py-3 mx-2" href="/users/logout">Logout</a>
 					</div>
 					<div class="hov">
-						<a class="px-3 py-5" href="profile.html">
+						<a class="px-3 py-5" href="/users/profile/{{request.user.id}}">
 							<i class="bi bi-person-circle h2 text-white"></i>
 						</a>
 					</div>

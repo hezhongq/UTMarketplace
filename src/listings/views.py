@@ -54,6 +54,7 @@ class DisplayListings(ListView):
     model = Listing
     context_object_name = "listings"
     template_name = "listings/display_listings.html"
+    paginate_by = 3
 
     def get_queryset(self):
         cost_from = self.request.GET.get('start-price', -1)

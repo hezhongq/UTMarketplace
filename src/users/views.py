@@ -152,16 +152,15 @@ def change_password(response):
 
 
 def search_results(request):
-    if request.method == 'POST':
-        searched = request.POST['search']
+    if request.method == 'GET':
+        searched = request.GET.get('search')
         listings = Listing.objects.filter(item_name__contains=searched)
-        paginator = Paginator(listings, 10)  # Show 25 contacts per page.
-        page_number = request.GET.get('page')
+        paginator = Paginator(listings, 3)  # Show 3 contacts per page.
+        page_number = request.GET.get('page_number')
         page_obj = paginator.get_page(page_number)
 
         # return render(request, "users/search_results.html", {'searched': searched, 'listings': listings})
         return render(request, "users/search_results.html", {'page_obj': page_obj, 'searched': searched})
-
     else:
         return render(request, "users/search_results.html", {})
 

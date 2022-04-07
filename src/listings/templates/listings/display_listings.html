@@ -195,6 +195,7 @@
 												// Set an event listener for the bookmark button to bookmark the item
 												bookmark_item_button = document.getElementById("bookmark{{ listing.id }}btn");
 												bookmark_item_button.addEventListener("click", () => {
+													alert("Bookmark updated!");
 													document.getElementById("bookmark{{ listing.id }}").submit();
 												})
 											</script>

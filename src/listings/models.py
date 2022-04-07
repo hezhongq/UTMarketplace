@@ -15,7 +15,8 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
-# Create your models here.
+# A listing has an item name, price, title, description, posted date, modified date, and image
+# Also has a reference to a category object which it is affiliated with and the original poster
 class Listing(models.Model):
     item_name = models.CharField(max_length=150)
     price = models.FloatField()
@@ -32,6 +33,8 @@ class Listing(models.Model):
         return "{0} -- {1} @ {2} created on {3}".format(self.item_name, self.category, self.price, self.post_date)
 
 
+# Bookmark model contains a foreign key to a UserExtension which is the user who created the bookmark
+# Additionally has a reference to the listing object which is bookmarked by the user
 class Bookmark(models.Model):
     owner = models.ForeignKey(UserExtension, on_delete=models.CASCADE)
     listing = models.ForeignKey(Listing, on_delete=models.CASCADE)

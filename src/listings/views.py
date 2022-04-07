@@ -59,8 +59,9 @@ class DisplayListings(ListView):
     def get_queryset(self):
         cost_from = self.request.GET.get('start-price', -1)
         cost_to = self.request.GET.get('end-price', -1)
-        # if nothing in text boxes, return Listings.objects.all()
-        if cost_from == -1 and cost_to == -1:
+
+        # if input is invalid, show all listings (fully/partially empty, cost_from > cost_to)
+        if cost_from == '' or cost_to == '' or int(cost_from) <= -1 or int(cost_to) <= -1 or int(cost_from) > int(cost_to):
             return Listing.objects.all()
 
         # if thing in text boxes, parse it and return filtered version

@@ -20,7 +20,7 @@ def home(response):
     Redirect user to login if they are not authenticated. 
     """
     if response.user.is_authenticated:
-        return render(response, 'users/home.html', {})
+        return redirect(reverse('listing-home'))
     else:
         return redirect('/users/login/')
 

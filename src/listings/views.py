@@ -6,6 +6,8 @@ from listings.forms.add_listing import AddListingForm
 
 from listings.models import Listing, Bookmark, Category
 from django.views.generic import FormView, ListView, DetailView, UpdateView, CreateView, DeleteView
+
+
 # Create your views here.
 
 
@@ -26,16 +28,17 @@ class AddListing(FormView):
 
     def form_valid(self, form):
         # Create the new listing here after validating data. Redirect to success URL if listing was successfully created
-        
+
         category_name = form.cleaned_data.pop('category')
         print('============')
-        print(category_name) 
+        print(category_name)
         category_object = Category.objects.get(name=category_name)
-        
+
         print('============')
-        print(form.cleaned_data) 
+        print(form.cleaned_data)
         # Might need to change original_poster to abstract user by doing a query
-        new_listing = Listing.objects.create(**form.cleaned_data, category=category_object, original_poster=self.request.user)
+        new_listing = Listing.objects.create(**form.cleaned_data, category=category_object,
+                                             original_poster=self.request.user)
         print(f"/listings/{new_listing.id}/details/")
         return redirect(f"/listings/{new_listing.id}/details/")
 
@@ -60,7 +63,8 @@ class UpdateListing(UpdateView):
 
     # Specify the success url here
     def get_success_url(self):
-       pass 
+        pass
+
 
 class DisplayListings(ListView):
     """
@@ -79,12 +83,12 @@ class DisplayListings(ListView):
             return Listing.objects.all()
 
         # if thing in text boxes, parse it and return filtered version
-        
+
         # ctgry = self.request.GET.get('category', 'give-default-value')
-        
+
         new_context = Listing.objects.filter(
             price__range=(cost_from, cost_to)
-        )#  .filter(category=ctgry)
+        )  # .filter(category=ctgry)
         return new_context
 
 

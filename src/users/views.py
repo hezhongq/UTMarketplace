@@ -15,8 +15,12 @@ from listings.models import Listing, Bookmark
 
 
 def home(response):
+    """
+    Iff user is authenticated, display home page.
+    Redirect user to login if they are not authenticated. 
+    """
     if response.user.is_authenticated:
-        return render(response, 'users/home.html', {})
+        return redirect(reverse('listing-home'))
     else:
         return redirect('/users/login/')
 

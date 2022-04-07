@@ -22,6 +22,13 @@ def home(response):
 
 
 def register(response):
+    """
+    Registers use iff:
+    - the domain ends with "mail.utoronto.ca"
+    - the email is not already registered in the database
+    - username is not already registered in the database
+    - password is strong
+    """
     error = ""
     if response.method == 'POST':
         form = RegistrationForm(response.POST)
@@ -31,7 +38,7 @@ def register(response):
             password = form.cleaned_data['password1']
             password2 = form.cleaned_data['password2']
             if password != password2:
-                error = "two passwords do not match with each other\n"
+                error = "Passwords do not match!\n"
                 return render(response, "users/signup.html", {'form': form, 'error': error})
             if not UserExtension.objects.all().filter(email=email):
                 user = UserExtension()
@@ -42,7 +49,7 @@ def register(response):
                 send_email(response.get_host(), email, "register")
                 return redirect('/users/login/')
             else:
-                error = "user exists\n"
+                error = "User already exists!\n"
                 return render(response, "users/signup.html", {'form': form, 'error': error})
     else:
         form = RegistrationForm()
@@ -50,6 +57,12 @@ def register(response):
 
 
 def login(response):
+    """
+    Logs user in iff:
+    - user is authenticated
+    - password and email matches
+    - user exists in the database
+    """
     error = ""
     if response.user.is_authenticated:
         return redirect('/')
@@ -62,12 +75,12 @@ def login(response):
             user = auth.authenticate(email=email, password=password)
             if user is not None:
                 if not user.is_active:
-                    error = "user not active\n"
+                    error = "Unauthenticated user!\n"
                     return render(response, "users/login.html", {'form': form, 'error': error})
                 auth.login(response, user)
-                return redirect('/users/home/')
+                return redirect('/listings/')
             else:
-                error = "wrong user email or password\n"
+                error = "Invalid email/password!\n"
     else:
         form = LoginForm()
 
@@ -75,11 +88,18 @@ def login(response):
 
 
 def do_logout(response):
+    """
+    Logs user out.
+    """
     auth.logout(response)
     return redirect('/users/login')
 
 
 def active_user(response, active_code):
+    """
+    After registration, an email is sent. Once the user clicks on the email, they will be authenticated and eligible to login.
+    """
+
     all_records = EmailVerifyRecord.objects.filter(code=active_code, send_type="register")
     if all_records:
         # should we avoid same record?
@@ -89,15 +109,19 @@ def active_user(response, active_code):
             if user:
                 user[0].is_active = True
                 user[0].save()
-                return render(response, "users/result.html", {'success': "verify account successfully"})
-            return render(response, "users/result.html", {'error': "no this user"})
-    return render(response, "users/result.html", {'error': "no this code"})
+                return render(response, "users/result.html", {'success': "Verification successful!"})
+            return render(response, "users/result.html", {'error': "User does not exist!"})
+    return render(response, "users/result.html", {'error': "Invalid confirmation code!"})
 
 
 def forget_password_submit(response, reset_code):
+    """
+    Users are able to reset their password, iff email exists in the database.
+    User is not assumed to be authenticated and instead on the login screen.
+    An email will be sent, where users can reset their password.
+    """
     all_records = EmailVerifyRecord.objects.filter(code=reset_code, send_type="forget")
     if all_records:
-        # should we avoid same record?
         for record in all_records:
             email = record.email
             user = UserExtension.objects.all().filter(email=email)
@@ -108,7 +132,7 @@ def forget_password_submit(response, reset_code):
                     if form.is_valid():
                         form.save()
                         return render(response, "users/result.html",
-                                      {'success': "reset password successfully"})
+                                      {'success': "Password reset successful!"})
                     else:
                         return render(response, "users/reset.html",
                                       {'form': form})
@@ -118,12 +142,16 @@ def forget_password_submit(response, reset_code):
                                   {'form': form})
             else:
                 return render(response, "users/result.html",
-                              {'error': "no this user"})
+                              {'error': "User does not exist!"})
     return render(response, "users/result.html",
-                  {'error': "no this code"})
+                  {'error': "Invalid confirmation code!"})
 
 
 def reset_password(response):
+    """
+    Users are able to reset their password, iff email exists in the database.
+    User is already assumed to be authenticated. An email will be sent, where users can reset their password.
+    """
     error = ""
     if response.method == 'POST':
         form = ResetPasswordForm(response.POST)
@@ -132,16 +160,19 @@ def reset_password(response):
             user = UserExtension.objects.all().filter(email=email)
             if user:
                 send_email(response.get_host(), email, "forget")
-                return render(response, "users/result.html", {'success': "email sent"})
-            return render(response, "users/result.html", {'error': "no this user"})
+                return render(response, "users/result.html", {'success': "Email sent!"})
+            return render(response, "users/result.html", {'error': "User does not exist!"})
     else:
         form = ResetPasswordForm()
     return render(response, "users/pwd_retrieval.html", {'form': form, 'error': error})
 
 
 def change_password(response):
+    """
+    Users are able to change their password, iff they are authenticated. 
+    """
     if not response.user.is_authenticated:
-        return render(response, "users/result.html", {'error': "please login"})
+        return render(response, "users/result.html", {'error': "Please Login"})
     if response.method == "POST":
         form = PasswordChangeForm(user=response.user, data=response.POST)
         if form.is_valid():
@@ -154,19 +185,23 @@ def change_password(response):
 
 
 def search_results(request):
+    """
+    Returns the listings filtered by the search result.
+    """
     if request.method == 'GET':
         searched = request.GET.get('search')
         listings = Listing.objects.filter(item_name__contains=searched)
         paginator = Paginator(listings, 3)  # Show 3 contacts per page.
         page_number = request.GET.get('page_number')
         page_obj = paginator.get_page(page_number)
-
-        # return render(request, "users/search_results.html", {'searched': searched, 'listings': listings})
         return render(request, "users/search_results.html", {'page_obj': page_obj, 'searched': searched})
     else:
         return render(request, "users/search_results.html", {})
 
 def report(request, user_id):
+    """
+    Users can report other users, iff the other user exists.
+    """
     reporter = request.user
     if not reporter.is_authenticated:
         return redirect(reverse('login'))
@@ -185,6 +220,9 @@ def report(request, user_id):
 
 
 def add_rate(response):
+    """
+    Updates a user's rating if user exists.
+    """
     if not response.user.is_authenticated:
         raise Http404("")
     if response.method == 'POST':
@@ -200,6 +238,9 @@ def add_rate(response):
 
 
 def profile(response, user_id):
+    """
+    Redirects a user's profile page if profile exists.
+    """
     user = UserExtension.objects.filter(id=user_id)
     if user_id == response.user.id:            
         return render(response, "users/profile.html", {'user': user[0], 'listing_set': user[0].listing_set.all(), 'is_user': True,
@@ -213,11 +254,13 @@ def profile(response, user_id):
                                                        'half_star': (user[0].rate - int(user[0].rate) >= 0.5),
                                                        'star_empty': range(int(5 - user[0].rate))})
     else:
-        return render(response, "users/result.html", {'error': "no this user"})
-
+        return render(response, "users/result.html", {'error': "User does not exist!"})
 
 
 def edit_profile(response):
+    """
+    If the user access their own profile, they are able to change some user settings.
+    """
     user = response.user
     form = EditUserForm()
     if not user.is_authenticated:
@@ -235,18 +278,26 @@ def edit_profile(response):
 
 
 def delete_account(response, user_id):
+    """
+    Sends an email to confirm account deletion and redirect the user to the login page once successful.
+    """
+
     user = UserExtension.objects.filter(id=user_id)
     if user_id == response.user.id:
         email = response.user.email
         send_email(response.get_host(), email, "delete")
         return redirect('/users/login/')
     elif user:
-        return render(response, "users/result.html", {"error": "access denied"})
+        return render(response, "users/result.html", {"error": "Access denied!"})
     else:
-        return render(response, "users/result.html", {"error": "no account exists"})
+        return render(response, "users/result.html", {"error": "Account doesnt exists!"})
 
 
 def delete_account_confirm(response, delete_account_confirm_code):
+    """
+    Once the user clicks the email link to corfirm their account deletion,
+    the user will be removed form the database and the user will be directed to a result page.
+    """
     all_records = EmailVerifyRecord.objects.filter(code=delete_account_confirm_code, send_type="delete")
     if all_records:
         for record in all_records:
@@ -255,9 +306,9 @@ def delete_account_confirm(response, delete_account_confirm_code):
             if user:
                 user[0].is_active = True
                 user[0].delete()
-                return render(response, "users/result.html", {'success': "account deleted"})
-            return render(response, "users/result.html", {'error': "user does not exist"})
-    return render(response, "users/result.html", {'error': "code does not exist"})
+                return render(response, "users/result.html", {'success': "Account deleted!"})
+            return render(response, "users/result.html", {'error': "Account does not exist!"})
+    return render(response, "users/result.html", {'error': "Invalid confirmation code!"})
 
 
 class DeleteBookmark(DeleteView):
@@ -274,6 +325,10 @@ class DeleteBookmark(DeleteView):
 '''===helpers==='''
 
 def random_str(randomlength=8):
+    """
+    Generates random string with specificefd length, default length is 8 characters long.
+    """
+
     s = ''
     chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789'
     length = len(chars) - 1
@@ -284,6 +339,10 @@ def random_str(randomlength=8):
 
 
 def send_email(hostname, email, send_type="register"):
+    """
+    This function sends an email to the users's email address.
+    """
+
     email_record = EmailVerifyRecord()
     code = random_str(16)
     email_record.code = code + email
@@ -292,8 +351,8 @@ def send_email(hostname, email, send_type="register"):
     email_record.save()
 
     if send_type == "register":
-        email_title = "UTMarketplace - register code"
-        email_body = "click to verify: http://{0}/users/active/{1}".format(hostname, code + email)
+        email_title = "UTMarketplace - Register code"
+        email_body = "Click to verify: http://{0}/users/active/{1}".format(hostname, code + email)
 
     elif send_type == "forget":
         email_title = "UTMarketplace - Password Reset"

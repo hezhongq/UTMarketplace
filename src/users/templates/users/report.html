@@ -148,9 +148,15 @@
                     <form method="post" enctype='multipart/form-data'>
                         {% csrf_token %}
                         {{ form|crispy }}
-                        <input type="submit" value="Submit" class="mt-2 btn btn-primary">
+                        <input id="submitbutton" type="submit" value="Submit" class="mt-2 btn btn-primary">
                     </form>
 				</div>
+                <script>
+                    report_submit = document.getElementById("submitbutton");
+                    report_submit.addEventListener("click", () => {
+                        alert("Report submitted!");
+                    })
+                </script>
 			</div>
 
 		</div>

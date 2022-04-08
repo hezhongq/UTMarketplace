@@ -76,20 +76,30 @@ class DisplayListings(ListView):
     paginate_by = 3
 
     def get_queryset(self):
+        new_context = Listing.objects.all()
+
         cost_from = self.request.GET.get('start-price', -1)
         cost_to = self.request.GET.get('end-price', -1)
+        category = self.request.GET.get('category')
+        hidden_category = self.request.GET.get('hidden_category')
 
+        if hidden_category and category == "":
+            category = hidden_category
+        
+        # if thing in text boxes, parse it and return filtered version
+        if category is not None:
+            new_context = Listing.objects.filter(category__name=category)
+
+        print(new_context)
         # if input is invalid, show all listings (fully/partially empty, cost_from > cost_to)
         if cost_from == '' or cost_to == '' or int(cost_from) <= -1 or int(cost_to) <= -1 or int(cost_from) > int(cost_to):
-            return Listing.objects.all()
-
-        # if thing in text boxes, parse it and return filtered version
+            return new_context
 
         # ctgry = self.request.GET.get('category', 'give-default-value')
-
-        new_context = Listing.objects.filter(
+        
+        new_context = new_context.filter(
             price__range=(cost_from, cost_to)
-        )  # .filter(category=ctgry)
+        )
         return new_context
 
 

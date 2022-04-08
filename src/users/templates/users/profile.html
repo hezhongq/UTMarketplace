@@ -168,7 +168,7 @@
                                           <div class="d-flex justify-content-center mb-2">
                                             <!-- <div>{{ user.id}}</div> -->
                                             <form action="/users/delete_account/{{ request.user.id }}">
-                                              <input type="submit" class="btn btn-primary" value="Delete Account" />
+                                              <input id="delete-account-btn" type="submit" class="btn btn-primary" value="Delete Account" />
                                             </form>
                                           </div>
                                                 {% else %}
@@ -189,6 +189,12 @@
                                                 <textarea maxlength="300" class="textarea form-control" id="rate_note"></textarea>
                                                 <button class="btn btn-primary btn-sm" id="rate_submit">Submit</button>
                                             </div>
+                                            <script>
+                                                delete_acc = document.getElementById("delete-account-btn");
+                                                delete_acc.addEventListener("click", () => {
+                                                    alert("Please check your email to confirm account deletion.");
+                                                })
+                                            </script>
                                             <script>
                                                     var ratingStars = [...document.getElementsByClassName("rate_star")];
 
@@ -293,7 +299,7 @@
                                       {% for listing in listing_set %}
                                       <div class="card" style="width: 18rem;">
                                         <div class="portrait" data-mdb-ripple-color="light">
-                                          <img src="https://conversion.teamstudy.com/link-preview?title=CSC369%20-%20Operating%20Systems&subtitle=University%20of%20Toronto%20%28St.%20George%29&color=%23002F65" class="img-fluid" />
+                                          <img src="{% static listing.image.url %}" class="img-fluid" />
                                           <a href="#!">
                                             <div class="mask" style="background-color: rgba(251, 251, 251, 0.15)"></div>
                                           </a>
@@ -305,7 +311,7 @@
                                             {{ listing.item_name }}
                                           </p>
                                       
-                                          <button type="button" class="btn btn-primary">Button</button>
+                                          <button type="button" class="btn btn-primary">View Listing</button>
                                         </div>
                                       </div>
                                         {% endfor %}
@@ -363,6 +369,12 @@
 
 
                 </div>
+                        <script>
+                            delete_acc = document.getElementById("delete-account-btn");
+                            delete_acc.addEventListener("click", () => {
+                                alert("Please check your email to confirm account deletion.");
+                            })
+                        </script>
 
 
 

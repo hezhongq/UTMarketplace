@@ -52,7 +52,7 @@
 
                                     <div class="d-flex justify-content-between align-items-center mb-4">
                                         <div>
-                                            <p class="mb-0">You have {{ bookmarks|length }} item(s), totalling to ${{ total_cost }}.</p>
+                                            <p class="mb-0">You have {{ bookmarks|length }} item(s), totalling to ${{ total_cost | floatformat:2 }}.</p>
                                         </div>
                                         <div>
                                             <p class="mb-0"><span class="text-muted">Sort by:</span> <a href="#!"
@@ -83,7 +83,7 @@
                                                 <!-- Quantity and price attributes-->
                                                 <div class="d-flex flex-row align-items-center">
                                                     <div style="width: 250px;">
-                                                        <h5 class="mb-0"> Listed Price: ${{ bookmark.listing.price }}</h5>
+                                                        <h5 class="mb-0"> Listed Price: ${{ bookmark.listing.price | floatformat:2 }}</h5>
                                                     </div>
                                                     <!-- Remove item from cart icon-->
                                                     <button id ="deleteBookmarkBtn" style="border: none;">

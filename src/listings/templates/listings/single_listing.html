@@ -147,9 +147,9 @@
                     <div class="col-8 m-5">
                         <div class="row">
 							<div class="col-10">
-								<a class="py-5 text-decoration-none text-black h5" href="profile.html">
+								<a class="py-5 text-decoration-none text-black h5" href="{% url 'profile' user_id=listing.original_poster.id %}">
 									<i class="bi bi-person-circle text-black"></i>
-									{{user.username}}
+									{{ listing.original_poster.username }}
 								</a>
 							</div>
 							<div class="col-2">
@@ -173,6 +173,7 @@
 												// Set an event listener for the bookmark button to bookmark the item
 												bookmark_item_button = document.getElementById("bookmarkItemBtn");
 												bookmark_item_button.addEventListener("click", () => {
+													alert("Bookmark updated!");
 													document.getElementById("bookmarkItem").submit();
 												})
 											</script>
@@ -184,7 +185,7 @@
                         </div>
 
                         <h2 class="mt-3">{{  listing.title }}</h2>
-                        <h5 class="">${{ listing.price }}</h5>
+                        <h5 class="">${{ listing.price|floatformat:2 }}</h5>
 						<div class="card ">
 							{% if not listing.image %}
 								<img class="rounded" src="../../../static/listing_images/default_listing.jpeg">
@@ -192,9 +193,10 @@
 								<img class="rounded" src="../../../static/listing_images/{{ listing.image }}">
 							{% endif %}
 						</div>	
-						<a href = "mailto:abc@example.com?subject = Feedback&body = Message">
-							Send Feedback
+						<a href = "mailto:{{ listing.original_poster.email }}?subject = Feedback&body = Message">
+							Message Seller
 						</a>
+						<h5> Item Description </h5>
 						<p>{{ listing.description }}</p>
 
                     </div>

@@ -6,78 +6,118 @@ from listings.forms.add_listing import AddListingForm
 
 from listings.models import Listing, Bookmark, Category
 from django.views.generic import FormView, ListView, DetailView, UpdateView, CreateView, DeleteView
+
+
 # Create your views here.
 
 
 def home(response):
+    """
+    Returns the homepage for listings app
+    """
     return render(response, 'users/display_listings.html', {})
 
 
 class AddListing(FormView):
+    """
+    Creates a FormView for adding a new listing
+    Redirects to the newly created listing page if successfully created
+    """
     template_name = 'listings/add_listing.html'
     form_class = AddListingForm
 
     def form_valid(self, form):
         # Create the new listing here after validating data. Redirect to success URL if listing was successfully created
-        
+
         category_name = form.cleaned_data.pop('category')
         print('============')
-        print(category_name) 
+        print(category_name)
         category_object = Category.objects.get(name=category_name)
-        
+
         print('============')
-        print(form.cleaned_data) 
+        print(form.cleaned_data)
         # Might need to change original_poster to abstract user by doing a query
-        new_listing = Listing.objects.create(**form.cleaned_data, category=category_object, original_poster=self.request.user)
+        new_listing = Listing.objects.create(**form.cleaned_data, category=category_object,
+                                             original_poster=self.request.user)
         print(f"/listings/{new_listing.id}/details/")
         return redirect(f"/listings/{new_listing.id}/details/")
 
 
-
 # Ensure that only the user who created this post can delete it
 class DeleteListing(DeleteView):
+    """
+    Creates a FormView for removing a listing
+    """
     model = Listing
     context_object_name = 'listing'
     template_name = 'listings/delete_listing.html'
 
 
 class UpdateListing(UpdateView):
+    """
+    Uses django UpdateView to update a listing model.
+    """
     model = Listing
     context_object_name = 'listing'
     template_name = 'listings/edit_listing.html'
 
     # Specify the success url here
     def get_success_url(self):
-       pass 
+        pass
+
 
 class DisplayListings(ListView):
+    """
+    Creates a listview to display all listings.
+    """
     model = Listing
     context_object_name = "listings"
     template_name = "listings/display_listings.html"
     paginate_by = 3
 
     def get_queryset(self):
+        new_context = Listing.objects.all()
+
         cost_from = self.request.GET.get('start-price', -1)
         cost_to = self.request.GET.get('end-price', -1)
-        # if nothing in text boxes, return Listings.objects.all()
-        if cost_from == -1 and cost_to == -1:
-            return Listing.objects.all()
+        category = self.request.GET.get('category')
+        hidden_category = self.request.GET.get('hidden_category')
 
-        # if thing in text boxes, parse it and return filtered version
+        if hidden_category and category == "":
+            category = hidden_category
         
+        # if thing in text boxes, parse it and return filtered version
+        if category is not None:
+            new_context = Listing.objects.filter(category__name=category)
+
+        print(new_context)
+        # if input is invalid, show all listings (fully/partially empty, cost_from > cost_to)
+        if cost_from == '' or cost_to == '' or int(cost_from) <= -1 or int(cost_to) <= -1 or int(cost_from) > int(cost_to):
+            return new_context
+
         # ctgry = self.request.GET.get('category', 'give-default-value')
         
-        new_context = Listing.objects.filter(
+        new_context = new_context.filter(
             price__range=(cost_from, cost_to)
-        )#  .filter(category=ctgry)
+        )
         return new_context
 
+
 class SingleListing(DetailView):
+    """
+    When a listing is clicked from listings page, we display a
+    DetailView of that single listing model.
+    """
     model = Listing
     context_object_name = "listing"
     template_name = "listings/single_listing.html"
 
+
 def bookmark_listing(request, pk):
+    """
+    When a user clicks on a bookmark button on a listing, we save that listing for the user.
+    If a user already bookmarked that listing, we remove the bookmark.
+    """
     given_listing = get_object_or_404(Listing, id=pk)
     existing_bookmarks = Bookmark.objects.filter(owner=request.user)
 

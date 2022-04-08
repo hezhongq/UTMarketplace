@@ -89,22 +89,22 @@
 							<p class="d-inline">Textbooks</p>
 						</summary>
 						<div class="list-group">
-							<a href="#" class="list-group-item list-group-item-action">Anthropology</a>
-							<a href="#" class="list-group-item list-group-item-action">Biology</a>
-							<a href="#" class="list-group-item list-group-item-action">Chemical $ physical science</a>
-							<a href="#" class="list-group-item list-group-item-action">Economics</a>
-							<a href="#" class="list-group-item list-group-item-action">English & Drama</a>
-							<a href="#" class="list-group-item list-group-item-action">Geography</a>
-							<a href="#" class="list-group-item list-group-item-action">Historical Studies</a>
-							<a href="#" class="list-group-item list-group-item-action">ICCIT</a>
-							<a href="#" class="list-group-item list-group-item-action">Languages Studies</a>
-							<a href="#" class="list-group-item list-group-item-action">Management</a>
-							<a href="#" class="list-group-item list-group-item-action">MCS</a>
-							<a href="#" class="list-group-item list-group-item-action">Philosophy</a>
-							<a href="#" class="list-group-item list-group-item-action">Political Science</a>
-							<a href="#" class="list-group-item list-group-item-action">Psychology</a>
-							<a href="#" class="list-group-item list-group-item-action">Sociology</a>
-							<a href="#" class="list-group-item list-group-item-action">Visual Studies</a>
+							<button form="filter" name="category" class="list-group-item list-group-item-action" type="submit" value="anthropology">Anthropology</button>
+							<button form="filter" name="category" class="list-group-item list-group-item-action" type="submit" value="biology">Biology</button>
+							<button form="filter" name="category" class="list-group-item list-group-item-action" type="submit" value="chemical_physical_sciences">Chemical & Physical Sciences</button>
+							<button form="filter" name="category" class="list-group-item list-group-item-action" type="submit" value="economics">Economics</button>
+							<button form="filter" name="category" class="list-group-item list-group-item-action" type="submit" value="english_drama">English & Drama</button>
+							<button form="filter" name="category" class="list-group-item list-group-item-action" type="submit" value="geography">Geography</button>
+							<button form="filter" name="category" class="list-group-item list-group-item-action" type="submit" value="history">Historical Studies</button>
+							<button form="filter" name="category" class="list-group-item list-group-item-action" type="submit" value="iccit">ICCIT</button>
+							<button form="filter" name="category" class="list-group-item list-group-item-action" type="submit" value="language_studies">Languages Studies</button>
+							<button form="filter" name="category" class="list-group-item list-group-item-action" type="submit" value="management">Management</button>
+							<button form="filter" name="category" class="list-group-item list-group-item-action" type="submit" value="mcs">MCS</button>
+							<button form="filter" name="category" class="list-group-item list-group-item-action" type="submit" value="philosopy">Philosophy</button>
+							<button form="filter" name="category" class="list-group-item list-group-item-action" type="submit" value="political_science">Political Science</button>
+							<button form="filter" name="category" class="list-group-item list-group-item-action" type="submit" value="psychology">Psychology</button>
+							<button form="filter" name="category" class="list-group-item list-group-item-action" type="submit" value="sociology">Sociology</button>
+							<button form="filter" name="category" class="list-group-item list-group-item-action" type="submit" value="visual_studies">Visual Studies</button>
 						</div>
 					</details>
 
@@ -157,15 +157,21 @@
 				<!---------------------- Listings  ---------------------->
 
 				<div class="col-7 col-lg-8 col-xl-9 bg-white m-3">
-					<h1 class="text-center mt-3">Subject 1</h1>
-
-					<form action="{% url 'listing-home' %}" method="GET">
-						{% csrf_token %}
+					{% if request.GET.category %}
+						<h1 class="text-center mt-3">{{ request.GET.category | title }}</h1>
+					{% else %}
+						<h1 class="text-center mt-3">Listings</h1>
+					{% endif %}
+					
+					<form action="{% url 'listing-home' %}" method="GET" id="filter">
 						<label for="">Starting price</label>
 						<input type="number" name="start-price" id="start-price">
 						<label for="">Ending price</label>
-						<input type="number" name="end-price" id="end-price">
-						<input type="submit" value="Submit">
+						<input type="number" name="end-price" id="end-price">	
+						{% if request.GET.category %}
+						<input type="hidden" name="hidden_category" value="{{ request.GET.category }}">
+						{% endif %}
+						<button type="submit"> Submit </button>
 					</form>
 
 
@@ -195,6 +201,7 @@
 												// Set an event listener for the bookmark button to bookmark the item
 												bookmark_item_button = document.getElementById("bookmark{{ listing.id }}btn");
 												bookmark_item_button.addEventListener("click", () => {
+													alert("Bookmark updated!");
 													document.getElementById("bookmark{{ listing.id }}").submit();
 												})
 											</script>
@@ -216,7 +223,7 @@
 											<h4>{{ listing.item_name }}</h4>
 										</a>
 										<!-- price -->
-										<p>${{ listing.price}}</p>
+										<p>${{ listing.price|floatformat:2 }}</p>
 										<!-- descriptions -->
 										<a href="#" class="btn btn-primary">See details</a>
 									</div>

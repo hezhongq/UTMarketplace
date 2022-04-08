@@ -157,7 +157,12 @@
 				<!---------------------- Listings  ---------------------->
 
 				<div class="col-7 col-lg-8 col-xl-9 bg-white m-3">
-					<h1 class="text-center mt-3">Subject 1</h1>
+					{% if request.GET.category %}
+						<h1 class="text-center mt-3">{{ request.GET.category }}</h1>
+					{% else %}
+						<h1 class="text-center mt-3">Listings</h1>
+					{% endif %}
+					
 					<form action="{% url 'listing-home' %}" method="GET" id="filter">
 						<label for="">Starting price</label>
 						<input type="number" name="start-price" id="start-price">

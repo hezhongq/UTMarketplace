@@ -147,9 +147,9 @@
                     <div class="col-8 m-5">
                         <div class="row">
 							<div class="col-10">
-								<a class="py-5 text-decoration-none text-black h5" href="profile.html">
+								<a class="py-5 text-decoration-none text-black h5" href="{% url 'profile' user_id=listing.original_poster.id %}">
 									<i class="bi bi-person-circle text-black"></i>
-									{{user.username}}
+									{{ listing.original_poster.username }}
 								</a>
 							</div>
 							<div class="col-2">

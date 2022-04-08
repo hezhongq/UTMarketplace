@@ -193,9 +193,10 @@
 								<img class="rounded" src="../../../static/listing_images/{{ listing.image }}">
 							{% endif %}
 						</div>	
-						<a href = "mailto:abc@example.com?subject = Feedback&body = Message">
-							Send Feedback
+						<a href = "mailto:{{ listing.original_poster.email }}?subject = Feedback&body = Message">
+							Message Seller
 						</a>
+						<h5> Item Description </h5>
 						<p>{{ listing.description }}</p>
 
                     </div>
